@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="nl" dir="ltr">
 <head>
 <meta charset="UTF-8">
@@ -16,825 +17,899 @@
     --border:   rgba(74,222,128,0.09);
     --border2:  rgba(74,222,128,0.18);
 
-    --green:    #3DDB6F;   /* primary accent – 5.2:1 on --bg */
-    --green2:   #22C55E;
-    --green-dim:#1A8C44;
-    --green-glow: rgba(61,219,111,0.12);
-
-    --teal:     #2DD4BF;   /* secondary accent */
-    --lime:     #A3E635;   /* highlight */
-
-    --danger:   #F87171;
-    --warn:     #FBBF24;
-    --ok:       #34D399;
-
-    --text:     #EDFFF2;
-    --muted:    #7DB890;   /* 4.6:1 on --bg */
-    --muted2:   #3D6648;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Instrument Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.65;
-    overflow-x: hidden;
-  }
-
-  /* Subtle grid texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(61,219,111,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(61,219,111,0.025) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* WCAG – skip link */
-  .skip-link {
-    position: absolute;
-    top: -100px; left: 16px;
-    background: var(--green);
-    color: var(--bg);
-    padding: 10px 20px;
-    border-radius: 0 0 8px 8px;
-    font-weight: 600;
-    font-size: 14px;
-    text-decoration: none;
-    z-index: 9999;
-    transition: top 0.2s;
-  }
-  .skip-link:focus { top: 0; }
-
-  /* WCAG – focus ring */
-  :focus-visible {
-    outline: 3px solid var(--green);
-    outline-offset: 3px;
-    border-radius: 4px;
-  }
-
-  /* WCAG – reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-    .reveal, h1, .hero-badge, .hero-sub, .hero-actions, .hero-visual {
-      opacity: 1 !important;
-      transform: none !important;
-    }
-  }
-
-  /* ── NAV ─────────────────────────────── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 48px;
-    background: rgba(5,12,7,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .logo {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: 22px;
-    letter-spacing: -0.5px;
-    color: var(--text);
-    text-decoration: none;
-  }
-  .logo em { font-style: normal; color: var(--green); }
-
-  .nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
-
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 400;
-    padding: 10px 14px;
-    border-radius: 6px;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    transition: color 0.2s, background 0.2s;
-  }
-  .nav-links a:hover { color: var(--text); background: rgba(61,219,111,0.06); }
-
-  .nav-cta {
-    background: var(--green) !important;
-    color: var(--bg) !important;
-    font-weight: 600 !important;
-    box-shadow: 0 0 20px rgba(61,219,111,0.25);
-  }
-  .nav-cta:hover { opacity: 0.88; background: var(--green) !important; }
-
-  /* ── HERO ────────────────────────────── */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 130px 24px 80px;
-    overflow: hidden;
-  }
-
-  /* Big radial */
-  .hero::after {
-    content: '';
-    position: absolute;
-    top: 10%; left: 50%;
-    transform: translateX(-50%);
-    width: 800px; height: 600px;
-    background: radial-gradient(ellipse, rgba(34,197,94,0.10) 0%, transparent 65%);
-    pointer-events: none;
-  }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(61,219,111,0.08);
-    border: 1px solid rgba(61,219,111,0.22);
-    border-radius: 100px;
-    padding: 6px 18px;
-    font-family: 'Instrument Mono', monospace;
-    font-size: 11px;
-    color: var(--green);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.1s forwards;
-  }
-
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--green);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
-
-  h1 {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: clamp(44px, 7.5vw, 88px);
-    line-height: 0.95;
-    letter-spacing: -3px;
-    max-width: 920px;
-    margin-bottom: 28px;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.2s forwards;
-  }
-
-  h1 em { font-style: normal; color: var(--green); }
-
-  h1 .outline {
-    -webkit-text-stroke: 2px var(--green2);
-    color: transparent;
-  }
-
-  .hero-sub {
-    font-size: 18px;
-    color: var(--muted);
-    max-width: 540px;
-    line-height: 1.75;
-    margin-bottom: 48px;
-    font-weight: 400;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.35s forwards;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.5s forwards;
-  }
-
-  .btn-primary {
-    background: var(--green);
-    color: var(--bg);
-    padding: 14px 32px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 15px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    gap: 8px;
-    transition: all 0.2s;
-    box-shadow: 0 0 32px rgba(61,219,111,0.3);
-    font-family: 'Cabinet Grotesk', sans-serif;
-    letter-spacing: -0.2px;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(61,219,111,0.4); }
-
-  .btn-ghost {
-    color: var(--muted);
-    padding: 14px 24px;
-    font-size: 15px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    transition: color 0.2s;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-  }
-  .btn-ghost:hover { color: var(--text); border-color: rgba(61,219,111,0.3); }
-
-  /* ── HERO VISUAL ─────────────────────── */
-  .hero-visual {
-    margin-top: 72px;
-    position: relative;
-    max-width: 980px;
-    width: 100%;
-    opacity: 0;
-    animation: fadeUp 0.9s 0.7s forwards;
-  }
-
-  .hero-visual::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    background: linear-gradient(180deg, rgba(61,219,111,0.18) 0%, transparent 55%);
-    border-radius: 18px;
-    z-index: -1;
-  }
-
-  .frame {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .frame-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 13px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface2);
-  }
-
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot:nth-child(1){background:#FF5F57}
-  .dot:nth-child(2){background:#FEBC2E}
-  .dot:nth-child(3){background:#28C840}
-
-  .frame-url {
-    margin-left: 12px;
-    font-family: 'Instrument Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    background: var(--bg);
-    padding: 4px 14px;
-    border-radius: 4px;
-  }
-
-  .dash {
-    padding: 24px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-
-  .card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .card.red   { border-color: rgba(248,113,113,0.25); }
-  .card.amber { border-color: rgba(251,191,36,0.25); }
-  .card.emerald { border-color: rgba(52,211,153,0.3); }
-
-  .card-label {
-    font-family: 'Instrument Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 10px;
-  }
-
-  .card-val {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: 38px;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-
-  .card.red    .card-val { color: var(--danger); }
-  .card.amber  .card-val { color: var(--warn); }
-  .card.emerald .card-val { color: var(--ok); }
-
-  .card-sub { font-size: 12px; color: var(--muted); margin-top: 5px; }
-
-  .card-bar {
-    position: absolute;
-    bottom: 0; left: 0;
-    height: 3px; border-radius: 0 0 10px 10px;
-  }
-  .card.red    .card-bar { background: var(--danger); width: 32%; box-shadow: 0 0 8px var(--danger); }
-  .card.amber  .card-bar { background: var(--warn);   width: 58%; box-shadow: 0 0 8px var(--warn); }
-  .card.emerald .card-bar { background: var(--ok);    width: 87%; box-shadow: 0 0 8px var(--ok); }
-
-  .findings {
-    grid-column: span 3;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .findings-head {
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    font-family: 'Instrument Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .badge-count {
-    background: rgba(248,113,113,0.12);
-    color: var(--danger);
-    border-radius: 4px;
-    padding: 2px 9px;
-    font-size: 11px;
-  }
-
-  .finding {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 13px 20px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-  .finding:last-child { border-bottom: none; }
-  .finding:hover { background: rgba(61,219,111,0.03); }
-
-  .f-icon {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; flex-shrink: 0;
-  }
-  .f-icon.r { background: rgba(248,113,113,0.1); }
-  .f-icon.y { background: rgba(251,191,36,0.1); }
-  .f-icon.g { background: rgba(61,219,111,0.1); }
-
-  .f-info { flex: 1; }
-  .f-title { font-size: 13px; font-weight: 500; color: var(--text); }
-  .f-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-  .f-badge {
-    font-family: 'Instrument Mono', monospace;
-    font-size: 10px;
-    padding: 3px 9px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .f-badge.high   { background: rgba(248,113,113,0.12); color: var(--danger); }
-  .f-badge.medium { background: rgba(251,191,36,0.12);  color: var(--warn); }
-  .f-badge.low    { background: rgba(61,219,111,0.1);   color: var(--green); }
-
-  @keyframes fadeUp {
-    from { opacity:0; transform: translateY(24px); }
-    to   { opacity:1; transform: translateY(0); }
-  }
-
-  /* ── LOGOS ───────────────────────────── */
-  .logos {
-    padding: 36px 48px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-  }
-
-  .logos-label {
-    font-family: 'Instrument Mono', monospace;
-    font-size: 11px;
-    color: var(--muted2);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 24px;
-  }
-
-  .logos-row {
-    display: flex; gap: 52px;
-    align-items: center; justify-content: center;
-    flex-wrap: wrap; opacity: 0.35;
-  }
-
-  .logos-row span {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-
-  /* ── SHARED SECTION ──────────────────── */
-  .section {
-    padding: 110px 48px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .tag {
-    font-family: 'Instrument Mono', monospace;
-    font-size: 11px;
-    color: var(--green);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .tag::before {
-    content: '';
-    width: 20px; height: 1px;
-    background: var(--green);
-  }
-
-  .section-h {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: clamp(34px, 4.5vw, 52px);
-    line-height: 1.0;
-    letter-spacing: -2px;
-    margin-bottom: 16px;
-  }
-
-  .section-sub {
-    color: var(--muted);
-    font-size: 17px;
-    max-width: 480px;
-    line-height: 1.75;
-    margin-bottom: 60px;
-    font-weight: 400;
-  }
-
-  /* ── HOW IT WORKS ────────────────────── */
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    position: relative;
-  }
-
-  .steps::before {
-    content: '';
-    position: absolute;
-    top: 32px; left: 10%;
-    width: 80%; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
-  }
-
-  .step {
-    padding: 0 20px 0 0;
-    position: relative;
-  }
-
-  .step-num-wrap {
-    width: 52px; height: 52px;
-    border-radius: 14px;
-    border: 1px solid var(--border2);
-    background: var(--surface2);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 24px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .step-num {
-    font-family: 'Instrument Mono', monospace;
-    font-size: 18px;
-    color: var(--green);
-    font-weight: 400;
-  }
-
-  .step-title {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 10px;
-    letter-spacing: -0.3px;
-  }
-
-  .step-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
-
-  /* ── MODULES ─────────────────────────── */
-  .modules-wrap {
-    padding: 0 48px 110px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .modules-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-
-  .mod {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 34px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .mod:hover { border-color: var(--border2); transform: translateY(-3px); }
-
-  .mod.featured {
-    border-color: rgba(61,219,111,0.22);
-    background: linear-gradient(140deg, rgba(61,219,111,0.05) 0%, var(--surface) 55%);
-  }
-
-  .mod::after {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(61,219,111,0.05) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .mod-status {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-family: 'Instrument Mono', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 4px 12px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-  }
-  .mod-status.live   { background: rgba(52,211,153,0.1); color: var(--ok); }
-  .mod-status.soon   { background: rgba(251,191,36,0.1); color: var(--warn); }
-  .mod-status.future { background: rgba(163,230,53,0.1); color: var(--lime); }
-
-  .mod-title {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: 26px;
-    letter-spacing: -0.8px;
-    margin-bottom: 10px;
-  }
-
-  .mod-sub { color: var(--muted); font-size: 14px; margin-bottom: 22px; line-height: 1.65; }
-
-  .mod-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-
-  .mod-list li {
-    font-size: 13px; color: var(--muted);
-    display: flex; align-items: center; gap: 10px;
-  }
-
-  .mod-list li::before {
-    content: '';
-    width: 16px; height: 16px;
-    flex-shrink: 0;
-    border-radius: 4px;
-    background: rgba(61,219,111,0.08);
-    border: 1px solid rgba(61,219,111,0.2);
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%233DDB6F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-
-  .mod-price {
-    margin-top: 26px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    display: flex; align-items: baseline; gap: 6px;
-  }
-
-  .price-val {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: 28px;
-    letter-spacing: -0.5px;
-    color: var(--text);
-  }
-
-  .price-per { font-size: 13px; color: var(--muted); }
-
-  /* ── PRICING ─────────────────────────── */
-  .pricing-wrap {
-    padding: 0 48px 110px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 14px;
-  }
-
-  .plan {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 34px;
-    transition: transform 0.3s;
-  }
-  .plan:hover { transform: translateY(-3px); }
-
-  .plan.highlight {
-    border-color: rgba(61,219,111,0.28);
-    background: linear-gradient(160deg, rgba(61,219,111,0.07) 0%, var(--surface) 50%);
-  }
-
-  .plan-name {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    margin-bottom: 6px;
-    letter-spacing: -0.3px;
-  }
-
-  .plan-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
-
-  .plan-price {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: 44px;
-    letter-spacing: -2px;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .plan-price span { font-size: 20px; font-weight: 400; color: var(--muted); }
-
-  .plan-per {
-    font-family: 'Instrument Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 26px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .plan-div { height: 1px; background: var(--border); margin-bottom: 22px; }
-
-  .plan-feats { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
-
-  .plan-feats li {
-    font-size: 13px; color: var(--muted);
-    display: flex; gap: 10px; align-items: flex-start;
-  }
-
-  .plan-feats li::before {
-    content: '✓';
-    color: var(--green);
-    font-size: 13px;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .btn-outline {
-    display: flex; align-items: center; justify-content: center;
-    padding: 12px; min-height: 44px;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    color: var(--text);
-    text-decoration: none;
-    font-size: 14px; font-weight: 500;
-    transition: all 0.2s;
-    font-family: 'Cabinet Grotesk', sans-serif;
-    letter-spacing: -0.2px;
-  }
-  .btn-outline:hover { border-color: var(--green); color: var(--green); }
-
-  .btn-filled {
-    display: flex; align-items: center; justify-content: center;
-    padding: 12px; min-height: 44px;
-    background: var(--green);
-    border-radius: 8px;
-    color: var(--bg);
-    text-decoration: none;
-    font-size: 14px; font-weight: 700;
-    transition: all 0.2s;
-    box-shadow: 0 0 24px rgba(61,219,111,0.25);
-    font-family: 'Cabinet Grotesk', sans-serif;
-    letter-spacing: -0.2px;
-  }
-  .btn-filled:hover { opacity: 0.87; }
-
-  /* ── CTA BANNER ──────────────────────── */
-  .cta {
-    margin: 0 48px 80px;
-    background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(61,219,111,0.05) 50%, rgba(45,212,191,0.06) 100%);
-    border: 1px solid rgba(61,219,111,0.2);
-    border-radius: 20px;
-    padding: 72px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cta::before {
-    content: '';
-    position: absolute;
-    top: -80px; left: 50%;
-    transform: translateX(-50%);
-    width: 600px; height: 400px;
-    background: radial-gradient(ellipse, rgba(61,219,111,0.08) 0%, transparent 65%);
-    pointer-events: none;
-  }
-
-  .cta h2 {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: clamp(28px, 4vw, 46px);
-    letter-spacing: -1.5px;
-    margin-bottom: 14px;
-    position: relative;
-  }
-
-  .cta p { color: var(--muted); font-size: 17px; margin-bottom: 36px; position: relative; }
-
-  .cta-btns { display: flex; gap: 16px; justify-content: center; position: relative; }
-
-  /* ── FOOTER ──────────────────────────── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 36px 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-logo {
-    font-family: 'Cabinet Grotesk', sans-serif;
-    font-weight: 900;
-    font-size: 18px;
-    text-decoration: none;
-    color: var(--text);
-  }
-  .footer-logo em { font-style: normal; color: var(--green); }
-
-  .footer-links { display: flex; gap: 28px; list-style: none; }
-  .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-  .footer-links a:hover { color: var(--text); }
-
-  .footer-copy { font-family: 'Instrument Mono', monospace; font-size: 11px; color: var(--muted2); }
-
-  /* ── SCROLL REVEAL ───────────────────── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .lang-switch {
-    font-family: 'Instrument Mono', monospace !important;
-    font-size: 12px !important;
-    letter-spacing: 0.05em;
-    border: 1px solid var(--border2) !important;
-    background: transparent !important;
-  }
-  .lang-switch:hover { border-color: var(--green) !important; }
-  .lang-active { color: var(--green); font-weight: 500; }
+```
+--green:    #3DDB6F;   /* primary accent – 5.2:1 on --bg */
+--green2:   #22C55E;
+--green-dim:#1A8C44;
+--green-glow: rgba(61,219,111,0.12);
+
+--teal:     #2DD4BF;   /* secondary accent */
+--lime:     #A3E635;   /* highlight */
+
+--danger:   #F87171;
+--warn:     #FBBF24;
+--ok:       #34D399;
+
+--text:     #EDFFF2;
+--muted:    #7DB890;   /* 4.6:1 on --bg */
+--muted2:   #3D6648;
+```
+
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘Instrument Sans’, sans-serif;
+font-weight: 300;
+line-height: 1.65;
+overflow-x: hidden;
+}
+
+/* Subtle grid texture */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image:
+linear-gradient(rgba(61,219,111,0.025) 1px, transparent 1px),
+linear-gradient(90deg, rgba(61,219,111,0.025) 1px, transparent 1px);
+background-size: 48px 48px;
+pointer-events: none;
+z-index: 0;
+}
+
+/* WCAG – skip link */
+.skip-link {
+position: absolute;
+top: -100px; left: 16px;
+background: var(–green);
+color: var(–bg);
+padding: 10px 20px;
+border-radius: 0 0 8px 8px;
+font-weight: 600;
+font-size: 14px;
+text-decoration: none;
+z-index: 9999;
+transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+
+/* WCAG – focus ring */
+:focus-visible {
+outline: 3px solid var(–green);
+outline-offset: 3px;
+border-radius: 4px;
+}
+
+/* WCAG – reduced motion */
+@media (prefers-reduced-motion: reduce) {
+*, *::before, *::after {
+animation-duration: 0.01ms !important;
+transition-duration: 0.01ms !important;
+}
+.reveal, h1, .hero-badge, .hero-sub, .hero-actions, .hero-visual {
+opacity: 1 !important;
+transform: none !important;
+}
+}
+
+/* ── NAV ─────────────────────────────── */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 18px 48px;
+background: rgba(5,12,7,0.85);
+backdrop-filter: blur(20px);
+border-bottom: 1px solid var(–border);
+}
+
+.logo {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: 22px;
+letter-spacing: -0.5px;
+color: var(–text);
+text-decoration: none;
+}
+.logo em { font-style: normal; color: var(–green); }
+
+.nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+
+.nav-links a {
+color: var(–muted);
+text-decoration: none;
+font-size: 14px;
+font-weight: 400;
+padding: 10px 14px;
+border-radius: 6px;
+min-height: 44px;
+display: flex;
+align-items: center;
+transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover { color: var(–text); background: rgba(61,219,111,0.06); }
+
+.nav-cta {
+background: var(–green) !important;
+color: var(–bg) !important;
+font-weight: 600 !important;
+box-shadow: 0 0 20px rgba(61,219,111,0.25);
+}
+.nav-cta:hover { opacity: 0.88; background: var(–green) !important; }
+
+/* ── HERO ────────────────────────────── */
+.hero {
+position: relative;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+padding: 130px 24px 80px;
+overflow: hidden;
+}
+
+/* Big radial */
+.hero::after {
+content: ‘’;
+position: absolute;
+top: 10%; left: 50%;
+transform: translateX(-50%);
+width: 800px; height: 600px;
+background: radial-gradient(ellipse, rgba(34,197,94,0.10) 0%, transparent 65%);
+pointer-events: none;
+}
+
+.hero-badge {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: rgba(61,219,111,0.08);
+border: 1px solid rgba(61,219,111,0.22);
+border-radius: 100px;
+padding: 6px 18px;
+font-family: ‘Instrument Mono’, monospace;
+font-size: 11px;
+color: var(–green);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+margin-bottom: 32px;
+opacity: 0;
+animation: fadeUp 0.6s 0.1s forwards;
+}
+
+.hero-badge::before {
+content: ‘’;
+width: 6px; height: 6px;
+background: var(–green);
+border-radius: 50%;
+box-shadow: 0 0 8px var(–green);
+animation: pulse 2s infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+h1 {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: clamp(44px, 7.5vw, 88px);
+line-height: 0.95;
+letter-spacing: -3px;
+max-width: 920px;
+margin-bottom: 28px;
+opacity: 0;
+animation: fadeUp 0.7s 0.2s forwards;
+}
+
+h1 em { font-style: normal; color: var(–green); }
+
+h1 .outline {
+-webkit-text-stroke: 2px var(–green2);
+color: transparent;
+}
+
+.hero-sub {
+font-size: 18px;
+color: var(–muted);
+max-width: 540px;
+line-height: 1.75;
+margin-bottom: 48px;
+font-weight: 400;
+opacity: 0;
+animation: fadeUp 0.7s 0.35s forwards;
+}
+
+.hero-actions {
+display: flex;
+gap: 16px;
+align-items: center;
+opacity: 0;
+animation: fadeUp 0.7s 0.5s forwards;
+}
+
+.btn-primary {
+background: var(–green);
+color: var(–bg);
+padding: 14px 32px;
+border-radius: 8px;
+font-weight: 700;
+font-size: 15px;
+text-decoration: none;
+display: inline-flex;
+align-items: center;
+min-height: 44px;
+gap: 8px;
+transition: all 0.2s;
+box-shadow: 0 0 32px rgba(61,219,111,0.3);
+font-family: ‘Cabinet Grotesk’, sans-serif;
+letter-spacing: -0.2px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(61,219,111,0.4); }
+
+.btn-ghost {
+color: var(–muted);
+padding: 14px 24px;
+font-size: 15px;
+text-decoration: none;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+min-height: 44px;
+transition: color 0.2s;
+border: 1px solid var(–border2);
+border-radius: 8px;
+}
+.btn-ghost:hover { color: var(–text); border-color: rgba(61,219,111,0.3); }
+
+/* ── HERO VISUAL ─────────────────────── */
+.hero-visual {
+margin-top: 72px;
+position: relative;
+max-width: 980px;
+width: 100%;
+opacity: 0;
+animation: fadeUp 0.9s 0.7s forwards;
+}
+
+.hero-visual::before {
+content: ‘’;
+position: absolute;
+inset: -1px;
+background: linear-gradient(180deg, rgba(61,219,111,0.18) 0%, transparent 55%);
+border-radius: 18px;
+z-index: -1;
+}
+
+.frame {
+background: var(–surface);
+border: 1px solid var(–border2);
+border-radius: 16px;
+overflow: hidden;
+}
+
+.frame-bar {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 13px 20px;
+border-bottom: 1px solid var(–border);
+background: var(–surface2);
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot:nth-child(1){background:#FF5F57}
+.dot:nth-child(2){background:#FEBC2E}
+.dot:nth-child(3){background:#28C840}
+
+.frame-url {
+margin-left: 12px;
+font-family: ‘Instrument Mono’, monospace;
+font-size: 12px;
+color: var(–muted);
+background: var(–bg);
+padding: 4px 14px;
+border-radius: 4px;
+}
+
+.dash {
+padding: 24px;
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 14px;
+}
+
+.card {
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 20px;
+position: relative;
+overflow: hidden;
+}
+.card.red   { border-color: rgba(248,113,113,0.25); }
+.card.amber { border-color: rgba(251,191,36,0.25); }
+.card.emerald { border-color: rgba(52,211,153,0.3); }
+
+.card-label {
+font-family: ‘Instrument Mono’, monospace;
+font-size: 10px;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+margin-bottom: 10px;
+}
+
+.card-val {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: 38px;
+line-height: 1;
+letter-spacing: -1px;
+}
+
+.card.red    .card-val { color: var(–danger); }
+.card.amber  .card-val { color: var(–warn); }
+.card.emerald .card-val { color: var(–ok); }
+
+.card-sub { font-size: 12px; color: var(–muted); margin-top: 5px; }
+
+.card-bar {
+position: absolute;
+bottom: 0; left: 0;
+height: 3px; border-radius: 0 0 10px 10px;
+}
+.card.red    .card-bar { background: var(–danger); width: 32%; box-shadow: 0 0 8px var(–danger); }
+.card.amber  .card-bar { background: var(–warn);   width: 58%; box-shadow: 0 0 8px var(–warn); }
+.card.emerald .card-bar { background: var(–ok);    width: 87%; box-shadow: 0 0 8px var(–ok); }
+
+.findings {
+grid-column: span 3;
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+overflow: hidden;
+}
+
+.findings-head {
+padding: 14px 20px;
+border-bottom: 1px solid var(–border);
+font-family: ‘Instrument Mono’, monospace;
+font-size: 11px;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.badge-count {
+background: rgba(248,113,113,0.12);
+color: var(–danger);
+border-radius: 4px;
+padding: 2px 9px;
+font-size: 11px;
+}
+
+.finding {
+display: flex;
+align-items: center;
+gap: 14px;
+padding: 13px 20px;
+border-bottom: 1px solid var(–border);
+transition: background 0.15s;
+}
+.finding:last-child { border-bottom: none; }
+.finding:hover { background: rgba(61,219,111,0.03); }
+
+.f-icon {
+width: 32px; height: 32px;
+border-radius: 8px;
+display: flex; align-items: center; justify-content: center;
+font-size: 14px; flex-shrink: 0;
+}
+.f-icon.r { background: rgba(248,113,113,0.1); }
+.f-icon.y { background: rgba(251,191,36,0.1); }
+.f-icon.g { background: rgba(61,219,111,0.1); }
+
+.f-info { flex: 1; }
+.f-title { font-size: 13px; font-weight: 500; color: var(–text); }
+.f-detail { font-size: 12px; color: var(–muted); margin-top: 2px; }
+
+.f-badge {
+font-family: ‘Instrument Mono’, monospace;
+font-size: 10px;
+padding: 3px 9px;
+border-radius: 4px;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+}
+.f-badge.high   { background: rgba(248,113,113,0.12); color: var(–danger); }
+.f-badge.medium { background: rgba(251,191,36,0.12);  color: var(–warn); }
+.f-badge.low    { background: rgba(61,219,111,0.1);   color: var(–green); }
+
+@keyframes fadeUp {
+from { opacity:0; transform: translateY(24px); }
+to   { opacity:1; transform: translateY(0); }
+}
+
+/* ── LOGOS ───────────────────────────── */
+.logos {
+padding: 36px 48px;
+border-top: 1px solid var(–border);
+border-bottom: 1px solid var(–border);
+text-align: center;
+}
+
+.logos-label {
+font-family: ‘Instrument Mono’, monospace;
+font-size: 11px;
+color: var(–muted2);
+text-transform: uppercase;
+letter-spacing: 0.12em;
+margin-bottom: 24px;
+}
+
+.logos-row {
+display: flex; gap: 52px;
+align-items: center; justify-content: center;
+flex-wrap: wrap; opacity: 0.35;
+}
+
+.logos-row span {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 700;
+font-size: 14px;
+color: var(–muted);
+letter-spacing: 0.08em;
+}
+
+/* ── SHARED SECTION ──────────────────── */
+.section {
+padding: 110px 48px;
+max-width: 1100px;
+margin: 0 auto;
+}
+
+.tag {
+font-family: ‘Instrument Mono’, monospace;
+font-size: 11px;
+color: var(–green);
+text-transform: uppercase;
+letter-spacing: 0.15em;
+margin-bottom: 14px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.tag::before {
+content: ‘’;
+width: 20px; height: 1px;
+background: var(–green);
+}
+
+.section-h {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: clamp(34px, 4.5vw, 52px);
+line-height: 1.0;
+letter-spacing: -2px;
+margin-bottom: 16px;
+}
+
+.section-sub {
+color: var(–muted);
+font-size: 17px;
+max-width: 480px;
+line-height: 1.75;
+margin-bottom: 60px;
+font-weight: 400;
+}
+
+/* ── HOW IT WORKS ────────────────────── */
+.steps {
+display: grid;
+grid-template-columns: repeat(4,1fr);
+position: relative;
+}
+
+.steps::before {
+content: ‘’;
+position: absolute;
+top: 32px; left: 10%;
+width: 80%; height: 1px;
+background: linear-gradient(90deg, transparent, var(–border2) 20%, var(–border2) 80%, transparent);
+}
+
+.step {
+padding: 0 20px 0 0;
+position: relative;
+}
+
+.step-num-wrap {
+width: 52px; height: 52px;
+border-radius: 14px;
+border: 1px solid var(–border2);
+background: var(–surface2);
+display: flex; align-items: center; justify-content: center;
+margin-bottom: 24px;
+position: relative;
+z-index: 1;
+}
+
+.step-num {
+font-family: ‘Instrument Mono’, monospace;
+font-size: 18px;
+color: var(–green);
+font-weight: 400;
+}
+
+.step-title {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 700;
+font-size: 16px;
+margin-bottom: 10px;
+letter-spacing: -0.3px;
+}
+
+.step-desc { font-size: 13px; color: var(–muted); line-height: 1.65; }
+
+/* ── MODULES ─────────────────────────── */
+.modules-wrap {
+padding: 0 48px 110px;
+max-width: 1100px;
+margin: 0 auto;
+}
+
+.modules-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 14px;
+}
+
+.mod {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 34px;
+position: relative;
+overflow: hidden;
+transition: border-color 0.3s, transform 0.3s;
+}
+.mod:hover { border-color: var(–border2); transform: translateY(-3px); }
+
+.mod.featured {
+border-color: rgba(61,219,111,0.22);
+background: linear-gradient(140deg, rgba(61,219,111,0.05) 0%, var(–surface) 55%);
+}
+
+.mod::after {
+content: ‘’;
+position: absolute;
+top: -60px; right: -60px;
+width: 200px; height: 200px;
+background: radial-gradient(circle, rgba(61,219,111,0.05) 0%, transparent 70%);
+pointer-events: none;
+}
+
+.mod-status {
+display: inline-flex; align-items: center; gap: 6px;
+font-family: ‘Instrument Mono’, monospace;
+font-size: 10px;
+text-transform: uppercase;
+letter-spacing: 0.1em;
+padding: 4px 12px;
+border-radius: 4px;
+margin-bottom: 20px;
+}
+.mod-status.live   { background: rgba(52,211,153,0.1); color: var(–ok); }
+.mod-status.soon   { background: rgba(251,191,36,0.1); color: var(–warn); }
+.mod-status.future { background: rgba(163,230,53,0.1); color: var(–lime); }
+
+.mod-title {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: 26px;
+letter-spacing: -0.8px;
+margin-bottom: 10px;
+}
+
+.mod-sub { color: var(–muted); font-size: 14px; margin-bottom: 22px; line-height: 1.65; }
+
+.mod-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+.mod-list li {
+font-size: 13px; color: var(–muted);
+display: flex; align-items: center; gap: 10px;
+}
+
+.mod-list li::before {
+content: ‘’;
+width: 16px; height: 16px;
+flex-shrink: 0;
+border-radius: 4px;
+background: rgba(61,219,111,0.08);
+border: 1px solid rgba(61,219,111,0.2);
+background-image: url(“data:image/svg+xml,%3Csvg width=‘10’ height=‘8’ viewBox=‘0 0 10 8’ fill=‘none’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cpath d=‘M1 4L3.5 6.5L9 1’ stroke=’%233DDB6F’ stroke-width=‘1.5’ stroke-linecap=‘round’ stroke-linejoin=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: center;
+}
+
+.mod-price {
+margin-top: 26px;
+padding-top: 20px;
+border-top: 1px solid var(–border);
+display: flex; align-items: baseline; gap: 6px;
+}
+
+.price-val {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: 28px;
+letter-spacing: -0.5px;
+color: var(–text);
+}
+
+.price-per { font-size: 13px; color: var(–muted); }
+
+/* ── PRICING ─────────────────────────── */
+.pricing-wrap {
+padding: 0 48px 110px;
+max-width: 1100px;
+margin: 0 auto;
+}
+
+.pricing-grid {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 14px;
+}
+
+.plan {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 34px;
+transition: transform 0.3s;
+}
+.plan:hover { transform: translateY(-3px); }
+
+.plan.highlight {
+border-color: rgba(61,219,111,0.28);
+background: linear-gradient(160deg, rgba(61,219,111,0.07) 0%, var(–surface) 50%);
+}
+
+.plan-name {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 800;
+font-size: 18px;
+margin-bottom: 6px;
+letter-spacing: -0.3px;
+}
+
+.plan-desc { font-size: 13px; color: var(–muted); margin-bottom: 24px; line-height: 1.5; }
+
+.plan-price {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: 44px;
+letter-spacing: -2px;
+color: var(–text);
+line-height: 1;
+margin-bottom: 4px;
+}
+.plan-price span { font-size: 20px; font-weight: 400; color: var(–muted); }
+
+.plan-per {
+font-family: ‘Instrument Mono’, monospace;
+font-size: 11px;
+color: var(–muted);
+margin-bottom: 26px;
+text-transform: uppercase;
+letter-spacing: 0.06em;
+}
+
+.plan-div { height: 1px; background: var(–border); margin-bottom: 22px; }
+
+.plan-feats { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
+
+.plan-feats li {
+font-size: 13px; color: var(–muted);
+display: flex; gap: 10px; align-items: flex-start;
+}
+
+.plan-feats li::before {
+content: ‘✓’;
+color: var(–green);
+font-size: 13px;
+flex-shrink: 0;
+margin-top: 1px;
+}
+
+.btn-outline {
+display: flex; align-items: center; justify-content: center;
+padding: 12px; min-height: 44px;
+border: 1px solid var(–border2);
+border-radius: 8px;
+color: var(–text);
+text-decoration: none;
+font-size: 14px; font-weight: 500;
+transition: all 0.2s;
+font-family: ‘Cabinet Grotesk’, sans-serif;
+letter-spacing: -0.2px;
+}
+.btn-outline:hover { border-color: var(–green); color: var(–green); }
+
+.btn-filled {
+display: flex; align-items: center; justify-content: center;
+padding: 12px; min-height: 44px;
+background: var(–green);
+border-radius: 8px;
+color: var(–bg);
+text-decoration: none;
+font-size: 14px; font-weight: 700;
+transition: all 0.2s;
+box-shadow: 0 0 24px rgba(61,219,111,0.25);
+font-family: ‘Cabinet Grotesk’, sans-serif;
+letter-spacing: -0.2px;
+}
+.btn-filled:hover { opacity: 0.87; }
+
+/* ── CTA BANNER ──────────────────────── */
+.cta {
+margin: 0 48px 80px;
+background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(61,219,111,0.05) 50%, rgba(45,212,191,0.06) 100%);
+border: 1px solid rgba(61,219,111,0.2);
+border-radius: 20px;
+padding: 72px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+
+.cta::before {
+content: ‘’;
+position: absolute;
+top: -80px; left: 50%;
+transform: translateX(-50%);
+width: 600px; height: 400px;
+background: radial-gradient(ellipse, rgba(61,219,111,0.08) 0%, transparent 65%);
+pointer-events: none;
+}
+
+.cta h2 {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: clamp(28px, 4vw, 46px);
+letter-spacing: -1.5px;
+margin-bottom: 14px;
+position: relative;
+}
+
+.cta p { color: var(–muted); font-size: 17px; margin-bottom: 36px; position: relative; }
+
+.cta-btns { display: flex; gap: 16px; justify-content: center; position: relative; }
+
+/* ── FOOTER ──────────────────────────── */
+footer {
+border-top: 1px solid var(–border);
+padding: 36px 48px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.footer-logo {
+font-family: ‘Cabinet Grotesk’, sans-serif;
+font-weight: 900;
+font-size: 18px;
+text-decoration: none;
+color: var(–text);
+}
+.footer-logo em { font-style: normal; color: var(–green); }
+
+.footer-links { display: flex; gap: 28px; list-style: none; }
+.footer-links a { font-size: 13px; color: var(–muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(–text); }
+
+.footer-copy { font-family: ‘Instrument Mono’, monospace; font-size: 11px; color: var(–muted2); }
+
+/* ── SCROLL REVEAL ───────────────────── */
+.reveal {
+opacity: 0;
+transform: translateY(28px);
+transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.lang-switch {
+font-family: ‘Instrument Mono’, monospace !important;
+font-size: 12px !important;
+letter-spacing: 0.05em;
+border: 1px solid var(–border2) !important;
+background: transparent !important;
+}
+.lang-switch:hover { border-color: var(–green) !important; }
+.lang-active { color: var(–green); font-weight: 500; }
+
+/* ── MOBILE NAV ─────────────────── */
+.nav-toggle {
+display: none; background: none; border: 1px solid var(–border2);
+border-radius: 6px; padding: 8px 10px; cursor: pointer; color: var(–muted);
+font-size: 18px; min-height: 44px; min-width: 44px;
+align-items: center; justify-content: center;
+}
+.nav-drawer {
+display: none; flex-direction: column; gap: 4px;
+position: fixed; top: 65px; left: 0; right: 0;
+background: rgba(5,12,7,0.98); backdrop-filter: blur(20px);
+border-bottom: 1px solid var(–border); padding: 16px 24px 24px; z-index: 99;
+}
+.nav-drawer.open { display: flex; }
+.nav-drawer a {
+color: var(–muted); text-decoration: none; font-size: 16px;
+padding: 12px 16px; border-radius: 8px; min-height: 48px;
+display: flex; align-items: center; transition: all 0.2s; border: 1px solid transparent;
+}
+.nav-drawer a:hover { color: var(–text); background: rgba(61,219,111,0.06); border-color: var(–border2); }
+.nav-drawer .nav-cta { border-color: var(–green) !important; margin-top: 8px; justify-content: center; }
+
+/* Language switcher */
+.lang-switcher {
+display: flex; align-items: center;
+border: 1px solid var(–border2); border-radius: 6px; overflow: hidden; margin-left: 8px;
+}
+.lang-btn {
+background: none; border: none; cursor: pointer;
+font-family: ‘Instrument Mono’, monospace; font-size: 11px;
+color: var(–muted); padding: 8px 10px; min-height: 36px;
+letter-spacing: 0.06em; transition: all 0.2s;
+}
+.lang-btn:hover { color: var(–text); background: rgba(61,219,111,0.06); }
+.lang-btn.active { background: rgba(61,219,111,0.12); color: var(–green); font-weight: 500; }
+.lang-sep { width: 1px; background: var(–border2); height: 20px; align-self: center; }
+.nav-right { display: flex; align-items: center; gap: 4px; }
+
+/* ── RESPONSIVE ─────────────────── */
+@media (max-width: 768px) {
+nav { padding: 14px 20px; }
+.nav-links { display: none; }
+.nav-toggle { display: flex; }
+.hero { padding: 110px 20px 60px; }
+h1 { letter-spacing: -2px; }
+.hero-actions { flex-direction: column; width: 100%; }
+.btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+.dash { grid-template-columns: 1fr; }
+.findings { grid-column: span 1 !important; }
+.frame-url { font-size: 10px; max-width: 160px; }
+.logos { padding: 28px 20px; }
+.logos-row { gap: 20px; }
+.section { padding: 72px 20px; }
+.steps { grid-template-columns: 1fr 1fr; gap: 24px; }
+.steps::before { display: none; }
+.modules-wrap { padding: 0 20px 72px; }
+.modules-grid { grid-template-columns: 1fr; }
+.mod[style*=“span 2”] { grid-column: span 1 !important; }
+.mod-list[style*=“grid”] { display: flex !important; flex-direction: column !important; }
+.pricing-wrap { padding: 0 20px 72px; }
+.pricing-grid { grid-template-columns: 1fr; }
+.cta { margin: 0 20px 60px; padding: 40px 24px; }
+.cta-btns { flex-direction: column; }
+.cta-btns a { width: 100%; justify-content: center; }
+footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+@media (max-width: 480px) {
+.steps { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -858,85 +933,90 @@
 <main id="main-content">
 
   <!-- HERO -->
+
   <section class="hero" aria-labelledby="hero-h1">
     <div class="hero-badge">Nu in early access</div>
 
-    <h1 id="hero-h1">
-      Jouw M365-omgeving.<br>
-      <em>Volledig</em> <span class="outline">inzichtelijk.</span>
-    </h1>
+```
+<h1 id="hero-h1">
+  Jouw M365-omgeving.<br>
+  <em>Volledig</em> <span class="outline">inzichtelijk.</span>
+</h1>
 
-    <p class="hero-sub">
-      Pryvee scant je Microsoft 365-omgeving in minuten — en brengt beveiligingsgaten, compliance-risico's en governance-issues in kaart voordat ze incidenten worden.
-    </p>
+<p class="hero-sub">
+  Pryvee scant je Microsoft 365-omgeving in minuten — en brengt beveiligingsgaten, compliance-risico's en governance-issues in kaart voordat ze incidenten worden.
+</p>
 
-    <div class="hero-actions">
-      <a href="#" class="btn-primary">Scan mijn tenant →</a>
-      <a href="#how" class="btn-ghost">Hoe werkt het? ↓</a>
+<div class="hero-actions">
+  <a href="#" class="btn-primary">Scan mijn tenant →</a>
+  <a href="#how" class="btn-ghost">Hoe werkt het? ↓</a>
+</div>
+
+<div class="hero-visual" role="img" aria-label="Pryvee dashboard met Secure Score 32%, MFA-dekking 58%, apparaatcompliance 87% en een lijst van kritieke bevindingen waaronder uitgeschakelde MFA voor 47 gebruikers en 124 verlopen gastaccounts">
+  <div class="frame">
+    <div class="frame-bar" aria-hidden="true">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="frame-url">app.pryvee.io / snapshot / contoso</div>
     </div>
+    <div class="dash" aria-hidden="true">
+      <div class="card red">
+        <div class="card-label">Secure Score</div>
+        <div class="card-val">32%</div>
+        <div class="card-sub">Kritiek — 18 openstaande bevindingen</div>
+        <div class="card-bar"></div>
+      </div>
+      <div class="card amber">
+        <div class="card-label">MFA-dekking</div>
+        <div class="card-val">58%</div>
+        <div class="card-sub">42% van de gebruikers onbeschermd</div>
+        <div class="card-bar"></div>
+      </div>
+      <div class="card emerald">
+        <div class="card-label">Apparaatcompliance</div>
+        <div class="card-val">87%</div>
+        <div class="card-sub">11 niet-conforme apparaten</div>
+        <div class="card-bar"></div>
+      </div>
 
-    <div class="hero-visual" role="img" aria-label="Pryvee dashboard met Secure Score 32%, MFA-dekking 58%, apparaatcompliance 87% en een lijst van kritieke bevindingen waaronder uitgeschakelde MFA voor 47 gebruikers en 124 verlopen gastaccounts">
-      <div class="frame">
-        <div class="frame-bar" aria-hidden="true">
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-          <div class="frame-url">app.pryvee.io / snapshot / contoso</div>
+      <div class="findings">
+        <div class="findings-head">
+          <span>Risicobevindingen</span>
+          <span class="badge-count">7 kritiek</span>
         </div>
-        <div class="dash" aria-hidden="true">
-          <div class="card red">
-            <div class="card-label">Secure Score</div>
-            <div class="card-val">32%</div>
-            <div class="card-sub">Kritiek — 18 openstaande bevindingen</div>
-            <div class="card-bar"></div>
+        <div class="finding">
+          <div class="f-icon r">🔓</div>
+          <div class="f-info">
+            <div class="f-title">MFA uitgeschakeld voor 47 gebruikers</div>
+            <div class="f-detail">Inclusief 3 beheerdersaccounts — directe actie vereist</div>
           </div>
-          <div class="card amber">
-            <div class="card-label">MFA-dekking</div>
-            <div class="card-val">58%</div>
-            <div class="card-sub">42% van de gebruikers onbeschermd</div>
-            <div class="card-bar"></div>
+          <span class="f-badge high">Hoog</span>
+        </div>
+        <div class="finding">
+          <div class="f-icon y">👥</div>
+          <div class="f-info">
+            <div class="f-title">124 verlopen gastaccounts</div>
+            <div class="f-detail">Geen activiteit in 180+ dagen, extern delen ingeschakeld</div>
           </div>
-          <div class="card emerald">
-            <div class="card-label">Apparaatcompliance</div>
-            <div class="card-val">87%</div>
-            <div class="card-sub">11 niet-conforme apparaten</div>
-            <div class="card-bar"></div>
+          <span class="f-badge medium">Gemiddeld</span>
+        </div>
+        <div class="finding">
+          <div class="f-icon r">🔍</div>
+          <div class="f-info">
+            <div class="f-title">Geen actief Conditional Access-beleid</div>
+            <div class="f-detail">Aanmeldingen vanaf elke locatie zijn toegestaan</div>
           </div>
-
-          <div class="findings">
-            <div class="findings-head">
-              <span>Risicobevindingen</span>
-              <span class="badge-count">7 kritiek</span>
-            </div>
-            <div class="finding">
-              <div class="f-icon r">🔓</div>
-              <div class="f-info">
-                <div class="f-title">MFA uitgeschakeld voor 47 gebruikers</div>
-                <div class="f-detail">Inclusief 3 beheerdersaccounts — directe actie vereist</div>
-              </div>
-              <span class="f-badge high">Hoog</span>
-            </div>
-            <div class="finding">
-              <div class="f-icon y">👥</div>
-              <div class="f-info">
-                <div class="f-title">124 verlopen gastaccounts</div>
-                <div class="f-detail">Geen activiteit in 180+ dagen, extern delen ingeschakeld</div>
-              </div>
-              <span class="f-badge medium">Gemiddeld</span>
-            </div>
-            <div class="finding">
-              <div class="f-icon r">🔍</div>
-              <div class="f-info">
-                <div class="f-title">Geen actief Conditional Access-beleid</div>
-                <div class="f-detail">Aanmeldingen vanaf elke locatie zijn toegestaan</div>
-              </div>
-              <span class="f-badge high">Hoog</span>
-            </div>
-          </div>
+          <span class="f-badge high">Hoog</span>
         </div>
       </div>
     </div>
+  </div>
+</div>
+```
+
   </section>
 
   <!-- LOGOS -->
+
   <section class="logos" aria-label="Vertrouwd door">
     <div class="logos-label">Vertrouwd door IT-teams en MSP's door heel Europa</div>
     <div class="logos-row" aria-hidden="true">
@@ -949,188 +1029,201 @@
   </section>
 
   <!-- HOW IT WORKS -->
+
   <section class="section reveal" id="how" aria-labelledby="how-h2">
     <div class="tag">Hoe het werkt</div>
     <h2 class="section-h" id="how-h2">Van nul naar auditrapport<br>in minder dan 5 minuten.</h2>
     <p class="section-sub">Geen agents. Geen installatie. Koppel je Microsoft-tenant en krijg direct bruikbare inzichten.</p>
 
-    <div class="steps" role="list">
-      <div class="step" role="listitem">
-        <div class="step-num-wrap" aria-hidden="true"><span class="step-num">01</span></div>
-        <div class="step-title">Koppel je tenant</div>
-        <p class="step-desc">Log in met je Microsoft-beheerdersaccount. Eenmalige toestemming. Alleen-lezen toegang. Niets te installeren.</p>
-      </div>
-      <div class="step" role="listitem">
-        <div class="step-num-wrap" aria-hidden="true"><span class="step-num">02</span></div>
-        <div class="step-title">Automatische scan</div>
-        <p class="step-desc">Pryvee leest 10+ Microsoft Graph-endpoints — MFA, Secure Score, Conditional Access, gasten en meer.</p>
-      </div>
-      <div class="step" role="listitem">
-        <div class="step-num-wrap" aria-hidden="true"><span class="step-num">03</span></div>
-        <div class="step-title">Risicoscore berekend</div>
-        <p class="step-desc">Elke bevinding wordt gescoord, gecategoriseerd en geprioriteerd op basis van de CIS M365 Benchmark v6.</p>
-      </div>
-      <div class="step" role="listitem">
-        <div class="step-num-wrap" aria-hidden="true"><span class="step-num">04</span></div>
-        <div class="step-title">Download je rapport</div>
-        <p class="step-desc">Een managementklaar PDF-rapport met samenvatting, risico-overzicht en concrete aanbevelingen.</p>
-      </div>
-    </div>
+```
+<div class="steps" role="list">
+  <div class="step" role="listitem">
+    <div class="step-num-wrap" aria-hidden="true"><span class="step-num">01</span></div>
+    <div class="step-title">Koppel je tenant</div>
+    <p class="step-desc">Log in met je Microsoft-beheerdersaccount. Eenmalige toestemming. Alleen-lezen toegang. Niets te installeren.</p>
+  </div>
+  <div class="step" role="listitem">
+    <div class="step-num-wrap" aria-hidden="true"><span class="step-num">02</span></div>
+    <div class="step-title">Automatische scan</div>
+    <p class="step-desc">Pryvee leest 10+ Microsoft Graph-endpoints — MFA, Secure Score, Conditional Access, gasten en meer.</p>
+  </div>
+  <div class="step" role="listitem">
+    <div class="step-num-wrap" aria-hidden="true"><span class="step-num">03</span></div>
+    <div class="step-title">Risicoscore berekend</div>
+    <p class="step-desc">Elke bevinding wordt gescoord, gecategoriseerd en geprioriteerd op basis van de CIS M365 Benchmark v6.</p>
+  </div>
+  <div class="step" role="listitem">
+    <div class="step-num-wrap" aria-hidden="true"><span class="step-num">04</span></div>
+    <div class="step-title">Download je rapport</div>
+    <p class="step-desc">Een managementklaar PDF-rapport met samenvatting, risico-overzicht en concrete aanbevelingen.</p>
+  </div>
+</div>
+```
+
   </section>
 
   <!-- MODULES -->
+
   <div class="modules-wrap reveal" id="modules">
     <div class="tag">Productmodules</div>
     <h2 class="section-h">Één platform.<br>Vijf lagen controle.</h2>
     <p class="section-sub">Begin met Snapshot. Groei door naar de volledige Pryvee governance-suite naarmate je behoeften toenemen.</p>
 
-    <div class="modules-grid">
-      <div class="mod featured">
-        <div class="mod-status live">● Nu beschikbaar</div>
-        <div class="mod-title">Pryvee Snapshot</div>
-        <p class="mod-sub">Eén-klik CIS L1 compliance-audit. Genereert een volledig risico-PDF in minuten.</p>
-        <ul class="mod-list">
-          <li>79 geautomatiseerde CIS M365 L1-checks</li>
-          <li>Microsoft Secure Score-analyse</li>
-          <li>MFA- en Conditional Access-gaps</li>
-          <li>Gasten- en extern deelrisico's</li>
-          <li>Managementklare PDF-export</li>
-        </ul>
-        <div class="mod-price">
-          <div class="price-val">€149</div>
-          <div class="price-per">per rapport — of €99/mnd</div>
-        </div>
-      </div>
-
-      <div class="mod">
-        <div class="mod-status soon">◐ Binnenkort</div>
-        <div class="mod-title">Pryvee Guard</div>
-        <p class="mod-sub">Continue monitoring van gasten en extern delen met geautomatiseerde meldingen.</p>
-        <ul class="mod-list">
-          <li>Volledig overzicht van gastaccounts</li>
-          <li>Detectie van inactieve & verlaten accounts</li>
-          <li>Risicoscore voor extern delen</li>
-          <li>Geautomatiseerde e-mailmeldingen</li>
-          <li>Wekelijks risico-overzicht per mail</li>
-        </ul>
-        <div class="mod-price">
-          <div class="price-val">€49</div>
-          <div class="price-per">/mnd per tenant</div>
-        </div>
-      </div>
-
-      <div class="mod">
-        <div class="mod-status soon">◐ Binnenkort</div>
-        <div class="mod-title">Pryvee Clean</div>
-        <p class="mod-sub">Tenant lifecycle-automatisering — detecteer verlaten sites, notificeer eigenaren, archiveer werkruimten.</p>
-        <ul class="mod-list">
-          <li>Detectie van inactieve sites (180+ dagen)</li>
-          <li>Geautomatiseerde eigenaarsmeldingen</li>
-          <li>Archiveer- en opruimworkflows</li>
-          <li>Governance-dashboard</li>
-          <li>Volledig auditspoor</li>
-        </ul>
-        <div class="mod-price">
-          <div class="price-val">€49</div>
-          <div class="price-per">/mnd per tenant</div>
-        </div>
-      </div>
-
-      <div class="mod">
-        <div class="mod-status soon">◐ Binnenkort</div>
-        <div class="mod-title">Pryvee Anonimiseer</div>
-        <p class="mod-sub">Documentanonimisering volledig in geheugen. Nul opslag — AVG-compliant by design.</p>
-        <ul class="mod-list">
-          <li>PDF & DOCX anonimisering</li>
-          <li>NER: namen, BSN, IBAN, adressen</li>
-          <li>Volledig in geheugen — niets opgeslagen</li>
-          <li>Ideaal vóór Copilot-workflows</li>
-          <li>Nederlands & Engelstalig</li>
-        </ul>
-        <div class="mod-price">
-          <div class="price-val">€29</div>
-          <div class="price-per">/mnd of per document</div>
-        </div>
-      </div>
-
-      <div class="mod" style="grid-column: span 2;">
-        <div class="mod-status future">✦ 2026</div>
-        <div class="mod-title">Pryvee AI</div>
-        <p class="mod-sub">Copilot-blootstellingsscanner. Detecteer overmachtiging voordat AI je gevoelige data bereikt.</p>
-        <ul class="mod-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <li>Microsoft Copilot-blootstellingsscore</li>
-          <li>Detectie van overmachtigde data</li>
-          <li>Mapping van hoog-risico mappen</li>
-          <li>AI-gereedheidsassessment</li>
-          <li>Aanbevelingen voor governance-gaps</li>
-          <li>Integratie met Snapshot-bevindingen</li>
-        </ul>
-        <div class="mod-price">
-          <div class="price-val">€99</div>
-          <div class="price-per">/mnd per tenant</div>
-        </div>
-      </div>
+```
+<div class="modules-grid">
+  <div class="mod featured">
+    <div class="mod-status live">● Nu beschikbaar</div>
+    <div class="mod-title">Pryvee Snapshot</div>
+    <p class="mod-sub">Eén-klik CIS L1 compliance-audit. Genereert een volledig risico-PDF in minuten.</p>
+    <ul class="mod-list">
+      <li>79 geautomatiseerde CIS M365 L1-checks</li>
+      <li>Microsoft Secure Score-analyse</li>
+      <li>MFA- en Conditional Access-gaps</li>
+      <li>Gasten- en extern deelrisico's</li>
+      <li>Managementklare PDF-export</li>
+    </ul>
+    <div class="mod-price">
+      <div class="price-val">€149</div>
+      <div class="price-per">per rapport — of €99/mnd</div>
     </div>
   </div>
 
+  <div class="mod">
+    <div class="mod-status soon">◐ Binnenkort</div>
+    <div class="mod-title">Pryvee Guard</div>
+    <p class="mod-sub">Continue monitoring van gasten en extern delen met geautomatiseerde meldingen.</p>
+    <ul class="mod-list">
+      <li>Volledig overzicht van gastaccounts</li>
+      <li>Detectie van inactieve & verlaten accounts</li>
+      <li>Risicoscore voor extern delen</li>
+      <li>Geautomatiseerde e-mailmeldingen</li>
+      <li>Wekelijks risico-overzicht per mail</li>
+    </ul>
+    <div class="mod-price">
+      <div class="price-val">€49</div>
+      <div class="price-per">/mnd per tenant</div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-status soon">◐ Binnenkort</div>
+    <div class="mod-title">Pryvee Clean</div>
+    <p class="mod-sub">Tenant lifecycle-automatisering — detecteer verlaten sites, notificeer eigenaren, archiveer werkruimten.</p>
+    <ul class="mod-list">
+      <li>Detectie van inactieve sites (180+ dagen)</li>
+      <li>Geautomatiseerde eigenaarsmeldingen</li>
+      <li>Archiveer- en opruimworkflows</li>
+      <li>Governance-dashboard</li>
+      <li>Volledig auditspoor</li>
+    </ul>
+    <div class="mod-price">
+      <div class="price-val">€49</div>
+      <div class="price-per">/mnd per tenant</div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-status soon">◐ Binnenkort</div>
+    <div class="mod-title">Pryvee Redact</div>
+    <p class="mod-sub">Documentredactie volledig in geheugen. Nul opslag — AVG-compliant by design.</p>
+    <ul class="mod-list">
+      <li>PDF & DOCX redactie</li>
+      <li>NER: namen, BSN, IBAN, adressen</li>
+      <li>Volledig in geheugen — niets opgeslagen</li>
+      <li>Ideaal vóór Copilot-workflows</li>
+      <li>Nederlands & Engelstalig</li>
+    </ul>
+    <div class="mod-price">
+      <div class="price-val">€29</div>
+      <div class="price-per">/mnd of per document</div>
+    </div>
+  </div>
+
+  <div class="mod" style="grid-column: span 2;">
+    <div class="mod-status future">✦ 2026</div>
+    <div class="mod-title">Pryvee AI</div>
+    <p class="mod-sub">Copilot-blootstellingsscanner. Detecteer overmachtiging voordat AI je gevoelige data bereikt.</p>
+    <ul class="mod-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <li>Microsoft Copilot-blootstellingsscore</li>
+      <li>Detectie van overmachtigde data</li>
+      <li>Mapping van hoog-risico mappen</li>
+      <li>AI-gereedheidsassessment</li>
+      <li>Aanbevelingen voor governance-gaps</li>
+      <li>Integratie met Snapshot-bevindingen</li>
+    </ul>
+    <div class="mod-price">
+      <div class="price-val">€99</div>
+      <div class="price-per">/mnd per tenant</div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
   <!-- PRICING -->
+
   <div class="pricing-wrap reveal" id="pricing">
     <div class="tag">Prijzen</div>
     <h2 class="section-h">Duidelijke prijzen.<br>Geen verrassingen.</h2>
     <p class="section-sub">Begin met één audit. Schaal naar een volledige governance-suite naarmate je klanten groeien.</p>
 
-    <div class="pricing-grid">
-      <div class="plan">
-        <div class="plan-name">Snapshot</div>
-        <p class="plan-desc">Eenmalig auditrapport voor één tenant</p>
-        <div class="plan-price">€149</div>
-        <div class="plan-per">eenmalige betaling</div>
-        <div class="plan-div"></div>
-        <ul class="plan-feats">
-          <li>Volledige CIS L1 M365-audit</li>
-          <li>Managementklare PDF</li>
-          <li>Risicoscore & samenvatting</li>
-          <li>Geprioriteerde aanbevelingen</li>
-          <li>30 dagen geldig</li>
-        </ul>
-        <a href="#" class="btn-outline">Ontvang je rapport</a>
-      </div>
+```
+<div class="pricing-grid">
+  <div class="plan">
+    <div class="plan-name">Snapshot</div>
+    <p class="plan-desc">Eenmalig auditrapport voor één tenant</p>
+    <div class="plan-price">€149</div>
+    <div class="plan-per">eenmalige betaling</div>
+    <div class="plan-div"></div>
+    <ul class="plan-feats">
+      <li>Volledige CIS L1 M365-audit</li>
+      <li>Managementklare PDF</li>
+      <li>Risicoscore & samenvatting</li>
+      <li>Geprioriteerde aanbevelingen</li>
+      <li>30 dagen geldig</li>
+    </ul>
+    <a href="#" class="btn-outline">Ontvang je rapport</a>
+  </div>
 
-      <div class="plan highlight">
-        <div class="plan-name">Snapshot Pro</div>
-        <p class="plan-desc">Maandelijkse herhalingsaudits met trendanalyse</p>
-        <div class="plan-price">€99<span>/mnd</span></div>
-        <div class="plan-per">per tenant · maandelijks gefactureerd</div>
-        <div class="plan-div"></div>
-        <ul class="plan-feats">
-          <li>Alles uit Snapshot</li>
-          <li>Maandelijkse automatische herscans</li>
-          <li>Risicotrend-tracking</li>
-          <li>E-mailmeldingen bij nieuwe bevindingen</li>
-          <li>Prioriteitsondersteuning</li>
-        </ul>
-        <a href="#" class="btn-filled">Start gratis proefperiode</a>
-      </div>
+  <div class="plan highlight">
+    <div class="plan-name">Snapshot Pro</div>
+    <p class="plan-desc">Maandelijkse herhalingsaudits met trendanalyse</p>
+    <div class="plan-price">€99<span>/mnd</span></div>
+    <div class="plan-per">per tenant · maandelijks gefactureerd</div>
+    <div class="plan-div"></div>
+    <ul class="plan-feats">
+      <li>Alles uit Snapshot</li>
+      <li>Maandelijkse automatische herscans</li>
+      <li>Risicotrend-tracking</li>
+      <li>E-mailmeldingen bij nieuwe bevindingen</li>
+      <li>Prioriteitsondersteuning</li>
+    </ul>
+    <a href="#" class="btn-filled">Start gratis proefperiode</a>
+  </div>
 
-      <div class="plan">
-        <div class="plan-name">MSP Partner</div>
-        <p class="plan-desc">White-label suite voor managed service providers</p>
-        <div class="plan-price" style="font-size:32px;letter-spacing:-1px">Op maat</div>
-        <div class="plan-per">volumeprijzen beschikbaar</div>
-        <div class="plan-div"></div>
-        <ul class="plan-feats">
-          <li>Onbeperkt tenants</li>
-          <li>White-label PDF-rapporten</li>
-          <li>Multi-tenant dashboard</li>
-          <li>API-toegang</li>
-          <li>Eigen accountmanager</li>
-        </ul>
-        <a href="#" class="btn-outline">Neem contact op</a>
-      </div>
-    </div>
+  <div class="plan">
+    <div class="plan-name">MSP Partner</div>
+    <p class="plan-desc">White-label suite voor managed service providers</p>
+    <div class="plan-price" style="font-size:32px;letter-spacing:-1px">Op maat</div>
+    <div class="plan-per">volumeprijzen beschikbaar</div>
+    <div class="plan-div"></div>
+    <ul class="plan-feats">
+      <li>Onbeperkt tenants</li>
+      <li>White-label PDF-rapporten</li>
+      <li>Multi-tenant dashboard</li>
+      <li>API-toegang</li>
+      <li>Eigen accountmanager</li>
+    </ul>
+    <a href="#" class="btn-outline">Neem contact op</a>
+  </div>
+</div>
+```
+
   </div>
 
   <!-- CTA -->
+
   <div class="cta reveal" aria-labelledby="cta-h2">
     <h2 id="cta-h2">Klaar om het echte risicoprofiel<br>van je tenant te zien?</h2>
     <p>Verbonden in 60 seconden. Geen installatie. Alleen-lezen toegang. Op elk moment opzegbaar.</p>
@@ -1154,16 +1247,259 @@
 </footer>
 
 <script>
+  // ── SCROLL REVEAL
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  function switchLang(e) {
-    e.preventDefault();
-    // Redirect to English version — swap this for your actual EN URL
-    alert('English version coming soon! / Engelstalige versie komt eraan.');
+  // ── MOBILE NAV
+  const toggle = document.getElementById('navToggle');
+  const drawer = document.getElementById('mobileNav');
+  if (toggle && drawer) {
+    toggle.addEventListener('click', () => {
+      const isOpen = drawer.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen);
+      toggle.setAttribute('aria-label', isOpen ? 'Menu sluiten' : 'Menu openen');
+      toggle.textContent = isOpen ? '✕' : '☰';
+    });
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      drawer.classList.remove('open');
+      toggle.setAttribute('aria-expanded', false);
+      toggle.textContent = '☰';
+    }));
+  }
+
+  // ── TRANSLATIONS
+  const T = {
+    nl: {
+      'meta_title': 'Pryvee – M365 Governance & Risico-intelligentie',
+      'meta_desc':  'Scan je Microsoft 365-omgeving in minuten op beveiligingsrisico's en compliance-gaps.',
+      'badge': 'Nu in early access',
+      'h1': 'Jouw M365-omgeving.<br><em>Volledig</em> <span class="outline">inzichtelijk.</span>',
+      'hero_sub': 'Pryvee scant je Microsoft 365-omgeving in minuten — en brengt beveiligingsgaten, compliance-risico's en governance-issues in kaart voordat ze incidenten worden.',
+      'cta_primary': 'Scan mijn tenant →',
+      'cta_ghost': 'Hoe werkt het? ↓',
+      'logos_label': 'Vertrouwd door IT-teams en MSP's door heel Europa',
+      'card_score_sub': 'Kritiek — 18 openstaande bevindingen',
+      'card_mfa_label': 'MFA-dekking',
+      'card_mfa_sub': '42% van de gebruikers onbeschermd',
+      'card_dev_label': 'Apparaatcompliance',
+      'card_dev_sub': '11 niet-conforme apparaten',
+      'findings_label': 'Risicobevindingen',
+      'findings_count': '7 kritiek',
+      'f1_title': 'MFA uitgeschakeld voor 47 gebruikers',
+      'f1_detail': 'Inclusief 3 beheerdersaccounts — directe actie vereist',
+      'f1_badge': 'Hoog',
+      'f2_title': '124 verlopen gastaccounts',
+      'f2_detail': 'Geen activiteit in 180+ dagen, extern delen ingeschakeld',
+      'f2_badge': 'Gemiddeld',
+      'f3_title': 'Geen actief Conditional Access-beleid',
+      'f3_detail': 'Aanmeldingen vanaf elke locatie zijn toegestaan',
+      'f3_badge': 'Hoog',
+      'how_tag': 'Hoe het werkt',
+      'how_h2': 'Van nul naar auditrapport<br>in minder dan 5 minuten.',
+      'how_sub': 'Geen agents. Geen installatie. Koppel je Microsoft-tenant en krijg direct bruikbare inzichten.',
+      's1_title': 'Koppel je tenant', 's1_desc': 'Log in met je Microsoft-beheerdersaccount. Eenmalige toestemming. Alleen-lezen toegang. Niets te installeren.',
+      's2_title': 'Automatische scan', 's2_desc': 'Pryvee leest 10+ Microsoft Graph-endpoints — MFA, Secure Score, Conditional Access, gasten en meer.',
+      's3_title': 'Risicoscore berekend', 's3_desc': 'Elke bevinding wordt gescoord en geprioriteerd op basis van de CIS M365 Benchmark v6.',
+      's4_title': 'Download je rapport', 's4_desc': 'Een managementklaar PDF-rapport met samenvatting, risico-overzicht en concrete aanbevelingen.',
+      'mod_tag': 'Productmodules',
+      'mod_h2': 'Eén platform.<br>Vijf lagen controle.',
+      'mod_sub': 'Begin met Snapshot. Groei door naar de volledige Pryvee governance-suite.',
+      'live': 'Nu beschikbaar', 'soon': 'Binnenkort',
+      'snap_sub': 'Eén-klik CIS L1 compliance-audit. Genereert een volledig risico-PDF in minuten.',
+      'guard_sub': 'Continue monitoring van gasten en extern delen met geautomatiseerde meldingen.',
+      'clean_sub': 'Tenant lifecycle-automatisering — detecteer verlaten sites, archiveer werkruimten.',
+      'redact_sub': 'Documentredactie volledig in geheugen. Nul opslag — AVG-compliant by design.',
+      'ai_sub': 'Copilot-blootstellingsscanner. Detecteer overmachtiging voordat AI je gevoelige data bereikt.',
+      'per_report': 'per rapport — of €99/mnd',
+      'per_month': '/mnd per tenant',
+      'per_doc': '/mnd of per document',
+      'price_tag': 'Prijzen',
+      'price_h2': 'Duidelijke prijzen.<br>Geen verrassingen.',
+      'price_sub': 'Begin met één audit. Schaal naar een volledige governance-suite.',
+      'plan1_desc': 'Eenmalig auditrapport voor één tenant',
+      'plan1_per': 'eenmalige betaling',
+      'plan1_btn': 'Ontvang je rapport',
+      'plan2_desc': 'Maandelijkse herhalingsaudits met trendanalyse',
+      'plan2_per': 'per tenant · maandelijks gefactureerd',
+      'plan2_per_unit': '/mnd',
+      'plan2_btn': 'Start gratis proefperiode',
+      'plan3_desc': 'White-label suite voor managed service providers',
+      'plan3_price': 'Op maat',
+      'plan3_per': 'volumeprijzen beschikbaar',
+      'plan3_btn': 'Neem contact op',
+      'cta_h2': 'Klaar om het echte risicoprofiel<br>van je tenant te zien?',
+      'cta_p': 'Verbonden in 60 seconden. Geen installatie. Alleen-lezen toegang.',
+      'cta_btn1': 'Scan mijn tenant →',
+      'cta_btn2': 'Eerst een gesprek',
+      'footer_copy': '© 2025 Pryvee · Alle rechten voorbehouden',
+      'nav_how': 'Hoe het werkt', 'nav_mod': 'Modules', 'nav_price': 'Prijzen', 'nav_cta': 'Ga van start →',
+      'footer_product': 'Product', 'footer_pricing': 'Prijzen', 'footer_privacy': 'Privacy', 'footer_contact': 'Contact',
+    },
+    en: {
+      'meta_title': 'Pryvee – M365 Governance & Risk Intelligence',
+      'meta_desc':  'Scan your Microsoft 365 tenant for security risks and compliance gaps in minutes.',
+      'badge': 'Now in early access',
+      'h1': 'Your M365 tenant.<br><em>Fully</em> <span class="outline">visible.</span>',
+      'hero_sub': 'Pryvee scans your Microsoft 365 environment in minutes — surfacing security gaps, compliance risks, and governance issues before they become incidents.',
+      'cta_primary': 'Scan my tenant →',
+      'cta_ghost': 'See how it works ↓',
+      'logos_label': 'Trusted by IT teams and MSPs across Europe',
+      'card_score_sub': 'Critical — 18 open findings',
+      'card_mfa_label': 'MFA Coverage',
+      'card_mfa_sub': '42% of users unprotected',
+      'card_dev_label': 'Device Compliance',
+      'card_dev_sub': '11 non-compliant devices',
+      'findings_label': 'Risk findings',
+      'findings_count': '7 critical',
+      'f1_title': 'MFA disabled for 47 users',
+      'f1_detail': 'Including 3 admin accounts — immediate action required',
+      'f1_badge': 'High',
+      'f2_title': '124 stale guest accounts',
+      'f2_detail': 'No activity in 180+ days, external sharing enabled',
+      'f2_badge': 'Medium',
+      'f3_title': 'No Conditional Access policies active',
+      'f3_detail': 'Sign-ins from any location are permitted',
+      'f3_badge': 'High',
+      'how_tag': 'How it works',
+      'how_h2': 'From zero to audit report<br>in under 5 minutes.',
+      'how_sub': 'No agents. No installation. Connect your Microsoft tenant and get actionable intelligence instantly.',
+      's1_title': 'Connect your tenant', 's1_desc': 'Sign in with your Microsoft admin account. One-time consent. Read-only access. Nothing installed.',
+      's2_title': 'Automatic scan', 's2_desc': 'Pryvee reads 10+ Microsoft Graph endpoints — MFA, Secure Score, Conditional Access, guests, and more.',
+      's3_title': 'Risk score generated', 's3_desc': 'Every finding is scored and prioritised based on the CIS M365 Benchmark v6.',
+      's4_title': 'Download your report', 's4_desc': 'A management-ready PDF with executive summary, risk breakdown, and concrete recommendations.',
+      'mod_tag': 'Product modules',
+      'mod_h2': 'One platform.<br>Five layers of control.',
+      'mod_sub': 'Start with Snapshot. Grow into the full Pryvee governance suite.',
+      'live': 'Available now', 'soon': 'Coming soon',
+      'snap_sub': 'One-click CIS L1 compliance audit. Generates a complete risk PDF in minutes.',
+      'guard_sub': 'Continuous guest and external sharing monitoring with automated alerts.',
+      'clean_sub': 'Tenant lifecycle automation — detect stale sites, notify owners, archive workspaces.',
+      'redact_sub': 'In-memory document redaction. Zero storage — GDPR compliant by design.',
+      'ai_sub': 'Copilot exposure scanner. Detect overpermissioning before AI reaches your sensitive data.',
+      'per_report': 'per report — or €99/mo',
+      'per_month': '/month per tenant',
+      'per_doc': '/month or per document',
+      'price_tag': 'Pricing',
+      'price_h2': 'Simple pricing.<br>No surprises.',
+      'price_sub': 'Start with a single audit. Scale to a full governance suite.',
+      'plan1_desc': 'One-time audit report for a single tenant',
+      'plan1_per': 'one-time payment',
+      'plan1_btn': 'Get your report',
+      'plan2_desc': 'Monthly recurring audits with trend tracking',
+      'plan2_per': 'per tenant · billed monthly',
+      'plan2_per_unit': '/mo',
+      'plan2_btn': 'Start free trial',
+      'plan3_desc': 'White-label suite for managed service providers',
+      'plan3_price': 'Custom',
+      'plan3_per': 'volume pricing available',
+      'plan3_btn': 'Contact us',
+      'cta_h2': 'Ready to see your tenant's<br>real risk profile?',
+      'cta_p': 'Connected in 60 seconds. No installation. Read-only access.',
+      'cta_btn1': 'Scan my tenant →',
+      'cta_btn2': 'Talk to us first',
+      'footer_copy': '© 2025 Pryvee · All rights reserved',
+      'nav_how': 'How it works', 'nav_mod': 'Modules', 'nav_price': 'Pricing', 'nav_cta': 'Get started →',
+      'footer_product': 'Product', 'footer_pricing': 'Pricing', 'footer_privacy': 'Privacy', 'footer_contact': 'Contact',
+    }
+  };
+
+  function setLang(lang) {
+    const t = T[lang];
+    document.getElementById('btnNL').classList.toggle('active', lang === 'nl');
+    document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+    document.getElementById('btnNL').setAttribute('aria-pressed', lang === 'nl');
+    document.getElementById('btnEN').setAttribute('aria-pressed', lang === 'en');
+    document.documentElement.lang = lang;
+    document.title = t.meta_title;
+    document.querySelector('meta[name="description"]').content = t.meta_desc;
+
+    const set = (sel, key, html=false) => {
+      const el = document.querySelector(sel);
+      if (!el || !t[key]) return;
+      if (html) el.innerHTML = t[key]; else el.textContent = t[key];
+    };
+    const setAll = (sel, key) => document.querySelectorAll(sel).forEach(el => { if(t[key]) el.textContent = t[key]; });
+
+    set('.hero-badge', 'badge');
+    set('#hero-h1 span', 'h1', true);
+    set('.hero-sub', 'hero_sub');
+    set('.hero-actions .btn-primary', 'cta_primary');
+    set('.hero-actions .btn-ghost', 'cta_ghost');
+    set('.logos-label', 'logos_label');
+    set('.card.red .card-sub', 'card_score_sub');
+    set('.card.amber .card-label', 'card_mfa_label');
+    set('.card.amber .card-sub', 'card_mfa_sub');
+    set('.card.emerald .card-label', 'card_dev_label');
+    set('.card.emerald .card-sub', 'card_dev_sub');
+    set('.findings-head span:first-child', 'findings_label');
+    set('.badge-count', 'findings_count');
+
+    const findings = document.querySelectorAll('.finding');
+    if (findings[0]) { findings[0].querySelector('.f-title').textContent = t.f1_title; findings[0].querySelector('.f-detail').textContent = t.f1_detail; findings[0].querySelector('.f-badge').textContent = t.f1_badge; }
+    if (findings[1]) { findings[1].querySelector('.f-title').textContent = t.f2_title; findings[1].querySelector('.f-detail').textContent = t.f2_detail; findings[1].querySelector('.f-badge').textContent = t.f2_badge; }
+    if (findings[2]) { findings[2].querySelector('.f-title').textContent = t.f3_title; findings[2].querySelector('.f-detail').textContent = t.f3_detail; findings[2].querySelector('.f-badge').textContent = t.f3_badge; }
+
+    set('#how .tag', 'how_tag');
+    set('#how-h2', 'how_h2', true);
+    set('#how .section-sub', 'how_sub');
+
+    const steps = document.querySelectorAll('.step');
+    const skeys = ['s1','s2','s3','s4'];
+    steps.forEach((s,i) => {
+      const k = skeys[i]; if (!k) return;
+      s.querySelector('.step-title').textContent = t[k+'_title'];
+      s.querySelector('.step-desc').textContent = t[k+'_desc'];
+    });
+
+    set('.modules-wrap .tag', 'mod_tag');
+    set('.modules-wrap .section-h', 'mod_h2', true);
+    set('.modules-wrap .section-sub', 'mod_sub');
+    document.querySelectorAll('.mod-status.live span, .mod-status.live').forEach(el => { if(el.tagName==='SPAN') el.textContent = t.live; });
+    document.querySelectorAll('.mod-status.soon span').forEach(el => el.textContent = t.soon);
+
+    const mods = document.querySelectorAll('.mod');
+    const modSubs = ['snap_sub','guard_sub','clean_sub','redact_sub','ai_sub'];
+    mods.forEach((m,i) => { const sub = m.querySelector('.mod-sub'); if(sub && modSubs[i]) sub.textContent = t[modSubs[i]]; });
+
+    const perEls = document.querySelectorAll('.price-per');
+    if(perEls[0]) perEls[0].textContent = t.per_report;
+    for(let i=1;i<4;i++) if(perEls[i]) perEls[i].textContent = t.per_month;
+    if(perEls[3]) perEls[3].textContent = t.per_doc;
+    if(perEls[4]) perEls[4].textContent = t.per_month;
+
+    set('.pricing-wrap .tag', 'price_tag');
+    set('.pricing-wrap .section-h', 'price_h2', true);
+    set('.pricing-wrap .section-sub', 'price_sub');
+
+    const plans = document.querySelectorAll('.plan');
+    if(plans[0]) { plans[0].querySelector('.plan-desc').textContent = t.plan1_desc; plans[0].querySelector('.plan-per').textContent = t.plan1_per; plans[0].querySelector('a').textContent = t.plan1_btn; }
+    if(plans[1]) { plans[1].querySelector('.plan-desc').textContent = t.plan2_desc; plans[1].querySelector('.plan-per').textContent = t.plan2_per; plans[1].querySelector('.plan-price span').textContent = t.plan2_per_unit; plans[1].querySelector('a').textContent = t.plan2_btn; }
+    if(plans[2]) { plans[2].querySelector('.plan-desc').textContent = t.plan3_desc; const pp = plans[2].querySelector('.plan-price'); if(pp) pp.childNodes[0].textContent = t.plan3_price; plans[2].querySelector('.plan-per').textContent = t.plan3_per; plans[2].querySelector('a').textContent = t.plan3_btn; }
+
+    set('#cta-h2', 'cta_h2', true);
+    set('.cta p', 'cta_p');
+    const ctaBtns = document.querySelectorAll('.cta-btns a');
+    if(ctaBtns[0]) ctaBtns[0].textContent = t.cta_btn1;
+    if(ctaBtns[1]) ctaBtns[1].textContent = t.cta_btn2;
+    set('.footer-copy', 'footer_copy');
+
+    const navLinks = document.querySelectorAll('#desktopNav a, #mobileNav a');
+    navLinks.forEach(a => {
+      const href = a.getAttribute('href');
+      if(href==='#how') a.textContent = t.nav_how;
+      else if(href==='#modules') a.textContent = t.nav_mod;
+      else if(href==='#pricing') a.textContent = t.nav_price;
+      else if(a.classList.contains('nav-cta')) a.textContent = t.nav_cta;
+    });
+
+    const footerLinks = document.querySelectorAll('.footer-links a');
+    const fkeys = ['footer_product','footer_pricing','footer_privacy','footer_contact'];
+    footerLinks.forEach((a,i) => { if(t[fkeys[i]]) a.textContent = t[fkeys[i]]; });
   }
 </script>
+
 </body>
 </html>
