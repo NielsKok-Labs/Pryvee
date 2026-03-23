@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="nl" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Pryvee prijzen — begin met een eenmalige audit voor €149 of kies een abonnement.">
+<title>Pryvee – Prijzen</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.page-hero{padding:140px 0 72px;text-align:center}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:52px}
+.plan{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:32px;display:flex;flex-direction:column}
+.plan.highlight{border-color:var(--border-g2);background:linear-gradient(160deg,rgba(52,199,107,0.06) 0%,var(--bg-card) 50%)}
+.plan-badge{margin-bottom:16px}
+.plan-name{font-family:var(--ff-d);font-weight:800;font-size:20px;letter-spacing:-.3px;margin-bottom:6px}
+.plan-desc{font-size:13px;color:var(--text-2);margin-bottom:22px;line-height:1.55}
+.plan-price{font-family:var(--ff-d);font-weight:900;font-size:46px;letter-spacing:-2px;line-height:1;margin-bottom:4px}
+.plan-price span{font-size:20px;font-weight:400;color:var(--text-2)}
+.plan-per{font-family:var(--ff-m);font-size:11px;color:var(--text-3);margin-bottom:24px;text-transform:uppercase;letter-spacing:.06em}
+.plan-div{height:1px;background:var(--border);margin-bottom:22px}
+.plan-feats{margin-bottom:28px;flex:1}
+.plan-btn{margin-top:auto}
+
+.compare{margin-top:80px}
+.compare-table{width:100%;border-collapse:collapse;margin-top:32px}
+.compare-table th{font-family:var(--ff-m);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th:not(:first-child){text-align:center}
+.compare-table td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-2)}
+.compare-table td:not(:first-child){text-align:center}
+.compare-table tr:hover td{background:rgba(255,255,255,0.02)}
+.compare-table .section-row td{font-family:var(--ff-m);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;padding:20px 16px 8px;border-bottom:none;background:none}
+.check{color:var(--g1);font-size:16px}
+.dash-cell{color:var(--text-3)}
+.highlight-col{background:rgba(52,199,107,0.03)}
+
+.faq{margin-top:80px}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.faq-item{padding:28px;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.faq-item:nth-child(even){border-right:none}
+.faq-item:nth-last-child(-n+2){border-bottom:none}
+.faq-q{font-family:var(--ff-d);font-weight:700;font-size:15px;margin-bottom:10px;letter-spacing:-.2px}
+.faq-a{font-size:13px;color:var(--text-2);line-height:1.65}
+
+.cta-strip{margin-top:80px;background:linear-gradient(135deg,rgba(52,199,107,0.08) 0%,rgba(52,199,107,0.05) 100%);border:1px solid var(--border-g2);border-radius:16px;padding:48px;text-align:center}
+.waitlist-form{display:flex;gap:10px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+.waitlist-form input{background:var(--bg-card);border:1px solid var(--border-g);border-radius:8px;padding:13px 20px;font-size:15px;color:var(--text);font-family:var(--ff-b);outline:none;width:280px;transition:border-color .2s}
+.waitlist-form input::placeholder{color:var(--text-3)}
+.waitlist-form input:focus{border-color:var(--g1)}
+.form-msg{font-family:var(--ff-m);font-size:12px;color:var(--g1);margin-top:12px;opacity:0;transition:opacity .3s}
+
+@media(max-width:900px){
+  .page-hero{padding:110px 0 48px}
+  .pricing-grid{grid-template-columns:1fr}
+  .faq-grid{grid-template-columns:1fr}
+  .faq-item{border-right:none}
+  .faq-item:nth-last-child(-n+2){border-bottom:1px solid var(--border)}
+  .faq-item:last-child{border-bottom:none}
+  .cta-strip{padding:32px 20px}
+  .waitlist-form{flex-direction:column}
+  .waitlist-form input{width:100%}
+  .waitlist-form .btn{width:100%;justify-content:center}
+  .compare-table{font-size:12px}
+  .compare-table th,.compare-table td{padding:10px 8px}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Naar hoofdinhoud</a>
+
+<nav class="topnav" aria-label="Hoofdnavigatie">
+  <a href="index.html" class="logo">Pry<em>vee</em></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="index.html#how" id="nav-how">Hoe het werkt</a></li>
+      <li><a href="index.html#modules" id="nav-mod">Modules</a></li>
+      <li><a href="pricing.html" class="active" id="nav-price">Prijzen</a></li>
+      <li><a href="index.html#waitlist" class="nav-cta" id="nav-cta">Early access</a></li>
+    </ul>
+    <div class="lang-sw" role="group" aria-label="Taal kiezen">
+      <button class="lang-btn active" id="btnNL" onclick="setLang('nl')" aria-pressed="true">NL</button>
+      <div class="lang-sep" aria-hidden="true"></div>
+      <button class="lang-btn" id="btnEN" onclick="setLang('en')" aria-pressed="false">EN</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu openen" aria-expanded="false">&#9776;</button>
+  </div>
+</nav>
+
+<nav class="drawer" id="drawer" aria-label="Mobiel menu">
+  <a href="index.html#how" id="drawer-how">Hoe het werkt</a>
+  <a href="index.html#modules" id="drawer-mod">Modules</a>
+  <a href="pricing.html" id="drawer-price">Prijzen</a>
+  <a href="about.html">Over Pryvee</a>
+  <a href="contact.html">Contact</a>
+  <a href="index.html#waitlist" class="nav-cta" id="drawer-cta">Early access</a>
+</nav>
+
+<main id="main">
+<div class="container">
+  <div class="page-hero">
+    <div class="tag" id="pg-tag">Prijzen</div>
+    <h1 class="headline" id="pg-h">Duidelijke prijzen.<br><em>Geen verrassingen.</em></h1>
+    <p class="subhead" style="margin:16px auto 0;max-width:400px" id="pg-sub">Begin met één audit. Schaal naar een volledige governance-suite naarmate je groeit.</p>
+  </div>
+
+  <div class="pricing-grid reveal">
+    <div class="plan">
+      <div class="plan-name">Snapshot</div>
+      <p class="plan-desc" id="p1d">Eenmalig auditrapport voor één tenant. Geen abonnement.</p>
+      <div class="plan-price">&euro;149</div>
+      <div class="plan-per" id="p1per">eenmalige betaling</div>
+      <div class="plan-div"></div>
+      <ul class="checklist plan-feats" id="p1f">
+        <li>Volledige CIS L1 M365-audit (79 checks)</li>
+        <li>Managementklare PDF</li>
+        <li>Risicoscore &amp; executive summary</li>
+        <li>Geprioriteerde aanbevelingen</li>
+        <li>30 dagen geldig</li>
+        <li>Eenmalige Microsoft-login</li>
+      </ul>
+      <a href="index.html#waitlist" class="btn btn-outline plan-btn" id="p1btn">Aanmelden voor early access</a>
+    </div>
+
+    <div class="plan highlight">
+      <div class="badge badge-green plan-badge" id="p2badge">Meest gekozen</div>
+      <div class="plan-name">Snapshot Pro</div>
+      <p class="plan-desc" id="p2d">Maandelijkse herhalingsaudits met trendanalyse en meldingen.</p>
+      <div class="plan-price">&euro;99<span id="p2unit">/mnd</span></div>
+      <div class="plan-per" id="p2per">per tenant &middot; maandelijks opzegbaar</div>
+      <div class="plan-div"></div>
+      <ul class="checklist plan-feats" id="p2f">
+        <li>Alles uit Snapshot</li>
+        <li>Maandelijkse automatische herscans</li>
+        <li>Risicotrendanalyse</li>
+        <li>E-mailmeldingen bij nieuwe bevindingen</li>
+        <li>Vergelijking met vorige maand</li>
+        <li>Prioriteitsondersteuning</li>
+      </ul>
+      <a href="index.html#waitlist" class="btn btn-green plan-btn" id="p2btn">Start gratis proefperiode</a>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">MSP Partner</div>
+      <p class="plan-desc" id="p3d">White-label suite voor managed service providers met meerdere tenants.</p>
+      <div class="plan-price" style="font-size:32px;letter-spacing:-1px" id="p3price">Op maat</div>
+      <div class="plan-per" id="p3per">volumeprijzen beschikbaar</div>
+      <div class="plan-div"></div>
+      <ul class="checklist plan-feats" id="p3f">
+        <li>Onbeperkt tenants</li>
+        <li>White-label PDF-rapporten</li>
+        <li>Multi-tenant dashboard</li>
+        <li>API-toegang</li>
+        <li>Eigen accountmanager</li>
+        <li>SLA &amp; prioriteitssupport</li>
+      </ul>
+      <a href="contact.html" class="btn btn-outline plan-btn" id="p3btn">Neem contact op</a>
+    </div>
+  </div>
+
+  <!-- COMPARE TABLE -->
+  <div class="compare reveal">
+    <h2 class="headline" id="cmp-h">Vergelijk alle functies</h2>
+    <table class="compare-table" role="table">
+      <thead>
+        <tr>
+          <th id="cmp-feat">Functie</th>
+          <th>Snapshot</th>
+          <th class="highlight-col">Snapshot Pro</th>
+          <th>MSP Partner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-row"><td colspan="4" id="cmp-s1">Audit &amp; Rapportage</td></tr>
+        <tr><td id="cf1">CIS L1 M365-audit (79 checks)</td><td><span class="check">&#10003;</span></td><td class="highlight-col"><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr><td id="cf2">Managementklare PDF</td><td><span class="check">&#10003;</span></td><td class="highlight-col"><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr><td id="cf3">Executive summary</td><td><span class="check">&#10003;</span></td><td class="highlight-col"><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr><td id="cf4">White-label PDF</td><td><span class="dash-cell">&mdash;</span></td><td class="highlight-col"><span class="dash-cell">&mdash;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr class="section-row"><td colspan="4" id="cmp-s2">Monitoring</td></tr>
+        <tr><td id="cf5">Maandelijkse herscans</td><td><span class="dash-cell">&mdash;</span></td><td class="highlight-col"><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr><td id="cf6">Risicotrendanalyse</td><td><span class="dash-cell">&mdash;</span></td><td class="highlight-col"><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr><td id="cf7">E-mailmeldingen</td><td><span class="dash-cell">&mdash;</span></td><td class="highlight-col"><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr class="section-row"><td colspan="4" id="cmp-s3">MSP &amp; Schaal</td></tr>
+        <tr><td id="cf8">Multi-tenant dashboard</td><td><span class="dash-cell">&mdash;</span></td><td class="highlight-col"><span class="dash-cell">&mdash;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr><td id="cf9">API-toegang</td><td><span class="dash-cell">&mdash;</span></td><td class="highlight-col"><span class="dash-cell">&mdash;</span></td><td><span class="check">&#10003;</span></td></tr>
+        <tr><td id="cf10">Eigen accountmanager</td><td><span class="dash-cell">&mdash;</span></td><td class="highlight-col"><span class="dash-cell">&mdash;</span></td><td><span class="check">&#10003;</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq reveal">
+    <h2 class="headline" style="margin-bottom:32px" id="faq-h">Veelgestelde vragen</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <p class="faq-q" id="fq1">Heeft Pryvee schrijftoegang tot mijn tenant?</p>
+        <p class="faq-a" id="fa1">Nee. Pryvee vraagt alleen leestoegang via Microsoft Graph. We kunnen niets aanpassen, verwijderen of toevoegen aan je omgeving.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q" id="fq2">Hoe lang duurt een scan?</p>
+        <p class="faq-a" id="fa2">Gemiddeld 2 tot 4 minuten voor een volledige CIS L1-scan. Grote tenants kunnen tot 8 minuten duren.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q" id="fq3">Welke Microsoft 365-licentie heb ik nodig?</p>
+        <p class="faq-a" id="fa3">Pryvee werkt met elke M365-licentie. Voor sommige checks (zoals Identity Protection) is Entra ID P2 vereist. We geven duidelijk aan welke checks niet van toepassing zijn.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q" id="fq4">Is mijn data veilig bij Pryvee?</p>
+        <p class="faq-a" id="fa4">We slaan geen tenant-data op na het genereren van het rapport. Alles wordt verwerkt in geheugen en daarna verwijderd. Het rapport zelf wordt 30 dagen beschikbaar gehouden.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q" id="fq5">Kan ik opzeggen wanneer ik wil?</p>
+        <p class="faq-a" id="fa5">Ja. Snapshot Pro is maandelijks opzegbaar zonder opzegtermijn. MSP-contracten hebben een bespreekbare looptijd.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q" id="fq6">Bieden jullie korting voor non-profits of overheden?</p>
+        <p class="faq-a" id="fa6">Ja. Neem contact op voor NGO-, onderwijs- en overheidskorting. We geloven dat ook kleinere organisaties recht hebben op goed inzicht.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA STRIP -->
+  <div class="cta-strip reveal" style="margin-bottom:80px">
+    <h2 class="headline" id="cta-h">Nog niet zeker?<br>Begin <em>gratis</em>.</h2>
+    <p class="subhead" style="margin:12px auto;max-width:380px" id="cta-sub">De eerste 50 aanmeldingen krijgen Pryvee Snapshot gratis. Geen creditcard nodig.</p>
+    <form class="waitlist-form" aria-label="Early access aanmelden">
+      <input type="email" placeholder="jouw@bedrijf.nl" required aria-label="E-mailadres" id="wl-input">
+      <button type="submit" class="btn btn-green" id="wl-btn">Schrijf me in &rarr;</button>
+    </form>
+    <p class="form-msg" id="form-msg" aria-live="polite"></p>
+  </div>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">Pry<em>vee</em></a>
+      <p id="footer-tagline">Microsoft 365 governance voor IT-teams die verder kijken dan de volgende audit.</p>
+    </div>
+    <div class="footer-col">
+      <h4 id="fl-product">Product</h4>
+      <ul>
+        <li><a href="index.html#modules" id="fl-snap">Snapshot</a></li>
+        <li><a href="index.html#modules" id="fl-guard">Guard</a></li>
+        <li><a href="index.html#modules" id="fl-clean">Clean</a></li>
+        <li><a href="index.html#modules" id="fl-redact">Redact</a></li>
+        <li><a href="index.html#modules" id="fl-ai">AI</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 id="fl-pricing">Prijzen</h4>
+      <ul>
+        <li><a href="pricing.html">Snapshot</a></li>
+        <li><a href="pricing.html">Snapshot Pro</a></li>
+        <li><a href="pricing.html">MSP Partner</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Bedrijf</h4>
+      <ul>
+        <li><a href="about.html">Over Pryvee</a></li>
+        <li><a href="contact.html" id="fl-contact">Contact</a></li>
+        <li><a href="#" id="fl-privacy">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p id="footer-copy">&copy; 2025 Pryvee &middot; Alle rechten voorbehouden</p>
+    <div class="ms-badge"><span id="footer-built">Gebouwd op</span><span>Microsoft Graph API</span></div>
+  </div>
+</footer>
+
+<script src="shared.js"></script>
+<script>
+function pageLang(lang) {
+  const t = {
+    nl:{
+      'pg-tag':'Prijzen','pg-h':'Duidelijke prijzen.<br><em>Geen verrassingen.</em>',
+      'pg-sub':'Begin met één audit. Schaal naar een volledige governance-suite naarmate je groeit.',
+      'p1d':'Eenmalig auditrapport voor één tenant. Geen abonnement.','p1per':'eenmalige betaling',
+      'p1btn':'Aanmelden voor early access',
+      'p2badge':'Meest gekozen','p2d':'Maandelijkse herhalingsaudits met trendanalyse en meldingen.','p2per':'per tenant · maandelijks opzegbaar','p2unit':'/mnd','p2btn':'Start gratis proefperiode',
+      'p3d':'White-label suite voor managed service providers.','p3price':'Op maat','p3per':'volumeprijzen beschikbaar','p3btn':'Neem contact op',
+      'cmp-h':'Vergelijk alle functies','cmp-feat':'Functie','cmp-s1':'Audit & Rapportage','cmp-s2':'Monitoring','cmp-s3':'MSP & Schaal',
+      'faq-h':'Veelgestelde vragen',
+      'fq1':'Heeft Pryvee schrijftoegang tot mijn tenant?','fa1':'Nee. Pryvee vraagt alleen leestoegang via Microsoft Graph. We kunnen niets aanpassen, verwijderen of toevoegen aan je omgeving.',
+      'fq2':'Hoe lang duurt een scan?','fa2':'Gemiddeld 2 tot 4 minuten voor een volledige CIS L1-scan. Grote tenants kunnen tot 8 minuten duren.',
+      'fq3':'Welke Microsoft 365-licentie heb ik nodig?','fa3':'Pryvee werkt met elke M365-licentie. Voor sommige checks is Entra ID P2 vereist. We geven duidelijk aan welke checks niet van toepassing zijn.',
+      'fq4':'Is mijn data veilig bij Pryvee?','fa4':'We slaan geen tenant-data op na het genereren van het rapport. Alles wordt verwerkt in geheugen en daarna verwijderd.',
+      'fq5':'Kan ik opzeggen wanneer ik wil?','fa5':'Ja. Snapshot Pro is maandelijks opzegbaar zonder opzegtermijn.',
+      'fq6':'Bieden jullie korting voor non-profits of overheden?','fa6':'Ja. Neem contact op voor NGO-, onderwijs- en overheidskorting.',
+      'cta-h':'Nog niet zeker?<br>Begin <em>gratis</em>.','cta-sub':'De eerste 50 aanmeldingen krijgen Pryvee Snapshot gratis. Geen creditcard nodig.',
+      'wl-input-ph':'jouw@bedrijf.nl','wl-btn':'Schrijf me in →',
+      'footer-tagline':'Microsoft 365 governance voor IT-teams die verder kijken dan de volgende audit.',
+    },
+    en:{
+      'pg-tag':'Pricing','pg-h':'Simple pricing.<br><em>No surprises.</em>',
+      'pg-sub':'Start with one audit. Scale to a full governance suite as you grow.',
+      'p1d':'One-time audit report for a single tenant. No subscription.','p1per':'one-time payment',
+      'p1btn':'Join early access',
+      'p2badge':'Most popular','p2d':'Monthly recurring audits with trend analysis and alerts.','p2per':'per tenant · cancel anytime','p2unit':'/mo','p2btn':'Start free trial',
+      'p3d':'White-label suite for managed service providers.','p3price':'Custom','p3per':'volume pricing available','p3btn':'Contact us',
+      'cmp-h':'Compare all features','cmp-feat':'Feature','cmp-s1':'Audit & Reporting','cmp-s2':'Monitoring','cmp-s3':'MSP & Scale',
+      'faq-h':'Frequently asked questions',
+      'fq1':'Does Pryvee have write access to my tenant?','fa1':'No. Pryvee only requests read access via Microsoft Graph. We cannot modify, delete or add anything to your environment.',
+      'fq2':'How long does a scan take?','fa2':'On average 2 to 4 minutes for a full CIS L1 scan. Large tenants can take up to 8 minutes.',
+      'fq3':'Which Microsoft 365 licence do I need?','fa3':'Pryvee works with any M365 licence. Some checks require Entra ID P2. We clearly indicate which checks do not apply.',
+      'fq4':'Is my data safe with Pryvee?','fa4':'We do not store tenant data after generating the report. Everything is processed in memory and then deleted.',
+      'fq5':'Can I cancel anytime?','fa5':'Yes. Snapshot Pro can be cancelled monthly without notice.',
+      'fq6':'Do you offer discounts for non-profits or governments?','fa6':'Yes. Contact us for NGO, education and government discounts.',
+      'cta-h':'Not sure yet?<br>Start <em>free</em>.','cta-sub':'The first 50 sign-ups get Pryvee Snapshot free. No credit card required.',
+      'wl-input-ph':'you@company.com','wl-btn':'Sign me up →',
+      'footer-tagline':'Microsoft 365 governance for IT teams who look beyond the next audit.',
+    }
+  };
+  const lang_t = t[lang];
+  const htmlIds = ['pg-h','cta-h'];
+  Object.keys(lang_t).forEach(id => {
+    if(id==='wl-input-ph'){const el=document.getElementById('wl-input');if(el)el.placeholder=lang_t[id];return;}
+    const el=document.getElementById(id);if(!el)return;
+    if(htmlIds.includes(id))el.innerHTML=lang_t[id];else el.textContent=lang_t[id];
+  });
+}
+</script>
+</body>
+</html>
