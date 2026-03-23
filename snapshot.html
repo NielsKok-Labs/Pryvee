@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="nl" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Pryvee Snapshot — één-klik CIS L1 compliance-audit voor je Microsoft 365-tenant. PDF-rapport in minuten.">
+<title>Pryvee Snapshot — M365 Compliance-audit in minuten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a0827; --ink-d:#120520; --plum:#3c1950; --plum-l:#53256f; --plum-xl:#6d3390;
+  --gold:#ffeb55; --gold-d:#e8d400; --gold-pale:rgba(255,235,85,0.08);
+  --surface:rgba(60,25,80,0.5); --surface2:rgba(60,25,80,0.3);
+  --border:rgba(255,235,85,0.1); --border2:rgba(255,235,85,0.2);
+  --text:#f0e8ff; --muted:#b8a0cc; --muted2:#7a5a90;
+  --danger:#ff6b6b; --warn:#ffb347; --ok:#4dd9a0;
+  --r:6px; --r-lg:12px; --r-xl:20px; --nav-h:72px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink-d);color:var(--text);font-family:'Instrument Sans',sans-serif;font-weight:400;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,235,85,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,235,85,0.018) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
+.skip{position:absolute;top:-100px;left:20px;background:var(--gold);color:var(--ink-d);padding:10px 22px;border-radius:0 0 var(--r) var(--r);font-weight:600;font-size:13px;text-decoration:none;z-index:9999;transition:top .2s;font-family:'Bricolage Grotesque',sans-serif}
+.skip:focus{top:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal,.anim-up{opacity:1!important;transform:none!important}}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
+.orb-1{width:800px;height:600px;background:radial-gradient(ellipse,rgba(109,51,144,0.32) 0%,transparent 70%);top:-200px;left:-150px}
+.orb-2{width:500px;height:500px;background:radial-gradient(ellipse,rgba(255,235,85,0.05) 0%,transparent 70%);bottom:100px;right:-100px}
+
+/* NAV */
+nav.bar{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 52px;background:rgba(18,5,32,0.85);backdrop-filter:blur(28px) saturate(1.6);border-bottom:1px solid var(--border)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.3px;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:3px}
+.logo-accent{color:var(--gold)}
+.nav-center{display:flex;gap:2px;list-style:none;align-items:center}
+.nav-center a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:400;padding:9px 15px;border-radius:var(--r);min-height:42px;display:flex;align-items:center;transition:color .18s,background .18s;letter-spacing:-0.1px}
+.nav-center a:hover,.nav-center a[aria-current="page"]{color:var(--text);background:rgba(255,255,255,0.05)}
+.nav-center a[aria-current="page"]{color:var(--gold)}
+.btn-nav{background:var(--gold);color:var(--ink-d);padding:9px 20px;border-radius:var(--r);font-weight:600;font-size:13px;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.2px;transition:all .18s;min-height:38px;display:flex;align-items:center;gap:6px}
+.btn-nav:hover{background:var(--gold-d);transform:translateY(-1px)}
+.ham{display:none;background:none;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;color:var(--muted);min-height:42px;min-width:42px;align-items:center;justify-content:center;font-size:18px;transition:all .18s}
+.ham:hover{color:var(--text);border-color:rgba(255,235,85,0.35)}
+.drawer{display:none;flex-direction:column;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(18,5,32,0.97);backdrop-filter:blur(28px);border-bottom:1px solid var(--border);padding:16px 24px 28px;z-index:190}
+.drawer.open{display:flex}
+.drawer a{color:var(--muted);text-decoration:none;font-size:16px;padding:14px 16px;border-radius:var(--r-lg);min-height:50px;display:flex;align-items:center;transition:all .2s;border:1px solid transparent}
+.drawer a:hover{color:var(--text);background:rgba(255,235,85,0.05);border-color:var(--border2)}
+.drawer .btn-nav{margin-top:8px;justify-content:center;border:none}
+
+/* HERO */
+.hero{position:relative;z-index:1;padding:calc(var(--nav-h) + 80px) 52px 80px;max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;min-height:90vh}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,235,85,0.25);background:rgba(255,235,85,0.06);border-radius:100px;padding:6px 18px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;width:fit-content;opacity:0;animation:up .6s .1s forwards}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:blink 2.4s ease-in-out infinite}
+.hero-left h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,4.5vw,62px);line-height:.93;letter-spacing:-2.5px;margin-bottom:24px;opacity:0;animation:up .7s .2s forwards}
+.hero-left h1 em{font-style:normal;color:var(--gold)}
+.hero-left p{color:var(--muted);font-size:17px;line-height:1.8;margin-bottom:40px;font-weight:400;max-width:480px;opacity:0;animation:up .7s .35s forwards}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:up .7s .5s forwards}
+.btn-primary{background:var(--gold);color:var(--ink-d);padding:14px 30px;border-radius:var(--r);font-weight:600;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.3px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:48px;transition:all .2s;box-shadow:0 0 40px rgba(255,235,85,0.2);white-space:nowrap}
+.btn-primary:hover{background:var(--gold-d);transform:translateY(-2px)}
+.btn-secondary{color:var(--muted);padding:14px 22px;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.2px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:48px;border:1px solid var(--border2);border-radius:var(--r);transition:all .2s;white-space:nowrap}
+.btn-secondary:hover{color:var(--text);border-color:rgba(255,235,85,0.35)}
+.trust-row{display:flex;align-items:center;gap:20px;margin-top:32px;opacity:0;animation:up .7s .65s forwards}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.trust-item span{font-size:14px}
+.trust-sep{width:1px;height:16px;background:var(--border2)}
+
+/* HERO RIGHT — report preview */
+.hero-right{position:relative;opacity:0;animation:up .9s .6s forwards}
+.report-preview{background:rgba(26,8,39,0.95);border:1px solid var(--border2);border-radius:var(--r-xl);overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.4)}
+.report-preview::before{content:'';position:absolute;top:-1px;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),rgba(255,235,85,0.3));z-index:1}
+.rp-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.rp-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14px;letter-spacing:-0.3px}
+.rp-date{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2)}
+.rp-score{padding:24px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rs-item{text-align:center;padding:16px 8px;background:rgba(255,255,255,0.03);border-radius:var(--r-lg)}
+.rs-val{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:28px;line-height:1;letter-spacing:-1px}
+.rs-lbl{font-family:'Geist Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:5px}
+.rs-red{color:var(--danger)} .rs-amber{color:var(--warn)} .rs-ok{color:var(--ok)}
+.rp-findings{padding:16px 24px}
+.rf-head{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;display:flex;justify-content:space-between}
+.rf-badge{background:rgba(255,107,107,0.12);color:var(--danger);padding:2px 8px;border-radius:4px;font-size:10px}
+.rf-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.rf-row:last-child{border-bottom:none}
+.rf-sev{font-family:'Geist Mono',monospace;font-size:9px;padding:2px 7px;border-radius:3px;flex-shrink:0;text-transform:uppercase}
+.rf-sev.h{background:rgba(255,107,107,0.12);color:var(--danger)} .rf-sev.m{background:rgba(255,179,71,0.12);color:var(--warn)}
+.rf-text{font-size:12px;color:var(--text);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rp-footer{padding:16px 24px;background:rgba(255,235,85,0.05);border-top:1px solid rgba(255,235,85,0.12);display:flex;align-items:center;justify-content:space-between}
+.rp-cis{font-family:'Geist Mono',monospace;font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em}
+.rp-dl{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+
+/* WRAP */
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 52px}
+.sec{padding:120px 0}
+.tag{font-family:'Geist Mono',monospace;font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.tag::before{content:'';width:22px;height:1px;background:var(--gold)}
+.h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(30px,4vw,52px);line-height:.93;letter-spacing:-2px;margin-bottom:16px}
+.lead{color:var(--muted);font-size:17px;max-width:500px;line-height:1.8;margin-bottom:64px;font-weight:400}
+
+/* CHECKS SECTION */
+.checks-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.checks-text .lead{margin-bottom:32px}
+.stat-row{display:flex;gap:32px;margin-bottom:40px}
+.stat{text-align:center}
+.stat-n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:44px;line-height:1;letter-spacing:-2px;color:var(--gold)}
+.stat-l{font-size:12px;color:var(--muted);margin-top:4px}
+.cat-list{display:flex;flex-direction:column;gap:10px}
+.cat-item{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(60,25,80,0.3);border:1px solid var(--border);border-radius:var(--r-lg);transition:border-color .2s}
+.cat-item:hover{border-color:var(--border2)}
+.cat-ico{font-size:18px;width:40px;height:40px;border-radius:var(--r);background:rgba(255,235,85,0.08);border:1px solid rgba(255,235,85,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cat-info{flex:1}
+.cat-t{font-size:14px;font-weight:500;font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-0.3px}
+.cat-d{font-size:12px;color:var(--muted);margin-top:2px}
+.cat-count{font-family:'Geist Mono',monospace;font-size:11px;color:var(--gold);background:rgba(255,235,85,0.1);padding:3px 9px;border-radius:4px;flex-shrink:0}
+
+/* REPORT SECTION */
+.report-anatomy{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.section-list{display:flex;flex-direction:column;gap:3px}
+.sec-item{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:var(--r-lg);transition:background .18s;cursor:default}
+.sec-item:hover{background:rgba(60,25,80,0.4)}
+.sec-num{font-family:'Geist Mono',monospace;font-size:12px;color:var(--gold);min-width:24px;margin-top:2px}
+.sec-body{}
+.sec-t{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:15px;letter-spacing:-0.3px;margin-bottom:4px}
+.sec-d{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* sample page mock */
+.page-mock{background:rgba(26,8,39,0.95);border:1px solid var(--border2);border-radius:var(--r-xl);overflow:hidden;position:sticky;top:calc(var(--nav-h) + 24px)}
+.pm-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(18,5,32,0.8);border-bottom:1px solid var(--border)}
+.pm-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13px;letter-spacing:-0.3px}
+.pm-tag{font-family:'Geist Mono',monospace;font-size:10px;color:var(--gold);background:rgba(255,235,85,0.1);padding:3px 9px;border-radius:4px;text-transform:uppercase;letter-spacing:0.08em}
+.pm-body{padding:20px}
+.pm-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+.pm-row:last-child{border-bottom:none}
+.pm-check{font-size:12px;color:var(--text);flex:1}
+.pm-status{font-family:'Geist Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;text-transform:uppercase;flex-shrink:0}
+.pm-status.pass{background:rgba(77,217,160,0.1);color:var(--ok)}
+.pm-status.fail{background:rgba(255,107,107,0.1);color:var(--danger)}
+.pm-status.warn{background:rgba(255,179,71,0.1);color:var(--warn)}
+
+/* HOW STEPS */
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.how-grid::before{content:'';position:absolute;top:22px;left:11%;width:78%;height:1px;background:linear-gradient(90deg,transparent,var(--border2) 15%,var(--border2) 85%,transparent)}
+.step-n{width:44px;height:44px;border-radius:var(--r-lg);border:1px solid var(--border2);background:rgba(60,25,80,0.5);display:flex;align-items:center;justify-content:center;margin-bottom:26px;position:relative;z-index:1}
+.step-n span{font-family:'Geist Mono',monospace;font-size:14px;color:var(--gold)}
+.step-t{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;margin-bottom:10px;letter-spacing:-0.4px}
+.step-d{font-size:13px;color:var(--muted);line-height:1.7;padding-right:20px}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:2px;max-width:720px}
+.faq-item{border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;transition:border-color .2s}
+.faq-item:hover{border-color:var(--border2)}
+.faq-q{width:100%;background:none;border:none;cursor:pointer;text-align:left;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:15px;letter-spacing:-0.3px;color:var(--text);gap:16px}
+.faq-q:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:var(--r-lg)}
+.faq-icon{font-size:18px;color:var(--muted);flex-shrink:0;transition:transform .25s}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-a{font-size:14px;color:var(--muted);line-height:1.75;padding:0 24px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-item.open .faq-a{max-height:300px;padding:0 24px 20px}
+
+/* CTA */
+.cta-strip{position:relative;z-index:1;margin:0 52px 100px;padding:80px 64px;text-align:center;border-radius:var(--r-xl);border:1px solid rgba(255,235,85,0.18);overflow:hidden}
+.cta-strip::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,235,85,0.07) 0%,rgba(60,25,80,0.4) 55%,rgba(109,51,144,0.12) 100%);z-index:0}
+.cta-strip>*{position:relative;z-index:1}
+.cta-strip h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(26px,3.5vw,46px);letter-spacing:-2px;margin-bottom:16px;line-height:.95}
+.cta-strip p{color:var(--muted);font-size:17px;margin-bottom:44px}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36px 52px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.f-links{display:flex;gap:28px;list-style:none;flex-wrap:wrap}
+.f-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .18s}
+.f-links a:hover{color:var(--text)}
+.f-copy{font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2)}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+@media(max-width:960px){
+  nav.bar{padding:0 20px}
+  .nav-center{display:none}
+  .ham{display:flex}
+  .wrap,.hero{padding-left:20px;padding-right:20px}
+  .hero{grid-template-columns:1fr;gap:48px;min-height:auto;padding-top:calc(var(--nav-h)+60px)}
+  .hero-right{position:relative;top:0}
+  .checks-layout,.report-anatomy{grid-template-columns:1fr}
+  .how-grid{grid-template-columns:1fr 1fr;gap:24px}
+  .how-grid::before{display:none}
+  .cta-strip{margin:0 20px 60px;padding:48px 28px}
+  .cta-btns{flex-direction:column}
+  .cta-btns a{width:100%;justify-content:center}
+  footer{padding:28px 20px;flex-direction:column;align-items:flex-start}
+  .stat-row{justify-content:flex-start}
+}
+@media(max-width:540px){
+  .how-grid{grid-template-columns:1fr}
+  .hero-actions{flex-direction:column;width:100%}
+  .btn-primary,.btn-secondary{justify-content:center}
+  .trust-row{flex-wrap:wrap;gap:12px}
+  .rp-score{grid-template-columns:1fr 1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-1" aria-hidden="true"></div>
+<div class="orb orb-2" aria-hidden="true"></div>
+
+<a href="#main" class="skip">Naar hoofdinhoud</a>
+
+<nav class="bar" aria-label="Hoofdnavigatie">
+  <a href="index.html" class="logo">Pry<span class="logo-accent">vee</span></a>
+  <ul class="nav-center" id="dnav">
+    <li><a href="index.html#how">Hoe het werkt</a></li>
+    <li><a href="index.html#products">Producten</a></li>
+    <li><a href="index.html#pricing">Prijzen</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a href="#" class="btn-nav" id="cta-nav">Scan mijn tenant →</a>
+    <button class="ham" id="ham" aria-label="Menu openen" aria-expanded="false" aria-controls="drawer">☰</button>
+  </div>
+</nav>
+
+<nav class="drawer" id="drawer" aria-label="Mobiele navigatie">
+  <a href="index.html#how"      onclick="closeD()">Hoe het werkt</a>
+  <a href="index.html#products" onclick="closeD()">Producten</a>
+  <a href="index.html#pricing"  onclick="closeD()">Prijzen</a>
+  <a href="#" class="btn-nav" onclick="closeD()">Scan mijn tenant →</a>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="h1">
+  <div class="hero-left">
+    <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Nu beschikbaar</div>
+    <h1 id="h1">Je M365-tenant.<br><em>Volledig</em> geauditeerd.<br>In minuten.</h1>
+    <p>Pryvee Snapshot voert 79 geautomatiseerde CIS M365 L1-checks uit op jouw tenant en genereert een managementklaar PDF-rapport — inclusief risicoscore, geprioriteerde bevindingen en concrete aanbevelingen.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Ontvang je Snapshot-rapport →</a>
+      <a href="#how" class="btn-secondary">Hoe werkt het?</a>
+    </div>
+    <div class="trust-row" aria-label="Vertrouwensindicatoren">
+      <div class="trust-item"><span aria-hidden="true">🔒</span>Alleen-lezen toegang</div>
+      <div class="trust-sep" aria-hidden="true"></div>
+      <div class="trust-item"><span aria-hidden="true">⚡</span>Rapport in &lt;5 min</div>
+      <div class="trust-sep" aria-hidden="true"></div>
+      <div class="trust-item"><span aria-hidden="true">📋</span>CIS M365 Benchmark v6</div>
+    </div>
+  </div>
+
+  <div class="hero-right" role="img" aria-label="Voorbeeld van een Snapshot PDF-rapport">
+    <div class="report-preview">
+      <div class="rp-head">
+        <div>
+          <div class="rp-title">Pryvee Snapshot — Contoso BV</div>
+          <div class="rp-date" style="margin-top:3px">GEGENEREERD OP 23 MRT 2025 · 14:07</div>
+        </div>
+        <div style="font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2)">REF #SN-20250323</div>
+      </div>
+      <div class="rp-score" aria-hidden="true">
+        <div class="rs-item"><div class="rs-val rs-red">32%</div><div class="rs-lbl">Secure Score</div></div>
+        <div class="rs-item"><div class="rs-val rs-amber">18</div><div class="rs-lbl">Bevindingen</div></div>
+        <div class="rs-item"><div class="rs-val rs-ok">7/10</div><div class="rs-lbl">Prioriteit</div></div>
+      </div>
+      <div class="rp-findings" aria-hidden="true">
+        <div class="rf-head">
+          <span>Top bevindingen</span>
+          <span class="rf-badge">7 kritiek</span>
+        </div>
+        <div class="rf-row"><span class="rf-sev h">Hoog</span><span class="rf-text">MFA uitgeschakeld voor 47 gebruikers</span></div>
+        <div class="rf-row"><span class="rf-sev h">Hoog</span><span class="rf-text">Geen Conditional Access-beleid actief</span></div>
+        <div class="rf-row"><span class="rf-sev m">Midden</span><span class="rf-text">124 verlopen gastaccounts</span></div>
+        <div class="rf-row"><span class="rf-sev h">Hoog</span><span class="rf-text">Legacy authenticatie niet geblokkeerd</span></div>
+        <div class="rf-row"><span class="rf-sev m">Midden</span><span class="rf-text">SharePoint extern delen onbeperkt</span></div>
+      </div>
+      <div class="rp-footer">
+        <span class="rp-cis">CIS M365 Benchmark v6</span>
+        <span class="rp-dl">📄 PDF downloaden</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKS -->
+<section class="wrap sec reveal" aria-labelledby="checks-h">
+  <div class="checks-layout">
+    <div class="checks-text">
+      <div class="tag">Wat Snapshot controleert</div>
+      <h2 class="h2" id="checks-h">79 checks.<br>Nul blinde vlekken.</h2>
+      <p class="lead">Snapshot dekt elke CIS M365 L1-categorie — van identiteit en toegang tot data-bescherming en apparaatbeheer.</p>
+      <div class="stat-row" role="list" aria-label="Statistieken">
+        <div class="stat" role="listitem"><div class="stat-n">79</div><div class="stat-l">Geautomatiseerde checks</div></div>
+        <div class="stat" role="listitem"><div class="stat-n">10+</div><div class="stat-l">Graph API-endpoints</div></div>
+        <div class="stat" role="listitem"><div class="stat-n">&lt;5'</div><div class="stat-l">Rapport gereed</div></div>
+      </div>
+      <a href="#" class="btn-primary">Start je audit →</a>
+    </div>
+    <div class="cat-list" role="list" aria-label="Categorieën die worden gecontroleerd">
+      <div class="cat-item" role="listitem"><div class="cat-ico" aria-hidden="true">🪪</div><div class="cat-info"><div class="cat-t">Identiteit &amp; Toegang</div><div class="cat-d">MFA, Conditional Access, legacy auth, admin roles</div></div><div class="cat-count">24 checks</div></div>
+      <div class="cat-item" role="listitem"><div class="cat-ico" aria-hidden="true">👥</div><div class="cat-info"><div class="cat-t">Gastaccounts &amp; Extern delen</div><div class="cat-d">Gastinvites, SharePoint-links, OneDrive-beleid</div></div><div class="cat-count">14 checks</div></div>
+      <div class="cat-item" role="listitem"><div class="cat-ico" aria-hidden="true">📧</div><div class="cat-info"><div class="cat-t">E-mail &amp; Exchange Online</div><div class="cat-d">DKIM, DMARC, SPF, anti-spam, anti-phishing</div></div><div class="cat-count">16 checks</div></div>
+      <div class="cat-item" role="listitem"><div class="cat-ico" aria-hidden="true">💻</div><div class="cat-info"><div class="cat-t">Apparaatcompliance</div><div class="cat-d">Intune-beleid, Windows/macOS compliance, BitLocker</div></div><div class="cat-count">12 checks</div></div>
+      <div class="cat-item" role="listitem"><div class="cat-ico" aria-hidden="true">🔏</div><div class="cat-info"><div class="cat-t">Data-bescherming</div><div class="cat-d">DLP-beleid, sensitivity labels, Purview-configuratie</div></div><div class="cat-count">13 checks</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT ANATOMY -->
+<section class="wrap reveal" id="report" aria-labelledby="report-h" style="padding-bottom:120px">
+  <div class="report-anatomy">
+    <div>
+      <div class="tag">Het rapport</div>
+      <h2 class="h2" id="report-h">Managementklaar.<br>Auditklaar.</h2>
+      <p class="lead">Het PDF-rapport is opgebouwd voor twee doelgroepen tegelijk: CISO's en managers lezen de samenvatting, technici werken door de gedetailleerde bevindingen.</p>
+      <div class="section-list" role="list" aria-label="Rapportsecties">
+        <div class="sec-item" role="listitem"><div class="sec-num">01</div><div class="sec-body"><div class="sec-t">Executive Summary</div><div class="sec-d">Risicoscore, overzicht van kritieke bevindingen en topprioriteiten voor management.</div></div></div>
+        <div class="sec-item" role="listitem"><div class="sec-num">02</div><div class="sec-body"><div class="sec-t">Risicoverdeling</div><div class="sec-d">Heatmap per categorie — hoog, medium en laag risico visueel in kaart gebracht.</div></div></div>
+        <div class="sec-item" role="listitem"><div class="sec-num">03</div><div class="sec-body"><div class="sec-t">Gedetailleerde bevindingen</div><div class="sec-d">Elke check met status, uitleg, impactbeoordeling en concrete remediatiestap.</div></div></div>
+        <div class="sec-item" role="listitem"><div class="sec-num">04</div><div class="sec-body"><div class="sec-t">CIS-compliance matrix</div><div class="sec-d">Overzicht van alle 79 checks met pass/fail-status en CIS-referentie.</div></div></div>
+        <div class="sec-item" role="listitem"><div class="sec-num">05</div><div class="sec-body"><div class="sec-t">Actieplan</div><div class="sec-d">Geprioriteerde aanbevelingen gesorteerd op impact — klaar om te verwerken in een ticket.</div></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="page-mock" aria-label="Voorbeeld van rapport CIS-checks pagina">
+        <div class="pm-bar">
+          <span class="pm-title">CIS M365 L1 — Identiteit &amp; Toegang</span>
+          <span class="pm-tag">Pagina 4 / 12</span>
+        </div>
+        <div class="pm-body" aria-hidden="true">
+          <div class="pm-row"><span class="pm-check">1.1.1 — MFA ingeschakeld voor alle gebruikers</span><span class="pm-status fail">Fail</span></div>
+          <div class="pm-row"><span class="pm-check">1.1.3 — Legacy-authenticatie geblokkeerd</span><span class="pm-status fail">Fail</span></div>
+          <div class="pm-row"><span class="pm-check">1.1.5 — Zelfbediening wachtwoordherstel</span><span class="pm-status pass">Pass</span></div>
+          <div class="pm-row"><span class="pm-check">1.1.6 — Microsoft Authenticator vereist</span><span class="pm-status warn">Partieel</span></div>
+          <div class="pm-row"><span class="pm-check">1.2.1 — Conditional Access — MFA vereist</span><span class="pm-status fail">Fail</span></div>
+          <div class="pm-row"><span class="pm-check">1.2.2 — Conditional Access — Risico-aanmelding</span><span class="pm-status fail">Fail</span></div>
+          <div class="pm-row"><span class="pm-check">1.3.1 — Privileged Identity Management</span><span class="pm-status pass">Pass</span></div>
+          <div class="pm-row"><span class="pm-check">1.3.3 — Globale beheerder &lt; 5 accounts</span><span class="pm-status warn">Partieel</span></div>
+          <div class="pm-row"><span class="pm-check">1.4.1 — Gastgebruiker-uitnodigingen beperkt</span><span class="pm-status pass">Pass</span></div>
+          <div class="pm-row"><span class="pm-check">1.4.2 — Gastgebruikers &lt; 30 dagen inactief</span><span class="pm-status fail">Fail</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="wrap reveal" id="how" aria-labelledby="how-h" style="padding-bottom:120px">
+  <div class="tag">Hoe het werkt</div>
+  <h2 class="h2" id="how-h">Rapport in vier stappen.<br>Zonder installatie.</h2>
+  <p class="lead">Verbind je tenant via een beveiligde Microsoft OAuth-flow. Geen agents, geen scripts, geen toegang tot mailinhoud.</p>
+  <div class="how-grid" role="list">
+    <div role="listitem"><div class="step-n"><span>01</span></div><h3 class="step-t">Koppel je tenant</h3><p class="step-d">Log in met je Microsoft-beheerdersaccount. Eenmalige toestemming. Alleen-lezen. Niets te installeren.</p></div>
+    <div role="listitem"><div class="step-n"><span>02</span></div><h3 class="step-t">Automatische scan</h3><p class="step-d">Pryvee leest Microsoft Graph — MFA-status, CA-beleid, gastaccounts, Secure Score en meer.</p></div>
+    <div role="listitem"><div class="step-n"><span>03</span></div><h3 class="step-t">Risicoscore berekend</h3><p class="step-d">Elke bevinding gescoord op basis van CIS M365 Benchmark v6 en geprioriteerd naar impact.</p></div>
+    <div role="listitem"><div class="step-n"><span>04</span></div><h3 class="step-t">Download je rapport</h3><p class="step-d">Managementklaar PDF — klaar voor directie, auditor of klant. Inclusief actieplan.</p></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="wrap reveal" aria-labelledby="faq-h" style="padding-bottom:120px">
+  <div class="tag">Veelgestelde vragen</div>
+  <h2 class="h2" id="faq-h">Alles wat je<br>wilt weten.</h2>
+  <div class="faq" role="list">
+    <div class="faq-item" role="listitem">
+      <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Welke rechten heeft Pryvee nodig in mijn tenant?<span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-a">Pryvee vraagt uitsluitend <em>lees-rechten</em> via de Microsoft Graph API. We schrijven niets naar je tenant en hebben geen toegang tot mailinhoud, bestanden of chatberichten. De exacte OAuth-scopes zijn: <code>SecurityEvents.Read.All</code>, <code>Policy.Read.All</code>, <code>User.Read.All</code> en <code>DeviceManagementConfiguration.Read.All</code>.</div>
+    </div>
+    <div class="faq-item" role="listitem">
+      <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Hoe lang duurt een scan?<span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-a">Een volledige scan duurt gemiddeld 2 tot 4 minuten, afhankelijk van de grootte van je tenant. Het PDF-rapport is direct beschikbaar na afloop van de scan.</div>
+    </div>
+    <div class="faq-item" role="listitem">
+      <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Slaan jullie data op uit mijn tenant?<span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-a">We slaan de scan-resultaten op zodat je je rapport kunt downloaden en herscannen kunt vergelijken met eerdere resultaten. We slaan <strong>nooit</strong> e-mailinhoud, bestanden of persoonsgebonden communicatie op. Je kunt je data op elk moment verwijderen via je accountinstellingen.</div>
+    </div>
+    <div class="faq-item" role="listitem">
+      <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Werkt Snapshot ook voor kleine organisaties zonder Microsoft E3/E5?<span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-a">Ja. Snapshot werkt met alle Microsoft 365-licenties, inclusief Business Basic, Standard en Premium. Sommige bevindingen (zoals Purview-instellingen) zijn alleen relevant bij E3/E5 — Snapshot geeft dit duidelijk aan in het rapport.</div>
+    </div>
+    <div class="faq-item" role="listitem">
+      <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Kan ik Snapshot gebruiken voor meerdere klanttenants als MSP?<span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-a">Absoluut. Met het MSP Partner-plan kun je onbeperkt tenants verbinden, white-label rapporten genereren met jouw logo en alles beheren vanuit één multi-tenant dashboard. Neem contact op voor volumeprijzen.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-strip reveal" aria-labelledby="cta-h">
+  <h2 id="cta-h">Ontdek wat er echt<br>in je tenant zit.</h2>
+  <p>Verbonden in 60 seconden. Rapport in 5 minuten. Geen installatie.</p>
+  <div class="cta-btns">
+    <a href="#" class="btn-primary">Ontvang je Snapshot-rapport →</a>
+    <a href="#" class="btn-secondary">Eerst een gesprek</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <a href="index.html" class="logo">Pry<span class="logo-accent">vee</span></a>
+  <ul class="f-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="snapshot.html" aria-current="page">Snapshot</a></li>
+    <li><a href="redact.html">Redact</a></li>
+    <li><a href="index.html#pricing">Prijzen</a></li>
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="f-copy">© 2025 Pryvee · Alle rechten voorbehouden</div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const ham=document.getElementById('ham'),drawer=document.getElementById('drawer');
+ham.addEventListener('click',()=>{const o=drawer.classList.toggle('open');ham.setAttribute('aria-expanded',String(o));ham.setAttribute('aria-label',o?'Menu sluiten':'Menu openen');ham.innerHTML=o?'✕':'☰';});
+function closeD(){drawer.classList.remove('open');ham.setAttribute('aria-expanded','false');ham.innerHTML='☰';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeD();});
+drawer.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const f=Array.from(drawer.querySelectorAll('a'));if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus();}else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus();}});
+function toggleFaq(btn){
+  const item=btn.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');});
+  if(!isOpen){item.classList.add('open');btn.setAttribute('aria-expanded','true');}
+}
+const mq=window.matchMedia('(max-width:960px)');
+function handleNav(m){document.getElementById('cta-nav').style.display=m.matches?'none':'flex';}
+mq.addEventListener('change',handleNav);handleNav(mq);
+</script>
+</body>
+</html>
