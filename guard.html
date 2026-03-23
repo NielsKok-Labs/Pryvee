@@ -6,13 +6,14 @@
 <meta name="description" id="meta-desc" content="Pryvee — binnenkort beschikbaar.">
 <title id="page-title">Pryvee — Binnenkort</title>
 <link rel="stylesheet" href="shared.css">
+<style>body{background:#1A0A40}.card,.plan,.feat,.cis-box,.stat,.footer-brand,.footer-col{background:#3C1980!important;border-color:rgba(255,235,85,0.15)!important}.stripe{background:#2A1060!important}.site-footer{background:#2A1060!important}.topnav{background:rgba(26,10,64,0.92)!important}.drawer{background:rgba(26,10,64,0.97)!important}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=Instrument+Mono:wght@300;400&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:#060A07;color:#EDF5EF;font-family:'Instrument Sans',sans-serif;font-weight:300;line-height:1.65;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
-:focus-visible{outline:3px solid #34C76B;outline-offset:3px;border-radius:4px}
+body{background:var(--purple-xdk,#1A0A40);color:#EDF5EF;font-family:'Instrument Sans',sans-serif;font-weight:300;line-height:1.65;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+:focus-visible{outline:3px solid #FFEB55;outline-offset:3px;border-radius:4px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
@@ -20,7 +21,7 @@ body{background:#060A07;color:#EDF5EF;font-family:'Instrument Sans',sans-serif;f
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:20px 52px;border-bottom:1px solid rgba(255,255,255,0.06)}
 .logo{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:20px;letter-spacing:-.5px;color:#EDF5EF;text-decoration:none}
-.logo em{font-style:normal;color:#34C76B}
+.logo em{font-style:normal;color:var(--yellow,#FFEB55)}
 .nav-back{font-family:'Instrument Mono',monospace;font-size:12px;color:#A0BAA8;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
 .nav-back:hover{color:#EDF5EF}
 
@@ -45,10 +46,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 5
 .wl-form{display:flex;gap:10px;width:100%;flex-wrap:wrap}
 .wl-input{flex:1;min-width:200px;background:#101A12;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:13px 18px;font-size:15px;color:#EDF5EF;font-family:'Instrument Sans',sans-serif;outline:none;transition:border-color .2s}
 .wl-input::placeholder{color:#456050}
-.wl-input:focus{border-color:#34C76B}
-.wl-btn{background:#34C76B;color:#060A07;border:none;border-radius:8px;padding:13px 22px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:15px;cursor:pointer;min-height:46px;transition:all .2s;white-space:nowrap}
-.wl-btn:hover{background:#22A855;transform:translateY(-1px)}
-.wl-msg{font-family:'Instrument Mono',monospace;font-size:11px;color:#34C76B;margin-top:10px;opacity:0;transition:opacity .3s;text-align:center}
+.wl-input:focus{border-color:var(--yellow,#FFEB55)}
+.wl-btn{background:var(--yellow,#FFEB55);color:#060A07;border:none;border-radius:8px;padding:13px 22px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:15px;cursor:pointer;min-height:46px;transition:all .2s;white-space:nowrap}
+.wl-btn:hover{background:var(--yellow-dk,#E8D230);transform:translateY(-1px)}
+.wl-msg{font-family:'Instrument Mono',monospace;font-size:11px;color:var(--yellow,#FFEB55);margin-top:10px;opacity:0;transition:opacity .3s;text-align:center}
 .wl-note{font-family:'Instrument Mono',monospace;font-size:10px;color:#456050;margin-top:10px;text-align:center}
 
 /* OTHER MODULES */
@@ -56,7 +57,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 5
 .om-label{font-family:'Instrument Mono',monospace;font-size:10px;color:#456050;text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px}
 .om-grid{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .om-card{background:#101A12;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px 18px;text-decoration:none;transition:border-color .2s,transform .2s;display:flex;align-items:center;gap:10px}
-.om-card:hover{border-color:rgba(52,199,107,0.2);transform:translateY(-2px)}
+.om-card:hover{border-color:rgba(255,235,85,0.2);transform:translateY(-2px)}
 .om-card-name{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#EDF5EF}
 .om-card-status{font-family:'Instrument Mono',monospace;font-size:9px;color:#456050;margin-top:2px}
 .om-card-icon{font-size:20px}
@@ -92,10 +93,10 @@ footer{padding:24px 52px;border-top:1px solid rgba(255,255,255,0.06);display:fle
   <p class="cs-tagline" id="module-tagline">Governance stopt niet na de audit.</p>
 
   <div class="feat-preview" id="feat-preview">
-    <div class="fp-item"><span class="fp-dot" style="background:#34C76B"></span>Gastaccount-monitoring</div>
-    <div class="fp-item"><span class="fp-dot" style="background:#34C76B"></span>Extern deelrisico</div>
-    <div class="fp-item"><span class="fp-dot" style="background:#34C76B"></span>Geautomatiseerde alerts</div>
-    <div class="fp-item"><span class="fp-dot" style="background:#34C76B"></span>Wekelijkse digest</div>
+    <div class="fp-item"><span class="fp-dot" style="background:var(--yellow,#FFEB55)"></span>Gastaccount-monitoring</div>
+    <div class="fp-item"><span class="fp-dot" style="background:var(--yellow,#FFEB55)"></span>Extern deelrisico</div>
+    <div class="fp-item"><span class="fp-dot" style="background:var(--yellow,#FFEB55)"></span>Geautomatiseerde alerts</div>
+    <div class="fp-item"><span class="fp-dot" style="background:var(--yellow,#FFEB55)"></span>Wekelijkse digest</div>
   </div>
 
   <div class="wl-wrap">
@@ -135,8 +136,8 @@ const modules = {
     name: 'Guard',
     desc: 'Continue monitoring van gastaccounts en extern delen &mdash; geautomatiseerd, met alerts en wekelijkse risico-digests.',
     tagline: 'Governance stopt niet na de audit.',
-    color: '#34C76B',
-    glow: 'rgba(52,199,107,0.06)',
+    color: '#FFEB55',
+    glow: 'rgba(255,235,85,0.06)',
     features: ['Gastaccount-monitoring','Extern deelrisico','Geautomatiseerde alerts','Wekelijkse digest','Orphaned Teams-detectie'],
     title: 'Pryvee Guard — Binnenkort',
     metadesc: 'Pryvee Guard — continue monitoring van gastaccounts en extern delen in Microsoft 365.'
@@ -195,7 +196,7 @@ fp.innerHTML = m.features.map(f =>
 // Hide current module from other modules grid
 const omGrid = document.getElementById('om-grid');
 const extraCards = {
-  guard: '<a href="guard.html" class="om-card" style="border-color:rgba(52,199,107,0.2)"><span class="om-card-icon">&#128101;</span><div><div class="om-card-name">Guard</div><div class="om-card-status" style="color:#34C76B">Jij bent hier</div></div></a>',
+  guard: '<a href="guard.html" class="om-card" style="border-color:rgba(255,235,85,0.2)"><span class="om-card-icon">&#128101;</span><div><div class="om-card-name">Guard</div><div class="om-card-status" style="color:var(--yellow,#FFEB55)">Jij bent hier</div></div></a>',
   clean: '<a href="clean.html" class="om-card" style="border-color:rgba(245,183,49,0.2)"><span class="om-card-icon">&#129529;</span><div><div class="om-card-name">Clean</div><div class="om-card-status" style="color:#F5B731">Jij bent hier</div></div></a>',
   ai: '<a href="ai.html" class="om-card" style="border-color:rgba(163,230,53,0.2)"><span class="om-card-icon">&#129302;</span><div><div class="om-card-name">AI</div><div class="om-card-status" style="color:#A3E635">Jij bent hier</div></div></a>'
 };

@@ -1,456 +1,282 @@
 <!DOCTYPE html>
 <html lang="nl" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Pryvee Redact — persoonsgegevens automatisch verwijderen uit PDF en DOCX. Volledig in uw browser. Namen, BSN, IBAN en adressen automatisch verwijderen uit PDF en DOCX.">
-<title>Pryvee Redact — In-memory documentredactie</title>
-<link rel="stylesheet" href="shared.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Pryvee Redact — persoonsgegevens automatisch verwijderen uit PDF en DOCX. 100% in uw browser verwerkt, uw document verlaat nooit uw apparaat.">
+<title>Pryvee Redact — Documentredactie in uw browser</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=Instrument+Mono:wght@300;400&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:#060A07;color:#EDF5EF;font-family:'Instrument Sans',sans-serif;font-weight:300;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(52,199,107,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(52,199,107,0.015) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0}
-.skip-link{position:absolute;top:-100px;left:16px;background:#34C76B;color:#060A07;padding:10px 20px;border-radius:0 0 8px 8px;font-weight:600;font-size:14px;text-decoration:none;z-index:9999;transition:top .2s}
-.skip-link:focus{top:0}
-:focus-visible{outline:3px solid #34C76B;outline-offset:3px;border-radius:4px}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
-@keyframes redact-in{from{width:0}to{width:100%}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.page-hero{background:var(--purple);border-bottom:1px solid var(--b-y);padding:148px 0 80px;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at 50% 0%,rgba(255,235,85,.10) 0%,transparent 60%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.breadcrumb{font-family:var(--fm);font-size:11px;color:var(--t3);margin-bottom:18px;display:flex;align-items:center;gap:6px}
+.breadcrumb a{color:var(--t3);text-decoration:none}.breadcrumb a:hover{color:var(--t2)}
+.breadcrumb em{color:var(--yellow);font-style:normal}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 52px;background:rgba(6,10,7,0.92);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.06)}
-.logo{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:20px;letter-spacing:-.5px;color:#EDF5EF;text-decoration:none}
-.logo em{font-style:normal;color:#34C76B}
-.logo-product{font-family:'Instrument Mono',monospace;font-size:11px;color:#A0BAA8;margin-left:8px;letter-spacing:.06em}
-.nav-links{display:flex;gap:4px;list-style:none;align-items:center}
-.nav-links a{color:#A0BAA8;text-decoration:none;font-size:14px;padding:8px 13px;border-radius:6px;min-height:40px;display:flex;align-items:center;transition:color .2s,background .2s}
-.nav-links a:hover{color:#EDF5EF;background:rgba(255,255,255,0.04)}
-.nav-cta{background:#34C76B!important;color:#060A07!important;font-family:'Cabinet Grotesk',sans-serif;font-weight:700!important}
-.nav-cta:hover{background:#22A855!important}
-.hamburger{display:none;background:none;border:1px solid rgba(52,199,107,0.2);border-radius:6px;width:40px;height:40px;cursor:pointer;color:#A0BAA8;font-size:18px;align-items:center;justify-content:center;margin-left:8px}
-.drawer{display:none;flex-direction:column;gap:4px;position:fixed;top:62px;left:0;right:0;background:rgba(6,10,7,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.06);padding:16px 20px 24px;z-index:99}
-.drawer.open{display:flex}
-.drawer a{color:#A0BAA8;text-decoration:none;font-size:16px;padding:13px 16px;border-radius:8px;min-height:48px;display:flex;align-items:center;border:1px solid transparent;transition:all .2s}
-.drawer a:hover{color:#EDF5EF;background:rgba(255,255,255,.03)}
-.drawer .nav-cta{margin-top:8px;justify-content:center;border-color:#34C76B!important}
-
-/* HERO */
-.hero{position:relative;padding:140px 52px 80px;max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
-.hero-glow{position:absolute;top:0;right:0;width:600px;height:500px;background:radial-gradient(ellipse at 80% 30%,rgba(52,199,107,0.06) 0%,transparent 65%);pointer-events:none}
-.breadcrumb{display:flex;align-items:center;gap:8px;font-family:'Instrument Mono',monospace;font-size:11px;color:#456050;margin-bottom:20px}
-.breadcrumb a{color:#456050;text-decoration:none;transition:color .2s}.breadcrumb a:hover{color:#A0BAA8}
-.breadcrumb span{color:#34C76B}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(52,199,107,0.08);border:1px solid rgba(52,199,107,0.22);border-radius:100px;padding:5px 14px;font-family:'Instrument Mono',monospace;font-size:10px;color:#34C76B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
-.hero-badge::before{content:'';width:5px;height:5px;background:#34C76B;border-radius:50%;box-shadow:0 0 6px #34C76B;animation:pulse 2s infinite}
-.hero h1{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(36px,5vw,60px);line-height:.95;letter-spacing:-2px;margin-bottom:20px}
-.hero h1 em{font-style:normal;color:#34C76B}
-.hero-sub{font-size:16px;color:#A0BAA8;line-height:1.75;margin-bottom:32px;max-width:440px}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border-radius:8px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:15px;text-decoration:none;min-height:46px;transition:all .2s;cursor:pointer;border:none;white-space:nowrap}
-.btn-teal{background:#34C76B;color:#060A07;box-shadow:0 0 28px rgba(52,199,107,0.2)}
-.btn-teal:hover{background:#22A855;transform:translateY(-2px)}
-.btn-ghost{background:transparent;color:#A0BAA8;border:1px solid rgba(52,199,107,0.2)!important}
-.btn-ghost:hover{color:#EDF5EF;border-color:rgba(52,199,107,0.4)!important}
-.hero-trust{margin-top:24px;display:flex;align-items:center;gap:12px;font-family:'Instrument Mono',monospace;font-size:11px;color:#456050;flex-wrap:wrap}
-.hero-trust-dot{width:4px;height:4px;background:#456050;border-radius:50%}
-
-/* REDACT VISUAL - DOCUMENT MOCKUP */
-.doc-mock{background:#101A12;border:1px solid rgba(52,199,107,0.2);border-radius:16px;overflow:hidden;animation:fadeUp .8s .3s both}
-.doc-topbar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#141F16;border-bottom:1px solid rgba(255,255,255,0.06)}
-.doc-dot{width:9px;height:9px;border-radius:50%}
-.doc-dot:nth-child(1){background:#FF5F57}.doc-dot:nth-child(2){background:#FEBC2E}.doc-dot:nth-child(3){background:#28C840}
-.doc-filename{font-family:'Instrument Mono',monospace;font-size:10px;color:#456050;margin-left:6px}
-.doc-badge{margin-left:auto;font-family:'Instrument Mono',monospace;font-size:9px;background:rgba(52,199,107,0.1);border:1px solid rgba(52,199,107,0.2);color:#34C76B;padding:2px 8px;border-radius:4px}
-.doc-body{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
-.doc-panel-label{font-family:'Instrument Mono',monospace;font-size:9px;color:#456050;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
-.doc-text{background:#141F16;border-radius:8px;padding:14px;border:1px solid rgba(255,255,255,0.06)}
-.doc-line{font-size:11px;color:#A0BAA8;line-height:1.8;margin-bottom:4px}
+/* DOCUMENT MOCKUP */
+.doc-mock{background:var(--purple-dk);border:1px solid var(--b-y);border-radius:16px;overflow:hidden;animation:fadeUp .7s .2s both}
+.doc-bar{display:flex;align-items:center;gap:6px;padding:11px 16px;background:var(--purple-xdk);border-bottom:1px solid var(--b)}
+.ddot{width:9px;height:9px;border-radius:50%}
+.ddot:nth-child(1){background:#FF5F57}.ddot:nth-child(2){background:#FEBC2E}.ddot:nth-child(3){background:#28C840}
+.doc-fn{font-family:var(--fm);font-size:10px;color:var(--t3);margin-left:6px}
+.doc-bdg{margin-left:auto;font-family:var(--fm);font-size:9px;background:rgba(255,235,85,.08);border:1px solid var(--b-y);color:var(--yellow);padding:2px 8px;border-radius:4px}
+.doc-body{padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.doc-lbl{font-family:var(--fm);font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.doc-txt{background:var(--purple-lt);border-radius:8px;padding:14px;border:1px solid var(--b)}
+.doc-line{font-size:11px;color:var(--t2);line-height:1.9;margin-bottom:2px}
 .doc-line:last-child{margin-bottom:0}
-/* Redacted text styling */
-.rx{display:inline-block;background:#F26B6B;color:transparent;border-radius:2px;height:12px;vertical-align:middle;user-select:none}
-.rx-name{width:80px}
-.rx-bsn{width:64px}
-.rx-iban{width:110px}
-.rx-addr{width:96px}
-.rx-email{width:120px}
-/* Animated redact bar */
-.rx-animate{position:relative;overflow:hidden}
-.rx-animate::after{content:'';position:absolute;top:0;left:0;height:100%;background:#34C76B;animation:redact-in 1.5s 1s ease both}
-.rx-a1{width:80px}.rx-a2{width:64px}
+.rx{display:inline-block;background:var(--yellow);color:transparent;border-radius:2px;height:11px;vertical-align:middle;user-select:none}
+.doc-stats{padding:0 16px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ds{background:var(--purple-lt);border-radius:6px;padding:10px 12px;border:1px solid var(--b);display:flex;align-items:center;justify-content:space-between}
+.ds-lbl{font-family:var(--fm);font-size:10px;color:var(--t3)}
+.ds-val{font-family:var(--fd);font-weight:700;font-size:14px;color:var(--yellow)}
+.doc-foot{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--purple-xdk);border-top:1px solid var(--b)}
+.df-note{font-family:var(--fm);font-size:9px;color:var(--t3)}
+.df-dl{font-family:var(--fm);font-size:9px;color:var(--yellow);background:rgba(255,235,85,.08);border:1px solid var(--b-y);padding:3px 10px;border-radius:4px}
 
-.doc-stats{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.doc-stat{background:#141F16;border-radius:6px;padding:10px 12px;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between}
-.ds-label{font-family:'Instrument Mono',monospace;font-size:10px;color:#456050}
-.ds-val{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;color:#34C76B}
-.doc-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#141F16;border-top:1px solid rgba(255,255,255,0.06)}
-.df-note{font-family:'Instrument Mono',monospace;font-size:9px;color:#456050}
-.df-dl{font-family:'Instrument Mono',monospace;font-size:9px;color:#34C76B;background:rgba(52,199,107,0.08);border:1px solid rgba(52,199,107,0.15);padding:3px 10px;border-radius:4px}
+/* KEY CLAIM */
+.key-claim{background:rgba(255,235,85,.06);border:1px solid var(--b-y);border-radius:10px;padding:16px 20px;margin-top:22px;display:flex;align-items:center;gap:12px}
+.kc-icon{font-size:22px;flex-shrink:0}
+.kc-text{font-size:13px;color:var(--t);line-height:1.55}
+.kc-text strong{color:var(--yellow)}
 
-/* CONTAINER */
-.container{max-width:1080px;margin:0 auto;padding:0 52px}
-.section{padding:80px 0}
-.tag{display:inline-flex;align-items:center;gap:8px;font-family:'Instrument Mono',monospace;font-size:10px;color:#34C76B;text-transform:uppercase;letter-spacing:.16em;margin-bottom:14px}
-.tag::before{content:'';width:18px;height:1px;background:#34C76B}
+/* FLOW */
+.flow-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;border-radius:14px;overflow:hidden;background:var(--b)}
+.flow-step{background:var(--purple-lt);padding:26px 22px}
+.flow-n{font-family:var(--fm);font-size:10px;color:var(--t3);margin-bottom:18px}
+.flow-ico{font-size:26px;margin-bottom:14px;display:block}
+.flow-title{font-family:var(--fd);font-weight:700;font-size:15px;margin-bottom:8px}
+.flow-desc{font-size:13px;color:var(--t2);line-height:1.65}
+.flow-key{margin-top:12px;font-family:var(--fm);font-size:9px;color:var(--yellow);background:rgba(255,235,85,.08);border:1px solid var(--b-y);padding:3px 8px;border-radius:4px;display:inline-block}
 
-/* HOW IT WORKS - REDACT FLOW */
-.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,0.04);margin-top:44px}
-.flow-step{background:#101A12;padding:28px 22px}
-.flow-n{font-family:'Instrument Mono',monospace;font-size:10px;color:#456050;margin-bottom:18px}
-.flow-icon{font-size:26px;margin-bottom:14px;display:block}
-.flow-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:15px;margin-bottom:8px}
-.flow-desc{font-size:12px;color:#A0BAA8;line-height:1.65}
-.flow-key{margin-top:12px;font-family:'Instrument Mono',monospace;font-size:9px;color:#34C76B;background:rgba(52,199,107,0.08);border:1px solid rgba(52,199,107,0.15);padding:3px 8px;border-radius:4px;display:inline-block}
+/* ENTITIES */
+.ent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ent{background:var(--purple-lt);border:1px solid var(--b);border-radius:12px;padding:20px;transition:border-color .3s}
+.ent:hover{border-color:var(--b-y)}
+.ent-ico{font-size:22px;margin-bottom:12px;display:block}
+.ent-name{font-family:var(--fd);font-weight:700;font-size:14px;margin-bottom:6px}
+.ent-desc{font-size:12px;color:var(--t2);line-height:1.6}
+.ent-ex{margin-top:10px;padding:8px 10px;background:var(--purple-dk);border-radius:6px;font-family:var(--fm);font-size:10px;color:var(--t3);display:flex;align-items:center;justify-content:space-between}
+.ent-rx{background:var(--yellow);color:transparent;border-radius:2px;padding:2px 8px;font-size:10px;user-select:none}
 
-/* ENTITY TYPES */
-.entity-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px}
-.entity-card{background:#101A12;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;transition:border-color .3s}
-.entity-card:hover{border-color:rgba(52,199,107,0.2)}
-.entity-icon{font-size:24px;margin-bottom:12px;display:block}
-.entity-name{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:15px;margin-bottom:6px}
-.entity-desc{font-size:12px;color:#A0BAA8;line-height:1.6}
-.entity-example{margin-top:10px;padding:8px 10px;background:#141F16;border-radius:6px;font-family:'Instrument Mono',monospace;font-size:10px;color:#456050;display:flex;align-items:center;justify-content:space-between}
-.entity-rx{background:#F26B6B;color:transparent;border-radius:2px;padding:2px 8px;font-size:10px;user-select:none}
+/* AVG */
+.avg-block{background:var(--purple-lt);border:1px solid var(--b-y2);border-radius:16px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.avg-points{display:flex;flex-direction:column;gap:18px}
+.avg-pt{display:flex;align-items:flex-start;gap:14px}
+.avg-ico{width:36px;height:36px;border-radius:10px;background:rgba(255,235,85,.08);border:1px solid var(--b-y);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.avg-title{font-family:var(--fd);font-weight:700;font-size:14px;margin-bottom:4px}
+.avg-desc{font-size:12px;color:var(--t2);line-height:1.65}
 
 /* PRICING */
-.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:44px}
-.price-card{background:#101A12;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;transition:border-color .3s,transform .3s}
-.price-card:hover{border-color:rgba(52,199,107,0.2);transform:translateY(-3px)}
-.price-card.highlight{border-color:rgba(52,199,107,0.25);background:linear-gradient(140deg,rgba(52,199,107,0.05) 0%,#101A12 55%)}
-.pc-tag{font-family:'Instrument Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:4px;margin-bottom:16px;display:inline-block}
-.pc-tag.pay{background:rgba(160,186,168,0.08);color:#A0BAA8}
-.pc-tag.sub{background:rgba(52,199,107,0.1);color:#34C76B}
-.pc-name{font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:20px;margin-bottom:6px}
-.pc-desc{font-size:13px;color:#A0BAA8;margin-bottom:18px;line-height:1.55}
-.pc-price{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:40px;letter-spacing:-1.5px;line-height:1;margin-bottom:4px}
-.pc-price span{font-size:16px;font-weight:400;color:#A0BAA8}
-.pc-per{font-family:'Instrument Mono',monospace;font-size:10px;color:#456050;margin-bottom:18px;text-transform:uppercase}
-.pc-div{height:1px;background:rgba(255,255,255,0.06);margin-bottom:16px}
-.checklist{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
-.checklist li{font-size:13px;color:#A0BAA8;display:flex;align-items:flex-start;gap:9px;line-height:1.5}
-.checklist li::before{content:'';width:16px;height:16px;flex-shrink:0;border-radius:4px;background:rgba(52,199,107,0.08);border:1px solid rgba(52,199,107,0.2);background-image:url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%232BCFBE' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;margin-top:1px}
-.pc-btn{display:flex;align-items:center;justify-content:center;padding:12px;min-height:44px;border-radius:8px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;text-decoration:none;transition:all .2s;border:none;cursor:pointer;width:100%}
-.pc-btn.outline{background:transparent;color:#EDF5EF;border:1px solid rgba(52,199,107,0.25)!important}
-.pc-btn.outline:hover{border-color:#34C76B!important;color:#34C76B}
-.pc-btn.filled{background:#34C76B;color:#060A07}
-.pc-btn.filled:hover{background:#22A855}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.plan{background:var(--purple-lt);border:1px solid var(--b);border-radius:16px;padding:28px;display:flex;flex-direction:column;transition:border-color .3s,transform .3s;position:relative;overflow:hidden}
+.plan:hover{border-color:var(--b-y);transform:translateY(-3px)}
+.plan::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at top right,rgba(255,235,85,.05) 0%,transparent 70%);pointer-events:none}
+.plan.hi{border-color:var(--b-y2);background:linear-gradient(140deg,rgba(255,235,85,.06) 0%,var(--purple-lt) 55%)}
+.plan-lbl{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:4px;margin-bottom:16px;display:inline-block}
+.plan-lbl.pay{background:rgba(255,255,255,.06);color:var(--t2)}
+.plan-lbl.sub{background:rgba(255,235,85,.1);color:var(--yellow);border:1px solid var(--b-y)}
+.plan-name{font-family:var(--fd);font-weight:800;font-size:22px;letter-spacing:-.4px;margin-bottom:6px}
+.plan-desc{font-size:13px;color:var(--t2);margin-bottom:18px;line-height:1.55}
+.plan-price{font-family:var(--fd);font-weight:800;font-size:40px;letter-spacing:-1.5px;line-height:1;margin-bottom:4px}
+.plan-price span{font-size:16px;font-weight:300;color:var(--t2)}
+.plan-per{font-family:var(--fm);font-size:10px;color:var(--t3);margin-bottom:18px;text-transform:uppercase}
+.plan-div{height:1px;background:var(--b);margin-bottom:16px}
+.plan-btn{display:flex;align-items:center;justify-content:center;padding:12px;min-height:44px;border-radius:8px;font-family:var(--fd);font-weight:700;font-size:14px;text-decoration:none;transition:all .2s;border:1px solid var(--b-y2)!important;background:transparent;color:var(--t);cursor:pointer;margin-top:auto}
+.plan-btn:hover{border-color:var(--yellow)!important;color:var(--yellow)}
+.plan-btn.fill{background:var(--yellow);color:var(--purple-xdk);border-color:var(--yellow)!important;box-shadow:0 0 24px rgba(255,235,85,.18)}
+.plan-btn.fill:hover{background:var(--yellow-dk)}
 
-/* AVG BLOCK */
-.avg-block{background:linear-gradient(135deg,rgba(52,199,107,0.06) 0%,rgba(52,199,107,0.04) 100%);border:1px solid rgba(52,199,107,0.18);border-radius:16px;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-top:44px}
-.avg-points{display:flex;flex-direction:column;gap:14px}
-.avg-point{display:flex;align-items:flex-start;gap:14px}
-.avg-icon{width:36px;height:36px;border-radius:10px;background:rgba(52,199,107,0.1);border:1px solid rgba(52,199,107,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.avg-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;margin-bottom:4px}
-.avg-desc{font-size:12px;color:#A0BAA8;line-height:1.6}
-
-/* WAITLIST */
-.waitlist-box{background:linear-gradient(135deg,rgba(52,199,107,0.07) 0%,rgba(52,199,107,0.04) 100%);border:1px solid rgba(52,199,107,0.2);border-radius:18px;padding:56px;text-align:center;position:relative;overflow:hidden}
-.waitlist-box::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:500px;height:400px;background:radial-gradient(ellipse,rgba(52,199,107,0.07) 0%,transparent 65%);pointer-events:none}
-.wl-form{display:flex;gap:10px;justify-content:center;margin-top:28px;flex-wrap:wrap;position:relative}
-.wl-input{background:#101A12;border:1px solid rgba(52,199,107,0.2);border-radius:8px;padding:13px 20px;font-size:15px;color:#EDF5EF;font-family:'Instrument Sans',sans-serif;outline:none;width:280px;transition:border-color .2s}
-.wl-input::placeholder{color:#456050}
-.wl-input:focus{border-color:#34C76B}
-.wl-msg{font-family:'Instrument Mono',monospace;font-size:11px;color:#34C76B;margin-top:10px;opacity:0;transition:opacity .3s;position:relative}
-.wl-note{font-family:'Instrument Mono',monospace;font-size:10px;color:#456050;margin-top:12px;position:relative}
-
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}
-
-footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 52px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.footer-nav{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
-.footer-nav a{font-size:13px;color:#A0BAA8;text-decoration:none;transition:color .2s}
-.footer-nav a:hover{color:#EDF5EF}
-.footer-copy{font-family:'Instrument Mono',monospace;font-size:11px;color:#456050}
+.wl-banner{background:var(--purple);border:1px solid var(--b-y2);border-radius:18px;padding:56px;text-align:center;position:relative;overflow:hidden}
+.wl-banner::before{content:'';position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(255,235,85,.10) 0%,transparent 65%);pointer-events:none}
+.wl-banner .wl-form{justify-content:center;position:relative;margin-top:28px}
 
 @media(max-width:900px){
-  nav{padding:14px 20px}
-  .nav-links{display:none}
-  .hamburger{display:flex}
-  .hero{grid-template-columns:1fr;padding:110px 20px 60px;gap:48px}
-  .container{padding:0 20px}
-  .section{padding:64px 0}
-  .flow{grid-template-columns:1fr 1fr}
-  .entity-grid{grid-template-columns:1fr 1fr}
-  .price-grid{grid-template-columns:1fr}
-  .avg-block{grid-template-columns:1fr}
-  .waitlist-box{padding:36px 20px}
-  .wl-form{flex-direction:column}
-  .wl-input{width:100%}
-  .wl-form .btn{width:100%;justify-content:center}
+  .page-hero{padding:118px 0 60px}
+  .hero-grid,.avg-block,.price-grid{grid-template-columns:1fr}
   .doc-body{grid-template-columns:1fr}
-  footer{padding:28px 20px;flex-direction:column;align-items:flex-start}
+  .flow-grid{grid-template-columns:1fr 1fr}
+  .ent-grid{grid-template-columns:1fr 1fr}
+  .wl-banner{padding:32px 20px}
+  .wl-banner .wl-form{flex-direction:column}
 }
 @media(max-width:480px){
-  .flow{grid-template-columns:1fr}
-  .entity-grid{grid-template-columns:1fr}
+  .flow-grid,.ent-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-<a href="#main" class="skip-link">Naar hoofdinhoud</a>
-
-<nav aria-label="Hoofdnavigatie">
-  <a href="index.html" class="logo">Pry<em>vee</em> <span class="logo-product">/ Redact</span></a>
-  <ul class="nav-links">
-    <li><a href="#how">Werkwijze</a></li>
-    <li><a href="#entities">Entiteiten</a></li>
-    <li><a href="#avg">AVG-compliance</a></li>
-    <li><a href="#pricing">Prijzen</a></li>
-    <li><a href="snapshot.html">Snapshot</a></li>
-    <li><a href="#waitlist" class="nav-cta">Early access</a></li>
-  </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu openen" aria-expanded="false">&#9776;</button>
+<a href="#main" class="skip">Naar hoofdinhoud</a>
+<nav class="topnav" aria-label="Hoofdnavigatie">
+  <a href="index.html" class="logo">Pry<em>vee</em><span class="logo-sub">Redact</span></a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#how">Werkwijze</a></li>
+      <li><a href="#entities">Entiteiten</a></li>
+      <li><a href="#avg">AVG</a></li>
+      <li><a href="#pricing">Prijzen</a></li>
+      <li><a href="snapshot.html">Snapshot</a></li>
+      <li><a href="#waitlist" class="nav-cta">Early access</a></li>
+    </ul>
+    <button class="ham" id="ham" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  </div>
 </nav>
-
-<nav class="drawer" id="drawer" aria-label="Mobiel menu">
-  <a href="index.html">&#8592; Terug naar Pryvee</a>
+<nav class="drawer" id="drawer">
+  <a href="index.html">&#8592; Pryvee Home</a>
   <a href="#how">Werkwijze</a>
   <a href="#entities">Entiteiten</a>
-  <a href="#avg">AVG-compliance</a>
+  <a href="#avg">AVG</a>
   <a href="#pricing">Prijzen</a>
   <a href="snapshot.html">Snapshot</a>
   <a href="#waitlist" class="nav-cta">Early access</a>
 </nav>
 
 <main id="main">
-
-<!-- HERO -->
-<div style="position:relative;overflow:hidden">
-  <div class="hero-glow" aria-hidden="true"></div>
-  <div class="hero" aria-labelledby="hero-h">
-    <div style="animation:fadeUp .5s .05s both">
-      <div class="breadcrumb"><a href="index.html">Pryvee</a> <span>/</span> <span>Redact</span></div>
-      <div class="hero-badge">Binnenkort beschikbaar</div>
-      <h1 id="hero-h">Gevoelige data<br>uit documenten.<br><em>In-memory.</em></h1>
-      <p class="hero-sub">Pryvee Redact detecteert en verwijdert automatisch persoonsgegevens uit PDF en DOCX &mdash; volledig verwerkt in uw browser. Uw document verlaat nooit uw apparaat en wordt nergens opgeslagen.</p>
-      <div class="hero-actions">
-        <a href="#waitlist" class="btn btn-teal">Aanmelden voor early access &rarr;</a>
-        <a href="#how" class="btn btn-ghost">Hoe het werkt &darr;</a>
+<section class="page-hero" aria-labelledby="redact-h">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div style="animation:fadeUp .5s .05s both">
+        <div class="breadcrumb"><a href="index.html">Pryvee</a> / <em>Redact</em></div>
+        <div class="bdg bdg-a" style="margin-bottom:20px">Binnenkort beschikbaar</div>
+        <h1 class="d2" id="redact-h" style="margin-bottom:18px">Persoonsgegevens<br>uit documenten.<br><em class="em">In uw browser.</em></h1>
+        <p class="sub" style="margin-bottom:24px">Pryvee Redact detecteert en verwijdert automatisch persoonsgegevens uit PDF en DOCX. Volledig verwerkt in uw browser &mdash; uw document verlaat nooit uw apparaat.</p>
+        <div class="key-claim">
+          <span class="kc-icon">&#128274;</span>
+          <p class="kc-text"><strong>Uw document verlaat uw browser nooit.</strong> Pryvee ontvangt uitsluitend een licentiecheck &mdash; nooit uw documentinhoud. Dit is de sterkst mogelijke AVG-garantie.</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
+          <a href="#waitlist" class="btn btn-y">Aanmelden voor early access &rarr;</a>
+          <a href="#how" class="btn btn-gh">Hoe het werkt &darr;</a>
+        </div>
       </div>
-      <div class="hero-trust">
-        <span>100% client-side</span>
-        <span class="hero-trust-dot"></span>
-        <span>Nul opslag op server</span>
-        <span class="hero-trust-dot"></span>
-        <span>AVG-compliant</span>
-        <span class="hero-trust-dot"></span>
-        <span>NL &amp; EN</span>
-      </div>
-    </div>
-
-    <!-- DOCUMENT MOCKUP -->
-    <div class="doc-mock" role="img" aria-label="Pryvee Redact interface met origineel en geredacteerd document naast elkaar">
-      <div class="doc-topbar" aria-hidden="true">
-        <div class="doc-dot"></div><div class="doc-dot"></div><div class="doc-dot"></div>
-        <span class="doc-filename">arbeidscontract-jan-smit.pdf</span>
-        <span class="doc-badge">&#128274; Geredacteerd</span>
-      </div>
-      <div class="doc-body" aria-hidden="true">
-        <div>
-          <div class="doc-panel-label">Origineel</div>
-          <div class="doc-text">
-            <div class="doc-line">Naam: <strong>Jan Smit</strong></div>
-            <div class="doc-line">BSN: <strong>123456789</strong></div>
-            <div class="doc-line">IBAN: <strong>NL91ABNA0417164300</strong></div>
-            <div class="doc-line">Adres: <strong>Keizersgracht 44</strong></div>
-            <div class="doc-line">E-mail: <strong>jan@smit.nl</strong></div>
-            <div class="doc-line">Geboortedatum: <strong>14-03-1987</strong></div>
+      <div role="img" aria-label="Pryvee Redact interface met origineel en geredacteerd document naast elkaar">
+        <div class="doc-mock">
+          <div class="doc-bar" aria-hidden="true">
+            <div class="ddot"></div><div class="ddot"></div><div class="ddot"></div>
+            <span class="doc-fn">arbeidscontract-smit.pdf</span>
+            <span class="doc-bdg">&#128274; Geredacteerd</span>
+          </div>
+          <div class="doc-body" aria-hidden="true">
+            <div>
+              <div class="doc-lbl">Origineel</div>
+              <div class="doc-txt">
+                <div class="doc-line">Naam: <strong>Jan Smit</strong></div>
+                <div class="doc-line">BSN: <strong>123456789</strong></div>
+                <div class="doc-line">IBAN: <strong>NL91ABNA0417164300</strong></div>
+                <div class="doc-line">Adres: <strong>Keizersgracht 44</strong></div>
+                <div class="doc-line">E-mail: <strong>jan@smit.nl</strong></div>
+              </div>
+            </div>
+            <div>
+              <div class="doc-lbl">Geredacteerd</div>
+              <div class="doc-txt">
+                <div class="doc-line">Naam: <span class="rx" style="width:68px"></span></div>
+                <div class="doc-line">BSN: <span class="rx" style="width:52px"></span></div>
+                <div class="doc-line">IBAN: <span class="rx" style="width:96px"></span></div>
+                <div class="doc-line">Adres: <span class="rx" style="width:80px"></span></div>
+                <div class="doc-line">E-mail: <span class="rx" style="width:60px"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="doc-stats" aria-hidden="true">
+            <div class="ds"><span class="ds-lbl">Gevonden entiteiten</span><span class="ds-val">5</span></div>
+            <div class="ds"><span class="ds-lbl">Serveropslag</span><span class="ds-val" style="color:#4ADE80">0 bytes</span></div>
+          </div>
+          <div class="doc-foot" aria-hidden="true">
+            <span class="df-note">&#128274; Verwerkt in uw browser &middot; geen servercontact</span>
+            <span class="df-dl">&#8595; Download</span>
           </div>
         </div>
-        <div>
-          <div class="doc-panel-label">Geredacteerd</div>
-          <div class="doc-text">
-            <div class="doc-line">Naam: <span class="rx rx-name"></span></div>
-            <div class="doc-line">BSN: <span class="rx rx-bsn"></span></div>
-            <div class="doc-line">IBAN: <span class="rx rx-iban"></span></div>
-            <div class="doc-line">Adres: <span class="rx rx-addr"></span></div>
-            <div class="doc-line">E-mail: <span class="rx rx-email"></span></div>
-            <div class="doc-line">Geboortedatum: <span class="rx" style="width:72px"></span></div>
-          </div>
-        </div>
-      </div>
-      <div class="doc-stats" style="padding:0 20px 16px" aria-hidden="true">
-        <div class="doc-stat">
-          <span class="ds-label">Gevonden entiteiten</span>
-          <span class="ds-val">6</span>
-        </div>
-        <div class="doc-stat">
-          <span class="ds-label">Opslag op server</span>
-          <span class="ds-val" style="color:#34D399">0 bytes</span>
-        </div>
-      </div>
-      <div class="doc-footer" aria-hidden="true">
-        <span class="df-note">&#128274; Verwerkt in-memory &middot; geen logs</span>
-        <span class="df-dl">&#8595; Download geredacteerd PDF</span>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- HOW IT WORKS -->
-<div style="background:#0C1410;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)">
-  <div class="container section" id="how">
+<!-- HOW -->
+<div class="stripe">
+  <div class="wrap sec" id="how">
     <div class="tag">Werkwijze</div>
-    <h2 style="font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(28px,4vw,46px);line-height:1;letter-spacing:-1.5px;margin-bottom:12px">Upload. Redacteer. Download.<br><em style="font-style:normal;color:#34C76B">Nul opslag.</em></h2>
-    <p style="color:#A0BAA8;font-size:16px;max-width:480px;line-height:1.7;margin-bottom:0">Pryvee Redact verwerkt uw document volledig in het servergeheugen. Zodra het geredacteerde bestand is gedownload, wordt de sessie gewist. Er wordt niets opgeslagen.</p>
-    <div class="flow reveal">
-      <div class="flow-step">
-        <div class="flow-n">01</div>
-        <span class="flow-icon">&#128196;</span>
-        <div class="flow-title">Upload document</div>
-        <p class="flow-desc">Upload een PDF of DOCX via de beveiligde Pryvee-interface. Het bestand wordt versleuteld getransporteerd via HTTPS.</p>
-        <span class="flow-key">PDF &middot; DOCX</span>
-      </div>
-      <div class="flow-step">
-        <div class="flow-n">02</div>
-        <span class="flow-icon">&#128270;</span>
-        <div class="flow-title">NER-analyse</div>
-        <p class="flow-desc">Named Entity Recognition draait volledig in uw browser via WebAssembly. Geen enkele byte van uw document bereikt onze servers.</p>
-        <span class="flow-key">Client-side NER &middot; WebAssembly</span>
-      </div>
-      <div class="flow-step">
-        <div class="flow-n">03</div>
-        <span class="flow-icon">&#9999;</span>
-        <div class="flow-title">Automatische redactie</div>
-        <p class="flow-desc">Gevonden entiteiten worden vervangen door een generieke aanduiding zoals <strong>[NAAM]</strong>, <strong>[BSN]</strong> of <strong>[IBAN]</strong>. U kunt de redactie controleren en aanpassen.</p>
-        <span class="flow-key">In-memory verwerking</span>
-      </div>
-      <div class="flow-step">
-        <div class="flow-n">04</div>
-        <span class="flow-icon">&#8595;</span>
-        <div class="flow-title">Download &amp; wissen</div>
-        <p class="flow-desc">Download het geredacteerde document. De sessie wordt direct gewist. Geen logs, geen opslag, geen sporen op de server.</p>
-        <span class="flow-key">Zero-retention</span>
-      </div>
+    <h2 class="d2 reveal" style="margin-bottom:10px">Upload. Redacteer. Download.<br><em class="em">Nul servercontact.</em></h2>
+    <p class="sub reveal" style="max-width:460px;margin-bottom:36px">Pryvee Redact draait volledig in uw browser via WebAssembly. Geen byte van uw document bereikt onze servers.</p>
+    <div class="flow-grid reveal">
+      <div class="flow-step"><div class="flow-n">01</div><span class="flow-ico">&#128196;</span><div class="flow-title">Upload document</div><p class="flow-desc">Upload een PDF of DOCX via de Pryvee-interface. Het bestand blijft volledig in uw browser &mdash; er wordt niets geüpload naar een server.</p><span class="flow-key">PDF &middot; DOCX &middot; Client-side</span></div>
+      <div class="flow-step"><div class="flow-n">02</div><span class="flow-ico">&#128270;</span><div class="flow-title">NER in uw browser</div><p class="flow-desc">Named Entity Recognition draait via WebAssembly lokaal in uw browser. Alle persoonsgegevens worden gedetecteerd en gelabeld &mdash; zonder servercontact.</p><span class="flow-key">WebAssembly &middot; Client-side NER</span></div>
+      <div class="flow-step"><div class="flow-n">03</div><span class="flow-ico">&#9999;&#65039;</span><div class="flow-title">Automatische redactie</div><p class="flow-desc">Gevonden entiteiten worden vervangen door [NAAM], [BSN], [IBAN] etc. U kunt de redactie reviewen en aanpassen v&oacute;&oacute;r de download.</p><span class="flow-key">In-browser verwerking</span></div>
+      <div class="flow-step"><div class="flow-n">04</div><span class="flow-ico">&#8595;</span><div class="flow-title">Download &amp; klaar</div><p class="flow-desc">Download het geredacteerde document. De sessie wordt gewist. Er zijn geen logs, geen opslag, geen sporen &mdash; op geen enkele server.</p><span class="flow-key">Zero-retention &middot; Zero-knowledge</span></div>
     </div>
   </div>
 </div>
 
-<!-- ENTITY TYPES -->
-<div class="container section" id="entities">
+<!-- ENTITIES -->
+<div class="wrap sec" id="entities">
   <div class="tag">Entiteiten</div>
-  <h2 style="font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(28px,4vw,46px);line-height:1;letter-spacing:-1.5px;margin-bottom:12px">Wat Redact <em style="font-style:normal;color:#34C76B">detecteert</em>.</h2>
-  <p style="color:#A0BAA8;font-size:16px;max-width:460px;line-height:1.7;margin-bottom:0">Named Entity Recognition detecteert automatisch alle gevoelige gegevenstypen in uw document &mdash; in het Nederlands en Engels.</p>
-  <div class="entity-grid reveal">
-    <div class="entity-card">
-      <span class="entity-icon">&#128100;</span>
-      <div class="entity-name">Persoonsnamen</div>
-      <p class="entity-desc">Voor- en achternamen, initialen en varianten in zowel Nederlands als Engels.</p>
-      <div class="entity-example"><span>Jan Smit</span><span class="entity-rx">[NAAM]</span></div>
-    </div>
-    <div class="entity-card">
-      <span class="entity-icon">&#128196;</span>
-      <div class="entity-name">BSN</div>
-      <p class="entity-desc">Burgerservicenummers in alle gangbare notaties, inclusief varianten met spaties en koppeltekens.</p>
-      <div class="entity-example"><span>123 456 789</span><span class="entity-rx">[BSN]</span></div>
-    </div>
-    <div class="entity-card">
-      <span class="entity-icon">&#127981;</span>
-      <div class="entity-name">IBAN &amp; bankrekeningnummers</div>
-      <p class="entity-desc">Nederlandse en internationale IBAN-nummers, inclusief BBAN-varianten.</p>
-      <div class="entity-example"><span>NL91ABNA...</span><span class="entity-rx">[IBAN]</span></div>
-    </div>
-    <div class="entity-card">
-      <span class="entity-icon">&#127968;</span>
-      <div class="entity-name">Adressen</div>
-      <p class="entity-desc">Straatnamen, huisnummers, postcodes en plaatsnamen in Nederlandse en internationale notatie.</p>
-      <div class="entity-example"><span>Keizersgracht 44</span><span class="entity-rx">[ADRES]</span></div>
-    </div>
-    <div class="entity-card">
-      <span class="entity-icon">&#128231;</span>
-      <div class="entity-name">E-mailadressen</div>
-      <p class="entity-desc">Alle gangbare e-mailformaten, inclusief zakelijke en persoonlijke adressen.</p>
-      <div class="entity-example"><span>jan@bedrijf.nl</span><span class="entity-rx">[EMAIL]</span></div>
-    </div>
-    <div class="entity-card">
-      <span class="entity-icon">&#128222;</span>
-      <div class="entity-name">Telefoonnummers</div>
-      <p class="entity-desc">Nederlandse en internationale telefoonnummers in alle notaties, inclusief mobiel en vast.</p>
-      <div class="entity-example"><span>+31 6 12345678</span><span class="entity-rx">[TEL]</span></div>
-    </div>
+  <h2 class="d2 reveal" style="margin-bottom:10px">Wat Redact <em class="em">detecteert</em>.</h2>
+  <p class="sub reveal" style="max-width:440px;margin-bottom:36px">Named Entity Recognition in Nederlands en Engels, rechtstreeks in uw browser.</p>
+  <div class="ent-grid reveal">
+    <div class="ent"><span class="ent-ico">&#128100;</span><div class="ent-name">Persoonsnamen</div><p class="ent-desc">Voor- en achternamen, initialen, in NL en EN.</p><div class="ent-ex"><span>Jan Smit</span><span class="ent-rx">[NAAM]</span></div></div>
+    <div class="ent"><span class="ent-ico">&#128196;</span><div class="ent-name">BSN</div><p class="ent-desc">Burgerservicenummers in alle gangbare notaties.</p><div class="ent-ex"><span>123 456 789</span><span class="ent-rx">[BSN]</span></div></div>
+    <div class="ent"><span class="ent-ico">&#127981;</span><div class="ent-name">IBAN</div><p class="ent-desc">Nederlandse en internationale IBAN-nummers.</p><div class="ent-ex"><span>NL91ABNA...</span><span class="ent-rx">[IBAN]</span></div></div>
+    <div class="ent"><span class="ent-ico">&#127968;</span><div class="ent-name">Adressen</div><p class="ent-desc">Straatnamen, huisnummers, postcodes, plaatsen.</p><div class="ent-ex"><span>Keizersgracht 44</span><span class="ent-rx">[ADRES]</span></div></div>
+    <div class="ent"><span class="ent-ico">&#128231;</span><div class="ent-name">E-mailadressen</div><p class="ent-desc">Alle gangbare e-mailformaten, zakelijk en persoonlijk.</p><div class="ent-ex"><span>jan@bedrijf.nl</span><span class="ent-rx">[EMAIL]</span></div></div>
+    <div class="ent"><span class="ent-ico">&#128222;</span><div class="ent-name">Telefoonnummers</div><p class="ent-desc">NL en internationaal, mobiel en vast.</p><div class="ent-ex"><span>+31 6 12345678</span><span class="ent-rx">[TEL]</span></div></div>
   </div>
 </div>
 
-<!-- AVG BLOCK -->
-<div style="background:#0C1410;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)">
-  <div class="container section" id="avg">
+<!-- AVG -->
+<div class="stripe">
+  <div class="wrap sec" id="avg">
     <div class="tag">AVG-compliance</div>
-    <h2 style="font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(28px,4vw,46px);line-height:1;letter-spacing:-1.5px;margin-bottom:44px">Privacy by design.<br><em style="font-style:normal;color:#34C76B">Niet by accident.</em></h2>
+    <h2 class="d2 reveal" style="margin-bottom:10px">Privacy by design.<br><em class="em">Niet by accident.</em></h2>
+    <p class="sub reveal" style="max-width:420px;margin-bottom:36px">Client-side verwerking is de sterkst mogelijke architecturale privacygarantie.</p>
     <div class="avg-block reveal">
       <div>
-        <h3 style="font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:22px;margin-bottom:8px">Waarom in-memory?</h3>
-        <p style="color:#A0BAA8;font-size:14px;line-height:1.75;margin-bottom:20px">Pryvee Redact verwerkt uw document volledig in uw eigen browser via WebAssembly. Er wordt geen enkel byte documentinhoud naar onze servers gestuurd. Dit gaat verder dan "we slaan het daarna op" &mdash; wij <strong>zien uw inhoud nooit</strong>. Dit is de sterkst mogelijke AVG-garantie.</p>
-        <p style="font-family:'Instrument Mono',monospace;font-size:11px;color:#456050">AVG Art. 5 lid 1e &middot; Dataminimalisatie &middot; Opslagbeperking</p>
+        <h3 class="d3" style="margin-bottom:12px">Waarom client-side?</h3>
+        <p style="color:var(--t2);font-size:14px;line-height:1.78;margin-bottom:16px">De AVG vereist dataminimalisatie: bewaar en verwerk niet meer dan noodzakelijk. Door documenten volledig in uw eigen browser te verwerken via WebAssembly, ontvangen onze servers letterlijk geen documentinhoud.</p>
+        <p style="color:var(--t2);font-size:14px;line-height:1.78;margin-bottom:16px">Dit verschilt fundamenteel van &ldquo;we slaan het daarna niet op&rdquo;. Wij <em>zien</em> uw documentinhoud nooit. Dat is architectureel geborgd, niet alleen een belofte.</p>
+        <p style="font-family:var(--fm);font-size:11px;color:var(--t3)">AVG Art. 5 lid 1c (dataminimalisatie) &middot; Art. 5 lid 1e (opslagbeperking)</p>
       </div>
       <div class="avg-points">
-        <div class="avg-point">
-          <div class="avg-icon">&#128274;</div>
-          <div>
-            <div class="avg-title">Document verlaat uw browser nooit</div>
-            <p class="avg-desc">Verwerking vindt volledig in uw browser plaats via WebAssembly. Onze servers ontvangen alleen een licentiecheck &mdash; nooit uw documentinhoud.</p>
-          </div>
-        </div>
-        <div class="avg-point">
-          <div class="avg-icon">&#128203;</div>
-          <div>
-            <div class="avg-title">Geen verwerkingslog</div>
-            <p class="avg-desc">Er worden geen verwerkingslogs bijgehouden die persoonsgegevens bevatten. Alleen anonieme sessiestatistieken.</p>
-          </div>
-        </div>
-        <div class="avg-point">
-          <div class="avg-icon">&#127482;&#127466;</div>
-          <div>
-            <div class="avg-title">Verwerking in de EU</div>
-            <p class="avg-desc">Alle verwerking vindt plaats op servers in de Europese Unie. Geen datatransfer buiten de EU.</p>
-          </div>
-        </div>
-        <div class="avg-point">
-          <div class="avg-icon">&#9889;</div>
-          <div>
-            <div class="avg-title">Ideaal v&oacute;&oacute;r Copilot</div>
-            <p class="avg-desc">Organisaties die Microsoft 365 Copilot uitrollen kunnen Redact gebruiken om documenten te anonimiseren v&oacute;&oacute;rdat AI erbij komt.</p>
-          </div>
-        </div>
+        <div class="avg-pt"><div class="avg-ico">&#128274;</div><div><div class="avg-title">Document verlaat uw browser nooit</div><p class="avg-desc">Verwerking via WebAssembly in uw browser. Onze servers ontvangen alleen een licentiecheck, nooit uw inhoud.</p></div></div>
+        <div class="avg-pt"><div class="avg-ico">&#128203;</div><div><div class="avg-title">Geen verwerkingslog</div><p class="avg-desc">Er worden geen logs bijgehouden die documentinhoud of persoonsgegevens bevatten. Alleen anonieme sessiestatistieken.</p></div></div>
+        <div class="avg-pt"><div class="avg-ico">&#127482;&#127466;</div><div><div class="avg-title">Verwerking in de EU</div><p class="avg-desc">De licentiecheck vindt plaats op EU-servers. Geen datatransfer buiten de EU.</p></div></div>
+        <div class="avg-pt"><div class="avg-ico">&#9889;</div><div><div class="avg-title">Ideaal v&oacute;&oacute;r Copilot</div><p class="avg-desc">Anonimiseer documenten v&oacute;&oacute;rdat Microsoft 365 Copilot er toegang toe krijgt. Minimaliseer uw AI-blootstellingsprofiel.</p></div></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- PRICING -->
-<div class="container section" id="pricing">
+<div class="wrap sec" id="pricing">
   <div class="tag">Prijzen</div>
-  <h2 style="font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(28px,4vw,46px);line-height:1;letter-spacing:-1.5px;margin-bottom:12px">Betaal per document<br>of kies een <em style="font-style:normal;color:#34C76B">abonnement</em>.</h2>
-  <p style="color:#A0BAA8;font-size:16px;max-width:420px;line-height:1.7">Schaal van incidenteel gebruik tot organisatiebrede documentworkflows.</p>
+  <h2 class="d2 reveal" style="margin-bottom:10px">Per document of <em class="em">onbeperkt</em>.</h2>
+  <p class="sub reveal" style="max-width:380px;margin-bottom:36px">Van incidenteel gebruik tot organisatiebrede documentworkflows.</p>
   <div class="price-grid reveal">
-    <div class="price-card">
-      <div class="pc-tag pay">Pay-per-document</div>
-      <div class="pc-name">Per document</div>
-      <p class="pc-desc">Betaal per document. Ideaal voor incidenteel gebruik of evaluatie.</p>
-      <div class="pc-price">&euro;2<span>,50</span></div>
-      <div class="pc-per">per document</div>
-      <div class="pc-div"></div>
-      <ul class="checklist">
+    <div class="plan">
+      <div class="plan-lbl pay">Pay-per-document</div>
+      <div class="plan-name">Per document</div>
+      <p class="plan-desc">Ideaal voor incidenteel gebruik of evaluatie. Geen abonnement.</p>
+      <div class="plan-price">&euro;2<span>,50</span></div>
+      <div class="plan-per">per document</div>
+      <div class="plan-div"></div>
+      <ul class="ck" style="margin-bottom:22px;flex:1">
         <li>PDF &amp; DOCX redactie</li>
         <li>6 entiteitstypen</li>
         <li>Redactie-review interface</li>
         <li>Download geredacteerd bestand</li>
-        <li>Nul serveropslag</li>
+        <li>100% client-side verwerking</li>
       </ul>
-      <a href="#waitlist" class="pc-btn outline">Aanmelden voor early access</a>
+      <a href="#waitlist" class="plan-btn">Aanmelden voor early access</a>
     </div>
-    <div class="price-card highlight">
-      <div class="pc-tag sub">&#9679; Meest gekozen</div>
-      <div class="pc-name">Organisatie</div>
-      <p class="pc-desc">Onbeperkt documenten voor uw hele organisatie. Inclusief API-toegang.</p>
-      <div class="pc-price">&euro;29<span>/mnd</span></div>
-      <div class="pc-per">per organisatie &middot; onbeperkt documenten</div>
-      <div class="pc-div"></div>
-      <ul class="checklist">
+    <div class="plan hi">
+      <div class="plan-lbl sub">&#9679; Meest gekozen</div>
+      <div class="plan-name">Organisatie</div>
+      <p class="plan-desc">Onbeperkt documenten voor uw hele organisatie, inclusief API-toegang en bulk-verwerking.</p>
+      <div class="plan-price">&euro;29<span>/mnd</span></div>
+      <div class="plan-per">per organisatie &middot; onbeperkt documenten</div>
+      <div class="plan-div"></div>
+      <ul class="ck" style="margin-bottom:22px;flex:1">
         <li>Onbeperkt documenten</li>
         <li>Alle entiteitstypen</li>
         <li>Bulk-verwerking</li>
@@ -458,69 +284,35 @@ footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 52px;display:fle
         <li>Aangepaste redactieregels</li>
         <li>Prioriteitsondersteuning</li>
       </ul>
-      <a href="#waitlist" class="pc-btn filled">Aanmelden voor early access</a>
+      <a href="#waitlist" class="plan-btn fill">Aanmelden voor early access</a>
     </div>
   </div>
 </div>
 
 <!-- WAITLIST -->
-<div class="container section" id="waitlist">
-  <div class="waitlist-box reveal">
-    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(52,199,107,0.08);border:1px solid rgba(52,199,107,0.22);border-radius:100px;padding:5px 14px;font-family:'Instrument Mono',monospace;font-size:10px;color:#34C76B;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;position:relative">
-      <span style="width:5px;height:5px;background:#34C76B;border-radius:50%;box-shadow:0 0 6px #34C76B;animation:pulse 2s infinite;display:block"></span>
-      Binnenkort beschikbaar
-    </div>
-    <h2 style="font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(26px,4vw,44px);line-height:1;letter-spacing:-1.5px;margin-bottom:12px;position:relative">Pryvee Redact.<br><em style="font-style:normal;color:#34C76B">Schrijf u als eerste in.</em></h2>
-    <p style="color:#A0BAA8;font-size:16px;max-width:420px;margin:0 auto;line-height:1.7;position:relative">Meld u aan voor early access en ontvang bericht zodra Pryvee Redact beschikbaar is. De eerste 50 organisaties krijgen de eerste maand gratis.</p>
-    <form class="wl-form" onsubmit="handleWL(event)">
+<div class="wrap sec-sm" id="waitlist">
+  <div class="wl-banner reveal">
+    <div class="bdg bdg-a" style="margin-bottom:20px;position:relative">Binnenkort beschikbaar</div>
+    <h2 class="d2" style="position:relative;margin-bottom:12px">Pryvee Redact.<br><em class="em">Schrijf u als eerste in.</em></h2>
+    <p class="sub" style="max-width:400px;margin:0 auto;position:relative">De eerste 50 organisaties krijgen de eerste maand gratis. Geen creditcard vereist.</p>
+    <form class="wl-form">
       <input type="email" class="wl-input" placeholder="uw@organisatie.nl" required aria-label="E-mailadres">
-      <button type="submit" class="btn btn-teal">Aanmelden &rarr;</button>
+      <button type="submit" class="btn btn-y">Aanmelden &rarr;</button>
     </form>
-    <p class="wl-msg" id="wl-msg" aria-live="polite"></p>
-    <p class="wl-note">Uw gegevens worden uitsluitend gebruikt voor communicatie over Pryvee Redact. Geen derden, geen spam.</p>
+    <p class="wl-msg" aria-live="polite"></p>
+    <p class="wl-note">Uw gegevens worden uitsluitend gebruikt voor communicatie over Pryvee Redact.</p>
   </div>
 </div>
-
 </main>
 
-<footer>
-  <a href="index.html" class="logo" style="font-size:16px">Pry<em>vee</em></a>
-  <ul class="footer-nav">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="snapshot.html">Snapshot</a></li>
-    <li><a href="redact.html">Redact</a></li>
-    <li><a href="pricing.html">Prijzen</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
-  <p class="footer-copy">&copy; 2025 Pryvee &middot; Alle rechten voorbehouden</p>
-</footer>
-
-<script>
-const ham = document.getElementById('hamburger');
-const drawer = document.getElementById('drawer');
-ham?.addEventListener('click', () => {
-  const open = drawer.classList.toggle('open');
-  ham.setAttribute('aria-expanded', open);
-  ham.innerHTML = open ? '&#10005;' : '&#9776;';
-});
-drawer?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  drawer.classList.remove('open');
-  ham.innerHTML = '&#9776;';
-}));
-
-const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.08});
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-function handleWL(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('button');
-  const msg = document.getElementById('wl-msg');
-  btn.textContent = 'Aangemeld ✓';
-  btn.disabled = true;
-  btn.style.background = '#34D399';
-  msg.textContent = 'Bedankt! U ontvangt bericht zodra Pryvee Redact beschikbaar is.';
-  msg.style.opacity = '1';
-}
-</script>
-</body>
-</html>
+<footer class="site-footer"><div class="wrap">
+  <div class="footer-grid">
+    <div class="footer-brand"><a href="index.html" class="logo">Pry<em>vee</em></a><p>Microsoft 365 governance voor IT-teams en MSP&apos;s.</p></div>
+    <div class="footer-col"><h4>Product</h4><ul><li><a href="snapshot.html">Snapshot</a></li><li><a href="redact.html">Redact</a></li><li><a href="pricing.html">Prijzen</a></li></ul></div>
+    <div class="footer-col"><h4>Bedrijf</h4><ul><li><a href="about.html">Over Pryvee</a></li><li><a href="contact.html">Contact</a></li><li><a href="#">Privacy</a></li></ul></div>
+    <div class="footer-col"><h4>Standaarden</h4><ul><li><a href="#">AVG / GDPR</a></li><li><a href="#">NIS2</a></li><li><a href="#">CIS M365</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2025 Pryvee &middot; Alle rechten voorbehouden</p><div class="ms-mark"><span>Gebouwd op</span><span>Microsoft Graph API</span></div></div>
+</div></footer>
+<script src="shared.js"></script>
+</body></html>

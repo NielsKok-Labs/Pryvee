@@ -3,219 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Pryvee — Microsoft 365 governance en compliance-automatisering voor IT-teams en MSP's. Snapshot audit, Redact en meer.">
+<meta name="description" content="Pryvee — Microsoft 365 governance en compliance-automatisering. Snapshot audit en Redact documentverwerking voor IT-teams en MSP's.">
 <title>Pryvee — Microsoft 365 Governance Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=Instrument+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Sans:wght@0,300;0,400;0,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
-/* INDEX-SPECIFIC */
-.hero{position:relative;padding:148px 0 80px;overflow:hidden}
-.hero-glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse at 50% 0%,rgba(52,199,107,0.07) 0%,transparent 65%);pointer-events:none}
-.hero-inner{max-width:720px;margin:0 auto;text-align:center;position:relative}
-.hero .bdg{margin-bottom:28px;animation:fadeUp .5s .05s both}
-.hero .d1{margin-bottom:22px;animation:fadeUp .6s .1s both}
-.hero .sub{max-width:500px;margin:0 auto 36px;animation:fadeUp .6s .2s both}
-.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .6s .3s both}
-.hero-proof{margin-top:18px;font-family:var(--fm);font-size:11px;color:var(--t3);animation:fadeUp .6s .4s both}
-.hero-proof strong{color:var(--g)}
+/* ── HERO ──────────────────────────── */
+.hero {
+  background: var(--purple);
+  position: relative; overflow: hidden;
+  padding: 152px 0 96px;
+  border-bottom: 1px solid var(--b-y);
+}
+/* Big radial glow from top */
+.hero::before {
+  content: '';
+  position: absolute; top: -40%; left: 50%;
+  transform: translateX(-50%);
+  width: 1000px; height: 700px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,235,85,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+/* Diagonal yellow stripe */
+.hero::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, transparent 0%, var(--yellow) 30%, var(--yellow) 70%, transparent 100%);
+  opacity: .5;
+}
+.hero-inner { max-width: 760px; position: relative; }
+.hero .bdg { margin-bottom: 28px; animation: fadeUp .5s .05s both; }
+.hero .d1  { margin-bottom: 22px; animation: fadeUp .6s .1s both; }
+.hero .sub { max-width: 520px; margin-bottom: 36px; animation: fadeUp .6s .2s both; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; animation: fadeUp .6s .3s both; }
+.hero-proof { margin-top: 20px; font-family: var(--fm); font-size: 11px; color: var(--t3); animation: fadeUp .6s .4s both; }
+.hero-proof strong { color: var(--yellow); }
 
-/* PRODUCT CARDS */
-.products{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:52px}
-.prod-card{background:var(--card);border:1px solid var(--b);border-radius:16px;padding:32px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;text-decoration:none;display:block}
-.prod-card:hover{border-color:var(--b-g2);transform:translateY(-4px)}
-.prod-card.main{border-color:var(--b-g2);background:linear-gradient(135deg,rgba(52,199,107,0.06) 0%,var(--card) 55%)}
-.prod-glow{position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(52,199,107,0.06) 0%,transparent 70%);pointer-events:none}
-.prod-icon{font-size:36px;margin-bottom:16px;display:block}
-.prod-name{font-family:var(--fd);font-weight:900;font-size:26px;letter-spacing:-.8px;margin-bottom:8px;color:var(--t)}
-.prod-desc{font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:20px}
-.prod-link{font-family:var(--fm);font-size:11px;color:var(--g);letter-spacing:.04em;display:flex;align-items:center;gap:6px}
-.prod-price{margin-top:auto;padding-top:18px;border-top:1px solid var(--b);font-family:var(--fd);font-weight:900;font-size:22px;letter-spacing:-.5px;color:var(--t)}
-.prod-price span{font-size:13px;font-weight:400;color:var(--t2);font-family:var(--fb)}
+/* Right-side decorative element */
+.hero-deco {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  width: 380px; opacity: .12; pointer-events: none;
+}
+.hero-deco-ring {
+  width: 380px; height: 380px; border-radius: 50%;
+  border: 60px solid var(--yellow);
+  position: absolute; right: -120px; top: 50%; transform: translateY(-50%);
+}
 
-/* COMING SOON STRIP */
-.cs-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
-.cs-card{background:var(--card);border:1px solid var(--b);border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px;text-decoration:none;transition:border-color .2s,transform .2s}
-.cs-card:hover{border-color:var(--b-g);transform:translateY(-2px)}
-.cs-icon{font-size:24px;flex-shrink:0}
-.cs-name{font-family:var(--fd);font-weight:700;font-size:15px;color:var(--t)}
-.cs-status{font-family:var(--fm);font-size:10px;color:var(--t3);margin-top:3px}
+/* ── PRODUCT CARDS ─────────────────── */
+.products { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 52px; }
+.prod {
+  background: var(--purple-lt); border: 1px solid var(--b);
+  border-radius: 16px; padding: 32px; display: flex; flex-direction: column;
+  text-decoration: none; color: var(--t);
+  transition: border-color .3s, transform .3s;
+  position: relative; overflow: hidden;
+}
+.prod:hover { border-color: var(--b-y2); transform: translateY(-4px); }
+.prod.main { border-color: var(--b-y2); background: linear-gradient(135deg, rgba(255,235,85,.06) 0%, var(--purple-lt) 55%); }
+.prod::after { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: radial-gradient(circle at top right, rgba(255,235,85,.06) 0%, transparent 70%); pointer-events: none; }
+.prod-icon { font-size: 38px; margin-bottom: 18px; display: block; }
+.prod-name { font-family: var(--fd); font-weight: 800; font-size: 26px; letter-spacing: -.6px; margin-bottom: 10px; }
+.prod-desc { font-size: 14px; color: var(--t2); line-height: 1.7; margin-bottom: 22px; }
+.prod-price { font-family: var(--fd); font-weight: 800; font-size: 20px; letter-spacing: -.3px; margin-top: auto; padding-top: 18px; border-top: 1px solid var(--b); }
+.prod-price span { font-size: 13px; font-weight: 400; color: var(--t2); font-family: var(--fb); }
+.prod-arrow { position: absolute; bottom: 28px; right: 28px; width: 32px; height: 32px; border: 1px solid var(--b-y); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--yellow); transition: all .2s; }
+.prod:hover .prod-arrow { background: var(--yellow); color: var(--purple-xdk); }
 
-/* HOW */
-.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;border-radius:12px;overflow:hidden;background:var(--b)}
-.how-step{background:var(--card);padding:26px 22px}
-.how-n{font-family:var(--fm);font-size:10px;color:var(--t3);margin-bottom:18px}
-.how-icon{font-size:26px;margin-bottom:14px;display:block}
-.how-title{font-family:var(--fd);font-weight:700;font-size:15px;margin-bottom:8px;letter-spacing:-.2px}
-.how-desc{font-size:13px;color:var(--t2);line-height:1.65}
+/* ── COMING SOON STRIP ─────────────── */
+.cs-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 12px; }
+.cs { background: var(--purple-lt); border: 1px solid var(--b); border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 14px; text-decoration: none; transition: border-color .2s, transform .2s; }
+.cs:hover { border-color: var(--b-y); transform: translateY(-2px); }
+.cs-ico { font-size: 22px; flex-shrink: 0; }
+.cs-name { font-family: var(--fd); font-weight: 700; font-size: 15px; color: var(--t); }
+.cs-status { font-family: var(--fm); font-size: 10px; color: var(--t3); margin-top: 2px; }
 
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.stat{background:var(--card);border:1px solid var(--b);border-radius:12px;padding:24px;text-align:center}
-.stat-num{font-family:var(--fd);font-weight:900;font-size:44px;letter-spacing:-2px;color:var(--g);line-height:1;margin-bottom:8px}
-.stat-lbl{font-size:13px;color:var(--t2);line-height:1.5}
+/* ── HOW ───────────────────────────── */
+.how-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; border-radius: 14px; overflow: hidden; background: var(--b); margin-top: 44px; }
+.how-step { background: var(--purple-lt); padding: 28px 22px; }
+.how-n { font-family: var(--fm); font-size: 10px; color: var(--t3); margin-bottom: 18px; letter-spacing: .06em; }
+.how-ico { font-size: 28px; margin-bottom: 16px; display: block; }
+.how-title { font-family: var(--fd); font-weight: 700; font-size: 15px; margin-bottom: 8px; letter-spacing: -.2px; }
+.how-desc { font-size: 13px; color: var(--t2); line-height: 1.65; }
 
-/* WAITLIST BANNER */
-.wl-banner{background:linear-gradient(135deg,rgba(52,199,107,0.07) 0%,rgba(52,199,107,0.03) 100%);border:1px solid var(--b-g2);border-radius:18px;padding:60px;text-align:center;position:relative;overflow:hidden}
-.wl-banner::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:500px;height:400px;background:radial-gradient(ellipse,rgba(52,199,107,0.07) 0%,transparent 65%);pointer-events:none}
-.wl-banner .wl-form{justify-content:center;position:relative;margin-top:28px}
+/* ── STATS ─────────────────────────── */
+.stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.stat { background: var(--purple-lt); border: 1px solid var(--b); border-radius: 14px; padding: 28px; text-align: center; }
+.stat-num { font-family: var(--fd); font-weight: 800; font-size: 48px; letter-spacing: -2px; color: var(--yellow); line-height: 1; margin-bottom: 10px; }
+.stat-lbl { font-size: 13px; color: var(--t2); line-height: 1.5; }
+
+/* ── WAITLIST BANNER ───────────────── */
+.wl-banner {
+  background: var(--purple);
+  border: 1px solid var(--b-y2);
+  border-radius: 18px; padding: 60px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.wl-banner::before {
+  content: '';
+  position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(255,235,85,.10) 0%, transparent 65%);
+  pointer-events: none;
+}
+.wl-banner .wl-form { justify-content: center; position: relative; margin-top: 28px; }
 
 @media(max-width:900px){
-  .hero{padding:120px 0 60px}
+  .hero{padding:118px 0 72px}
+  .hero-deco-ring{display:none}
   .products{grid-template-columns:1fr}
   .cs-strip{grid-template-columns:1fr}
-  .how-steps{grid-template-columns:1fr 1fr}
+  .how-grid{grid-template-columns:1fr 1fr}
   .stats{grid-template-columns:1fr}
   .wl-banner{padding:36px 20px}
   .wl-banner .wl-form{flex-direction:column}
-  .hero-actions{flex-direction:column;align-items:center}
-  .hero-actions .btn{width:100%;max-width:320px;justify-content:center}
+  .hero-actions{flex-direction:column;align-items:flex-start}
 }
 @media(max-width:480px){
-  .how-steps{grid-template-columns:1fr}
+  .how-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-<a href="#main" class="skip" id="skip-lnk">Naar hoofdinhoud</a>
 
+<a href="#main" class="skip">Naar hoofdinhoud</a>
 <nav class="topnav" aria-label="Hoofdnavigatie">
   <a href="index.html" class="logo">Pry<em>vee</em></a>
   <div class="nav-right">
     <ul class="nav-links">
-      <li><a href="#how" id="nav-how">Hoe het werkt</a></li>
-      <li><a href="#modules" id="nav-mod">Modules</a></li>
-      <li><a href="pricing.html" id="nav-price">Prijzen</a></li>
-      <li><a href="#waitlist" class="nav-cta" id="nav-cta">Early access</a></li>
+      <li><a href="#how">Hoe het werkt</a></li>
+      <li><a href="#modules">Producten</a></li>
+      <li><a href="pricing.html">Prijzen</a></li>
+      <li><a href="#waitlist" class="nav-cta">Early access</a></li>
     </ul>
-    <div class="lang-sw" role="group" aria-label="Taal kiezen">
+    <div class="lang-sw" role="group" aria-label="Taal">
       <button class="lang-btn on" id="btnNL" onclick="setLang('nl')" aria-pressed="true">NL</button>
       <div class="lang-sep" aria-hidden="true"></div>
       <button class="lang-btn" id="btnEN" onclick="setLang('en')" aria-pressed="false">EN</button>
     </div>
-    <button class="ham" id="ham" aria-label="Menu openen" aria-expanded="false">&#9776;</button>
+    <button class="ham" id="ham" aria-label="Menu" aria-expanded="false">&#9776;</button>
   </div>
 </nav>
-
 <nav class="drawer" id="drawer" aria-label="Mobiel menu">
-  <a href="#how" id="dr-how">Hoe het werkt</a>
-  <a href="#modules" id="dr-mod">Modules</a>
-  <a href="pricing.html" id="dr-price">Prijzen</a>
-  <a href="about.html" id="fc-about">Over Pryvee</a>
+  <a href="#how">Hoe het werkt</a>
+  <a href="#modules">Producten</a>
+  <a href="snapshot.html">Snapshot</a>
+  <a href="redact.html">Redact</a>
+  <a href="pricing.html">Prijzen</a>
+  <a href="about.html">Over Pryvee</a>
   <a href="contact.html">Contact</a>
-  <a href="#waitlist" class="nav-cta" id="dr-cta">Early access</a>
+  <a href="#waitlist" class="nav-cta">Early access</a>
 </nav>
 
 <main id="main">
 
 <!-- HERO -->
 <section class="hero" aria-labelledby="hero-h">
-  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-deco-ring" aria-hidden="true"></div>
   <div class="wrap">
     <div class="hero-inner">
-      <div class="bdg bdg-g" id="hero-bdg">Early access open</div>
-      <h1 class="d1" id="hero-h">Microsoft 365 governance.<br><em class="em">Geautomatiseerd.</em></h1>
-      <p class="sub" id="hero-sub">Pryvee automatiseert compliance-audits, documentredactie en governance-monitoring voor Microsoft 365 &mdash; op basis van de CIS Benchmark v6.0.1.</p>
+      <div class="bdg bdg-y">Early access open</div>
+      <h1 class="d1" id="hero-h">
+        Microsoft 365<br>governance.<br>
+        <em class="em">Geautomatiseerd.</em>
+      </h1>
+      <p class="sub">Pryvee automatiseert compliance-audits en documentredactie voor Microsoft 365 &mdash; op basis van de CIS Benchmark v6.0.1. Voor IT-teams en MSP&apos;s.</p>
       <div class="hero-actions">
-        <a href="#waitlist" class="btn btn-g" id="hero-cta">Aanmelden voor early access &rarr;</a>
-        <a href="#how" class="btn btn-gh" id="hero-more">Meer informatie &darr;</a>
+        <a href="#waitlist" class="btn btn-y">Aanmelden voor early access &rarr;</a>
+        <a href="#how" class="btn btn-gh">Meer informatie &darr;</a>
       </div>
-      <p class="hero-proof" id="hero-proof"><strong>200+</strong> IT-professionals en MSP&apos;s hebben zich aangemeld</p>
+      <p class="hero-proof"><strong>200+</strong> IT-professionals en MSP&apos;s hebben zich aangemeld</p>
     </div>
   </div>
 </section>
 
 <!-- PRODUCTS -->
 <div class="wrap sec" id="modules">
-  <div class="tag" id="mod-tag">Producten</div>
-  <h2 class="d2 reveal" id="mod-h">Twee producten. &Eacute;&eacute;n platform.</h2>
-  <p class="sub reveal" style="max-width:440px;margin:12px 0 40px" id="mod-sub">Begin met Snapshot voor uw eerste compliance-audit. Voeg Redact toe voor AVG-conforme documentverwerking.</p>
+  <div class="tag">Producten</div>
+  <h2 class="d2 reveal" style="margin-bottom:10px">Twee producten. &Eacute;&eacute;n platform.</h2>
+  <p class="sub reveal" style="max-width:460px;margin-bottom:40px">Begin met Snapshot voor uw eerste CIS-compliance audit. Voeg Redact toe voor AVG-conforme documentverwerking in uw browser.</p>
 
   <div class="products reveal">
-    <a href="snapshot.html" class="prod-card main">
-      <div class="prod-glow" aria-hidden="true"></div>
+    <a href="snapshot.html" class="prod main">
       <span class="prod-icon">&#128202;</span>
-      <div class="bdg bdg-g" style="margin-bottom:16px" id="snap-bdg">Nu beschikbaar</div>
+      <div class="bdg bdg-y" style="margin-bottom:14px">Nu beschikbaar</div>
       <div class="prod-name">Pryvee Snapshot</div>
-      <p class="prod-desc" id="snap-desc">Geautomatiseerde CIS L1 compliance-audit voor Microsoft 365. 79 checks via Graph API, risicoscore en managementklaar PDF-rapport &mdash; in minuten.</p>
-      <ul class="ck" id="snap-ck">
+      <p class="prod-desc">Geautomatiseerde CIS L1 compliance-audit. 79 checks via Microsoft Graph, managementklaar PDF-rapport en remediation controls (Pro).</p>
+      <ul class="ck" style="margin-bottom:20px">
         <li>79 CIS M365 L1-checks (v6.0.1)</li>
         <li>Managementklaar PDF-rapport</li>
         <li>Live dashboard + herscans (Pro)</li>
         <li>Remediation controls (Pro)</li>
       </ul>
-      <div class="prod-price">
-        &euro;149 <span id="snap-price-sub">eenmalig &mdash; of &euro;199/mnd Pro</span>
-      </div>
-      <div class="prod-link" style="margin-top:16px" id="snap-link">Bekijk Snapshot &rarr;</div>
+      <div class="prod-price">&euro;149 <span>eenmalig &mdash; of &euro;199/mnd Pro</span></div>
+      <div class="prod-arrow">&#8599;</div>
     </a>
-
-    <a href="redact.html" class="prod-card">
-      <div class="prod-glow" aria-hidden="true"></div>
+    <a href="redact.html" class="prod">
       <span class="prod-icon">&#9999;&#65039;</span>
-      <div class="bdg bdg-a" style="margin-bottom:16px" id="redact-bdg">Binnenkort</div>
+      <div class="bdg bdg-a" style="margin-bottom:14px">Binnenkort</div>
       <div class="prod-name">Pryvee Redact</div>
-      <p class="prod-desc" id="redact-desc">Automatische redactie van persoonsgegevens uit PDF en DOCX &mdash; volledig in uw browser verwerkt. Uw document verlaat nooit uw apparaat.</p>
-      <ul class="ck" id="redact-ck">
+      <p class="prod-desc">Automatische redactie van persoonsgegevens uit PDF en DOCX. 100% verwerkt in uw browser &mdash; uw document verlaat nooit uw apparaat.</p>
+      <ul class="ck" style="margin-bottom:20px">
         <li>Namen, BSN, IBAN, adressen, e-mail</li>
-        <li>100% client-side verwerking</li>
-        <li>Nul serveropslag &mdash; AVG-compliant</li>
-        <li>Nederlands &amp; Engels</li>
+        <li>100% client-side &mdash; WebAssembly</li>
+        <li>Uw document verlaat uw browser nooit</li>
+        <li>AVG-compliant by design</li>
       </ul>
-      <div class="prod-price">
-        &euro;2,50 <span id="redact-price-sub">per document &mdash; of &euro;29/mnd</span>
-      </div>
-      <div class="prod-link" style="margin-top:16px" id="redact-link">Bekijk Redact &rarr;</div>
+      <div class="prod-price">&euro;2,50 <span>per document &mdash; of &euro;29/mnd</span></div>
+      <div class="prod-arrow">&#8599;</div>
     </a>
   </div>
 
-  <!-- Coming soon strip -->
-  <div class="cs-strip reveal" style="margin-top:10px">
-    <a href="guard.html" class="cs-card">
-      <span class="cs-icon">&#128101;</span>
-      <div><div class="cs-name">Guard</div><div class="cs-status" id="cs-soon1">Binnenkort &mdash; gastmonitoring</div></div>
-    </a>
-    <a href="clean.html" class="cs-card">
-      <span class="cs-icon">&#129529;</span>
-      <div><div class="cs-name">Clean</div><div class="cs-status" id="cs-soon2">Binnenkort &mdash; tenant lifecycle</div></div>
-    </a>
-    <a href="ai.html" class="cs-card">
-      <span class="cs-icon">&#129302;</span>
-      <div><div class="cs-name">AI</div><div class="cs-status" id="cs-soon3">2026 &mdash; Copilot-scanner</div></div>
-    </a>
+  <div class="cs-strip reveal">
+    <a href="guard.html" class="cs"><span class="cs-ico">&#128101;</span><div><div class="cs-name">Guard</div><div class="cs-status">Binnenkort &mdash; gastmonitoring</div></div></a>
+    <a href="clean.html" class="cs"><span class="cs-ico">&#129529;</span><div><div class="cs-name">Clean</div><div class="cs-status">Binnenkort &mdash; tenant lifecycle</div></div></a>
+    <a href="ai.html"   class="cs"><span class="cs-ico">&#129302;</span><div><div class="cs-name">AI</div><div class="cs-status">2026 &mdash; Copilot-scanner</div></div></a>
   </div>
 </div>
 
 <!-- HOW -->
 <div class="stripe">
   <div class="wrap sec" id="how">
-    <div class="tag" id="how-tag">Werkwijze</div>
-    <h2 class="d2 reveal" id="how-h">Van Microsoft-login naar auditrapport in minuten.</h2>
-    <p class="sub reveal" style="max-width:420px;margin:12px 0 40px" id="how-sub">Geen installatie. Geen agent. Alleen leestoegang via de Graph API.</p>
-    <div class="how-steps reveal">
+    <div class="tag">Werkwijze</div>
+    <h2 class="d2 reveal" style="margin-bottom:10px">Van Microsoft-login naar<br>auditrapport in minuten.</h2>
+    <p class="sub reveal" style="max-width:420px;margin-bottom:40px">Geen installatie. Geen agent. Alleen leestoegang via de Microsoft Graph API.</p>
+    <div class="how-grid reveal">
       <div class="how-step">
         <div class="how-n">01</div>
-        <span class="how-icon">&#128274;</span>
-        <div class="how-title" id="how-s1t">Verbind uw tenant</div>
-        <p class="how-desc" id="how-s1d">Authenticeer met uw Microsoft-beheerdersaccount. Eenmalige admin consent via Entra ID. Uitsluitend leestoegang &mdash; Pryvee schrijft nooit naar uw tenant.</p>
+        <span class="how-ico">&#128274;</span>
+        <div class="how-title">Verbind uw tenant</div>
+        <p class="how-desc">Authenticeer met uw Microsoft-beheerdersaccount. Eenmalige admin consent via Entra ID. Uitsluitend leestoegang.</p>
       </div>
       <div class="how-step">
         <div class="how-n">02</div>
-        <span class="how-icon">&#9889;</span>
-        <div class="how-title" id="how-s2t">Automatische scan</div>
-        <p class="how-desc" id="how-s2d">Pryvee voert 79 CIS L1-checks uit via Microsoft Graph: MFA, Conditional Access, Secure Score, gastaccounts, auditlogs en meer.</p>
+        <span class="how-ico">&#9889;</span>
+        <div class="how-title">Automatische scan</div>
+        <p class="how-desc">79 CIS L1-checks via Microsoft Graph: MFA, Conditional Access, Secure Score, gastaccounts, auditlogs en meer.</p>
       </div>
       <div class="how-step">
         <div class="how-n">03</div>
-        <span class="how-icon">&#128202;</span>
-        <div class="how-title" id="how-s3t">Risicoscore</div>
-        <p class="how-desc" id="how-s3d">Elke bevinding wordt gewogen op basis van de CIS Benchmark v6.0.1 en gecategoriseerd naar ernst. U ziet direct wat kritiek is en wat kan wachten.</p>
+        <span class="how-ico">&#128202;</span>
+        <div class="how-title">Risicoscore</div>
+        <p class="how-desc">Elke bevinding gewogen op basis van CIS Benchmark v6.0.1 en gecategoriseerd naar ernst.</p>
       </div>
       <div class="how-step">
         <div class="how-n">04</div>
-        <span class="how-icon">&#128196;</span>
-        <div class="how-title" id="how-s4t">Rapport &amp; actie</div>
-        <p class="how-desc" id="how-s4d">Download het managementklare PDF-rapport. Pro-gebruikers kunnen bevindingen direct herstellen via remediation controls in het dashboard.</p>
+        <span class="how-ico">&#128196;</span>
+        <div class="how-title">Rapport &amp; actie</div>
+        <p class="how-desc">Management-ready PDF. Pro: bevindingen direct herstellen via remediation controls in het dashboard.</p>
       </div>
     </div>
   </div>
@@ -224,33 +260,24 @@
 <!-- STATS -->
 <div class="wrap sec">
   <div class="stats reveal">
-    <div class="stat">
-      <div class="stat-num">79</div>
-      <p class="stat-lbl" id="stat1">CIS L1-checks geautomatiseerd in Pryvee Snapshot</p>
-    </div>
-    <div class="stat">
-      <div class="stat-num">200+</div>
-      <p class="stat-lbl" id="stat2">IT-professionals en MSP&apos;s op de early access-lijst</p>
-    </div>
-    <div class="stat">
-      <div class="stat-num">0</div>
-      <p class="stat-lbl" id="stat3">bytes documentdata opgeslagen door Pryvee Redact</p>
-    </div>
+    <div class="stat"><div class="stat-num">79</div><p class="stat-lbl">CIS L1-checks geautomatiseerd in Snapshot</p></div>
+    <div class="stat"><div class="stat-num">200+</div><p class="stat-lbl">IT-professionals en MSP&apos;s op de early access-lijst</p></div>
+    <div class="stat"><div class="stat-num">0</div><p class="stat-lbl">bytes documentdata opgeslagen door Pryvee Redact</p></div>
   </div>
 </div>
 
 <!-- WAITLIST -->
 <div class="wrap sec-sm" id="waitlist">
   <div class="wl-banner reveal">
-    <div class="bdg bdg-g" style="margin-bottom:20px;position:relative" id="wl-bdg">Early access open</div>
-    <h2 class="d2" style="position:relative;margin-bottom:12px" id="wl-h">Pryvee Snapshot &mdash; nu in early access.<br><em class="em">De eerste 50 gratis.</em></h2>
-    <p class="sub" style="max-width:420px;margin:0 auto;position:relative" id="wl-sub">De eerste 50 organisaties krijgen volledige toegang tot Pryvee Snapshot zonder kosten. Geen creditcard vereist.</p>
-    <form class="wl-form" onsubmit="wlSubmit(event)">
-      <input type="email" class="wl-input" placeholder="uw@organisatie.nl" required aria-label="E-mailadres" id="wl-inp">
-      <button type="submit" class="btn btn-g" id="wl-btn">Aanmelden &rarr;</button>
+    <div class="bdg bdg-y" style="margin-bottom:20px;position:relative">Early access open</div>
+    <h2 class="d2" style="position:relative;margin-bottom:12px">De eerste 50 organisaties.<br><em class="em">Snapshot gratis.</em></h2>
+    <p class="sub" style="max-width:420px;margin:0 auto;position:relative">Geen creditcard. Geen verplichtingen. Alleen toegang tot Pryvee Snapshot zodra het live gaat.</p>
+    <form class="wl-form" id="wl-form">
+      <input type="email" class="wl-input" id="wl-inp" placeholder="uw@organisatie.nl" required aria-label="E-mailadres">
+      <button type="submit" class="btn btn-y" id="wl-btn">Aanmelden &rarr;</button>
     </form>
     <p class="wl-msg" id="wl-msg" aria-live="polite"></p>
-    <p class="wl-note" id="wl-note">Uw gegevens worden uitsluitend gebruikt voor communicatie over Pryvee.</p>
+    <p class="wl-note">Uw gegevens worden uitsluitend gebruikt voor communicatie over Pryvee.</p>
   </div>
 </div>
 
@@ -261,34 +288,25 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="logo">Pry<em>vee</em></a>
-        <p id="fc-tagline">Microsoft 365 governance voor IT-teams en MSP's.</p>
+        <p id="fc-tagline">Microsoft 365 governance voor IT-teams en MSP&apos;s.</p>
       </div>
-      <div class="footer-col">
-        <h4 id="fc-product">Product</h4>
-        <ul>
-          <li><a href="snapshot.html" id="fc-snap">Snapshot</a></li>
-          <li><a href="redact.html" id="fc-redact">Redact</a></li>
-          <li><a href="guard.html" id="fc-guard">Guard</a></li>
-          <li><a href="clean.html" id="fc-clean">Clean</a></li>
-          <li><a href="ai.html" id="fc-ai">AI</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4 id="fc-pricing">Prijzen</h4>
-        <ul>
-          <li><a href="pricing.html">Snapshot</a></li>
-          <li><a href="pricing.html">Snapshot Pro</a></li>
-          <li><a href="pricing.html">MSP Partner</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Bedrijf</h4>
-        <ul>
-          <li><a href="about.html" id="fc-about">Over Pryvee</a></li>
-          <li><a href="contact.html" id="fc-contact">Contact</a></li>
-          <li><a href="#" id="fc-privacy">Privacy</a></li>
-        </ul>
-      </div>
+      <div class="footer-col"><h4 id="fc-product">Product</h4><ul>
+        <li><a href="snapshot.html">Snapshot</a></li>
+        <li><a href="redact.html">Redact</a></li>
+        <li><a href="guard.html">Guard</a></li>
+        <li><a href="clean.html">Clean</a></li>
+        <li><a href="ai.html">AI</a></li>
+      </ul></div>
+      <div class="footer-col"><h4 id="fc-pricing">Prijzen</h4><ul>
+        <li><a href="pricing.html">Snapshot</a></li>
+        <li><a href="pricing.html">Snapshot Pro</a></li>
+        <li><a href="pricing.html">MSP Partner</a></li>
+      </ul></div>
+      <div class="footer-col"><h4 id="fc-company">Bedrijf</h4><ul>
+        <li><a href="about.html">Over Pryvee</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul></div>
     </div>
     <div class="footer-bottom">
       <p id="fc-copy">&copy; 2025 Pryvee &middot; Alle rechten voorbehouden</p>
@@ -298,93 +316,5 @@
 </footer>
 
 <script src="shared.js"></script>
-<script>
-function wlSubmit(e) {
-  e.preventDefault();
-  const btn = document.getElementById('wl-btn');
-  const msg = document.getElementById('wl-msg');
-  btn.textContent = lang === 'nl' ? 'Aangemeld ✓' : 'Joined ✓';
-  btn.disabled = true; btn.style.background = '#34D399';
-  msg.textContent = lang === 'nl'
-    ? 'Bedankt! U ontvangt bericht zodra Snapshot beschikbaar is.'
-    : 'Thanks! You\'ll hear from us when Snapshot launches.';
-  msg.style.opacity = '1';
-}
-
-function pageTrans(l) {
-  const nl = {
-    'skip-lnk':'Naar hoofdinhoud',
-    'hero-bdg':'Early access open',
-    'hero-h':'Microsoft 365 governance.<br><em class="em">Geautomatiseerd.</em>',
-    'hero-sub':'Pryvee automatiseert compliance-audits, documentredactie en governance-monitoring voor Microsoft 365 — op basis van de CIS Benchmark v6.0.1.',
-    'hero-cta':'Aanmelden voor early access →','hero-more':'Meer informatie ↓',
-    'hero-proof':'<strong>200+</strong> IT-professionals en MSP’s hebben zich aangemeld',
-    'mod-tag':'Producten','mod-h':'Twee producten. Één platform.',
-    'mod-sub':'Begin met Snapshot voor uw eerste compliance-audit. Voeg Redact toe voor AVG-conforme documentverwerking.',
-    'snap-bdg':'Nu beschikbaar',
-    'snap-desc':'Geautomatiseerde CIS L1 compliance-audit voor Microsoft 365. 79 checks via Graph API, risicoscore en managementklaar PDF-rapport — in minuten.',
-    'snap-price-sub':'eenmalig — of €199/mnd Pro','snap-link':'Bekijk Snapshot →',
-    'redact-bdg':'Binnenkort',
-    'redact-desc':'Automatische redactie van persoonsgegevens uit PDF en DOCX — volledig in uw browser verwerkt. Uw document verlaat nooit uw apparaat.',
-    'redact-price-sub':'per document — of €29/mnd','redact-link':'Bekijk Redact →',
-    'cs-soon1':'Binnenkort — gastmonitoring','cs-soon2':'Binnenkort — tenant lifecycle','cs-soon3':'2026 — Copilot-scanner',
-    'how-tag':'Werkwijze','how-h':'Van Microsoft-login naar auditrapport in minuten.',
-    'how-sub':'Geen installatie. Geen agent. Alleen leestoegang via de Graph API.',
-    'how-s1t':'Verbind uw tenant','how-s1d':'Authenticeer met uw Microsoft-beheerdersaccount. Eenmalige admin consent via Entra ID. Uitsluitend leestoegang.',
-    'how-s2t':'Automatische scan','how-s2d':'Pryvee voert 79 CIS L1-checks uit via Microsoft Graph: MFA, Conditional Access, Secure Score, gastaccounts en meer.',
-    'how-s3t':'Risicoscore','how-s3d':'Elke bevinding wordt gewogen op basis van de CIS Benchmark v6.0.1 en gecategoriseerd naar ernst.',
-    'how-s4t':'Rapport & actie','how-s4d':'Download het managementklare PDF-rapport. Pro-gebruikers herstellen bevindingen via remediation controls.',
-    'stat1':'CIS L1-checks geautomatiseerd in Pryvee Snapshot',
-    'stat2':'IT-professionals en MSP’s op de early access-lijst',
-    'stat3':'bytes documentdata opgeslagen door Pryvee Redact',
-    'wl-bdg':'Early access open',
-    'wl-h':'Pryvee Snapshot — nu in early access.<br><em class="em">De eerste 50 gratis.</em>',
-    'wl-sub':'De eerste 50 organisaties krijgen volledige toegang tot Pryvee Snapshot zonder kosten. Geen creditcard vereist.',
-    'wl-inp-ph':'uw@organisatie.nl','wl-btn':'Aanmelden →',
-    'wl-note':'Uw gegevens worden uitsluitend gebruikt voor communicatie over Pryvee.',
-    'fc-tagline':'Microsoft 365 governance voor IT-teams en MSP’s.',
-  };
-  const en = {
-    'skip-lnk':'Skip to main content',
-    'hero-bdg':'Early access open',
-    'hero-h':'Microsoft 365 governance.<br><em class="em">Automated.</em>',
-    'hero-sub':'Pryvee automates compliance audits, document redaction and governance monitoring for Microsoft 365 — based on the CIS Benchmark v6.0.1.',
-    'hero-cta':'Join the early access list →','hero-more':'Learn more ↓',
-    'hero-proof':'<strong>200+</strong> IT professionals and MSPs have signed up',
-    'mod-tag':'Products','mod-h':'Two products. One platform.',
-    'mod-sub':'Start with Snapshot for your first compliance audit. Add Redact for GDPR-compliant document processing.',
-    'snap-bdg':'Available now',
-    'snap-desc':'Automated CIS L1 compliance audit for Microsoft 365. 79 checks via Graph API, risk score and management-ready PDF report — in minutes.',
-    'snap-price-sub':'one-time — or €199/mo Pro','snap-link':'View Snapshot →',
-    'redact-bdg':'Coming soon',
-    'redact-desc':'Automatic redaction of personal data from PDF and DOCX — processed entirely in your browser. Your document never leaves your device.',
-    'redact-price-sub':'per document — or €29/mo','redact-link':'View Redact →',
-    'cs-soon1':'Coming soon — guest monitoring','cs-soon2':'Coming soon — tenant lifecycle','cs-soon3':'2026 — Copilot scanner',
-    'how-tag':'How it works','how-h':'From Microsoft login to audit report in minutes.',
-    'how-sub':'No installation. No agent. Read-only access via the Graph API.',
-    'how-s1t':'Connect your tenant','how-s1d':'Authenticate with your Microsoft admin account. One-time admin consent via Entra ID. Read-only access only.',
-    'how-s2t':'Automatic scan','how-s2d':'Pryvee runs 79 CIS L1 checks via Microsoft Graph: MFA, Conditional Access, Secure Score, guest accounts and more.',
-    'how-s3t':'Risk score','how-s3d':'Every finding is weighted based on the CIS Benchmark v6.0.1 and categorised by severity.',
-    'how-s4t':'Report & action','how-s4d':'Download the management-ready PDF report. Pro users remediate findings via controls in the dashboard.',
-    'stat1':'CIS L1 checks automated in Pryvee Snapshot',
-    'stat2':'IT professionals and MSPs on the early access list',
-    'stat3':'bytes of document data stored by Pryvee Redact',
-    'wl-bdg':'Early access open',
-    'wl-h':'Pryvee Snapshot — now in early access.<br><em class="em">First 50 are free.</em>',
-    'wl-sub':'The first 50 organisations get full access to Pryvee Snapshot at no cost. No credit card required.',
-    'wl-inp-ph':'you@organisation.com','wl-btn':'Sign up →',
-    'wl-note':'Your details are used exclusively for Pryvee communications.',
-    'fc-tagline':'Microsoft 365 governance for IT teams and MSPs.',
-  };
-  const t = l === 'nl' ? nl : en;
-  const htmlIds = new Set(['hero-h','wl-h','hero-proof']);
-  Object.keys(t).forEach(id => {
-    if (id === 'wl-inp-ph') { const el = document.getElementById('wl-inp'); if(el) el.placeholder = t[id]; return; }
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (htmlIds.has(id)) el.innerHTML = t[id]; else el.textContent = t[id];
-  });
-}
-</script>
 </body>
 </html>
