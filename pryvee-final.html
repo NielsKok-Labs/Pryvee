@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="nl" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" id="metaDesc" content="Scan je Microsoft 365-omgeving in minuten op beveiligingsrisicos en compliance-gaps.">
+<title id="pageTitle">Pryvee - M365 Governance & Risico-intelligentie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;700;800;900&family=Instrument+Mono:wght@300;400&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#050C07; --surface:#0B160D; --surface2:#0F1E11;
+  --border:rgba(74,222,128,0.09); --border2:rgba(74,222,128,0.18);
+  --green:#3DDB6F; --green2:#22C55E;
+  --danger:#F87171; --warn:#FBBF24; --ok:#34D399;
+  --text:#EDFFF2; --muted:#7DB890; --muted2:#3D6648;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',sans-serif;font-weight:300;line-height:1.65;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(61,219,111,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(61,219,111,0.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+/* WCAG */
+.skip-link{position:absolute;top:-100px;left:16px;background:var(--green);color:var(--bg);padding:10px 20px;border-radius:0 0 8px 8px;font-weight:600;font-size:14px;text-decoration:none;z-index:9999;transition:top .2s}
+.skip-link:focus{top:0}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:4px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal,h1,.hero-badge,.hero-sub,.hero-actions,.hero-visual{opacity:1!important;transform:none!important}}
+
+/* NAV */
+nav.topnav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(5,12,7,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:22px;letter-spacing:-.5px;color:var(--text);text-decoration:none;flex-shrink:0}
+.logo em{font-style:normal;color:var(--green)}
+.nav-right{display:flex;align-items:center;gap:4px}
+.nav-links{display:flex;gap:4px;list-style:none;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;padding:10px 12px;border-radius:6px;min-height:44px;display:flex;align-items:center;transition:color .2s,background .2s;white-space:nowrap}
+.nav-links a:hover{color:var(--text);background:rgba(61,219,111,0.06)}
+.nav-cta{background:var(--green)!important;color:var(--bg)!important;font-weight:700!important;font-family:'Cabinet Grotesk',sans-serif;box-shadow:0 0 20px rgba(61,219,111,0.25)}
+.nav-cta:hover{opacity:.88}
+
+/* Lang switcher */
+.lang-sw{display:flex;align-items:center;border:1px solid var(--border2);border-radius:6px;overflow:hidden;margin-left:8px;flex-shrink:0}
+.lang-btn{background:none;border:none;cursor:pointer;font-family:'Instrument Mono',monospace;font-size:11px;color:var(--muted);padding:8px 10px;min-height:36px;letter-spacing:.06em;transition:all .2s}
+.lang-btn:hover{color:var(--text);background:rgba(61,219,111,0.06)}
+.lang-btn.active{background:rgba(61,219,111,0.12);color:var(--green);font-weight:500}
+.lang-sep{width:1px;background:var(--border2);height:20px;align-self:center}
+
+/* Hamburger */
+.hamburger{display:none;background:none;border:1px solid var(--border2);border-radius:6px;padding:0;cursor:pointer;color:var(--muted);font-size:20px;min-height:44px;min-width:44px;align-items:center;justify-content:center;margin-left:8px;transition:all .2s}
+.hamburger:hover{color:var(--text);border-color:rgba(61,219,111,0.3)}
+
+/* Mobile drawer */
+.drawer{display:none;flex-direction:column;gap:4px;position:fixed;top:65px;left:0;right:0;background:rgba(5,12,7,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:16px 24px 28px;z-index:99}
+.drawer.open{display:flex}
+.drawer a{color:var(--muted);text-decoration:none;font-size:16px;padding:13px 16px;border-radius:8px;min-height:48px;display:flex;align-items:center;transition:all .2s;border:1px solid transparent}
+.drawer a:hover{color:var(--text);background:rgba(61,219,111,.06);border-color:var(--border2)}
+.drawer .nav-cta{margin-top:8px;justify-content:center;border-color:var(--green)!important}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:130px 24px 80px;overflow:hidden}
+.hero::after{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(34,197,94,.10) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(61,219,111,.08);border:1px solid rgba(61,219,111,.22);border-radius:100px;padding:6px 18px;font-family:'Instrument Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:32px;opacity:0;animation:fadeUp .6s .1s forwards}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(40px,7.5vw,88px);line-height:.95;letter-spacing:-3px;max-width:920px;margin-bottom:28px;opacity:0;animation:fadeUp .7s .2s forwards}
+h1 em{font-style:normal;color:var(--green)}
+h1 .outline{-webkit-text-stroke:2px var(--green2);color:transparent}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--muted);max-width:540px;line-height:1.75;margin-bottom:48px;font-weight:400;opacity:0;animation:fadeUp .7s .35s forwards}
+.hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .7s .5s forwards}
+.btn-primary{background:var(--green);color:var(--bg);padding:14px 28px;border-radius:8px;font-weight:700;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;min-height:44px;gap:8px;transition:all .2s;box-shadow:0 0 32px rgba(61,219,111,.3);font-family:'Cabinet Grotesk',sans-serif;white-space:nowrap}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(61,219,111,.4)}
+.btn-ghost{color:var(--muted);padding:14px 20px;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;transition:color .2s;border:1px solid var(--border2);border-radius:8px;white-space:nowrap}
+.btn-ghost:hover{color:var(--text);border-color:rgba(61,219,111,.3)}
+
+/* HERO VISUAL */
+.hero-visual{margin-top:64px;position:relative;max-width:980px;width:100%;opacity:0;animation:fadeUp .9s .7s forwards}
+.hero-visual::before{content:'';position:absolute;inset:-1px;background:linear-gradient(180deg,rgba(61,219,111,.18) 0%,transparent 55%);border-radius:18px;z-index:-1}
+.frame{background:var(--surface);border:1px solid var(--border2);border-radius:16px;overflow:hidden}
+.frame-bar{display:flex;align-items:center;gap:8px;padding:13px 20px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot:nth-child(1){background:#FF5F57}.dot:nth-child(2){background:#FEBC2E}.dot:nth-child(3){background:#28C840}
+.frame-url{font-family:'Instrument Mono',monospace;font-size:12px;color:var(--muted);background:var(--bg);padding:4px 12px;border-radius:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:300px}
+.dash{padding:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:18px;position:relative;overflow:hidden}
+.card.red{border-color:rgba(248,113,113,.25)}.card.amber{border-color:rgba(251,191,36,.25)}.card.emerald{border-color:rgba(52,211,153,.3)}
+.card-label{font-family:'Instrument Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.card-val{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:34px;line-height:1;letter-spacing:-1px}
+.card.red .card-val{color:var(--danger)}.card.amber .card-val{color:var(--warn)}.card.emerald .card-val{color:var(--ok)}
+.card-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.card-bar{position:absolute;bottom:0;left:0;height:3px;border-radius:0 0 10px 10px}
+.card.red .card-bar{background:var(--danger);width:32%;box-shadow:0 0 8px var(--danger)}
+.card.amber .card-bar{background:var(--warn);width:58%;box-shadow:0 0 8px var(--warn)}
+.card.emerald .card-bar{background:var(--ok);width:87%;box-shadow:0 0 8px var(--ok)}
+.findings{grid-column:span 3;background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.findings-head{padding:12px 18px;border-bottom:1px solid var(--border);font-family:'Instrument Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center}
+.badge-count{background:rgba(248,113,113,.12);color:var(--danger);border-radius:4px;padding:2px 9px;font-size:11px}
+.finding{display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);transition:background .15s}
+.finding:last-child{border-bottom:none}
+.finding:hover{background:rgba(61,219,111,.03)}
+.f-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.f-icon.r{background:rgba(248,113,113,.1)}.f-icon.y{background:rgba(251,191,36,.1)}
+.f-info{flex:1;min-width:0}
+.f-title{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f-detail{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f-badge{font-family:'Instrument Mono',monospace;font-size:10px;padding:3px 9px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0}
+.f-badge.high{background:rgba(248,113,113,.12);color:var(--danger)}.f-badge.medium{background:rgba(251,191,36,.12);color:var(--warn)}
+
+/* LOGOS */
+.logos{padding:32px 48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+.logos-label{font-family:'Instrument Mono',monospace;font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px}
+.logos-row{display:flex;gap:40px;align-items:center;justify-content:center;flex-wrap:wrap;opacity:.35}
+.logos-row span{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--muted);letter-spacing:.08em}
+
+/* SECTION */
+.section{padding:100px 48px;max-width:1100px;margin:0 auto}
+.tag{font-family:'Instrument Mono',monospace;font-size:11px;color:var(--green);text-transform:uppercase;letter-spacing:.15em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.tag::before{content:'';width:20px;height:1px;background:var(--green)}
+.section-h{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(30px,4.5vw,52px);line-height:1.0;letter-spacing:-2px;margin-bottom:14px}
+.section-sub{color:var(--muted);font-size:17px;max-width:480px;line-height:1.75;margin-bottom:56px;font-weight:400}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;position:relative}
+.steps::before{content:'';position:absolute;top:26px;left:10%;width:80%;height:1px;background:linear-gradient(90deg,transparent,var(--border2) 20%,var(--border2) 80%,transparent)}
+.step-num-wrap{width:52px;height:52px;border-radius:14px;border:1px solid var(--border2);background:var(--surface2);display:flex;align-items:center;justify-content:center;margin-bottom:22px;position:relative;z-index:1}
+.step-num{font-family:'Instrument Mono',monospace;font-size:18px;color:var(--green)}
+.step-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:16px;margin-bottom:10px;letter-spacing:-.3px}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* MODULES */
+.modules-wrap{padding:0 48px 100px;max-width:1100px;margin:0 auto}
+.modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mod{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.mod:hover{border-color:var(--border2);transform:translateY(-3px)}
+.mod.featured{border-color:rgba(61,219,111,.22);background:linear-gradient(140deg,rgba(61,219,111,.05) 0%,var(--surface) 55%)}
+.mod::after{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(61,219,111,.05) 0%,transparent 70%);pointer-events:none}
+.mod-status{display:inline-flex;align-items:center;gap:6px;font-family:'Instrument Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;padding:4px 12px;border-radius:4px;margin-bottom:18px}
+.mod-status.live{background:rgba(52,211,153,.1);color:var(--ok)}.mod-status.soon{background:rgba(251,191,36,.1);color:var(--warn)}.mod-status.future{background:rgba(163,230,53,.1);color:#A3E635}
+.mod-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:24px;letter-spacing:-.8px;margin-bottom:10px}
+.mod-sub{color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.65}
+.mod-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.mod-list li{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.mod-list li::before{content:'';width:16px;height:16px;flex-shrink:0;border-radius:4px;background:rgba(61,219,111,.08);border:1px solid rgba(61,219,111,.2);background-image:url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%233DDB6F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.mod-price{margin-top:24px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:baseline;gap:6px}
+.price-val{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:26px;letter-spacing:-.5px;color:var(--text)}
+.price-per{font-size:13px;color:var(--muted)}
+
+/* PRICING */
+.pricing-wrap{padding:0 48px 100px;max-width:1100px;margin:0 auto}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.plan{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;transition:transform .3s}
+.plan:hover{transform:translateY(-3px)}
+.plan.highlight{border-color:rgba(61,219,111,.28);background:linear-gradient(160deg,rgba(61,219,111,.07) 0%,var(--surface) 50%)}
+.plan-name{font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:18px;margin-bottom:6px;letter-spacing:-.3px}
+.plan-desc{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.5}
+.plan-price{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:42px;letter-spacing:-2px;color:var(--text);line-height:1;margin-bottom:4px}
+.plan-price span{font-size:20px;font-weight:400;color:var(--muted)}
+.plan-per{font-family:'Instrument Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:24px;text-transform:uppercase;letter-spacing:.06em}
+.plan-div{height:1px;background:var(--border);margin-bottom:20px}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.plan-feats li{font-size:13px;color:var(--muted);display:flex;gap:10px;align-items:flex-start}
+.plan-feats li::before{content:'checkmark';font-size:0;width:16px;height:16px;flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='7' cy='7' r='7' fill='rgba(61,219,111,0.12)'/%3E%3Cpath d='M4 7L6 9L10 5' stroke='%233DDB6F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;margin-top:1px}
+.btn-outline{display:flex;align-items:center;justify-content:center;padding:12px;min-height:44px;border:1px solid var(--border2);border-radius:8px;color:var(--text);text-decoration:none;font-size:14px;font-weight:500;transition:all .2s;font-family:'Cabinet Grotesk',sans-serif}
+.btn-outline:hover{border-color:var(--green);color:var(--green)}
+.btn-filled{display:flex;align-items:center;justify-content:center;padding:12px;min-height:44px;background:var(--green);border-radius:8px;color:var(--bg);text-decoration:none;font-size:14px;font-weight:700;transition:all .2s;box-shadow:0 0 24px rgba(61,219,111,.25);font-family:'Cabinet Grotesk',sans-serif}
+.btn-filled:hover{opacity:.87}
+
+/* CTA */
+.cta{margin:0 48px 80px;background:linear-gradient(135deg,rgba(34,197,94,.1) 0%,rgba(61,219,111,.05) 50%,rgba(45,212,191,.06) 100%);border:1px solid rgba(61,219,111,.2);border-radius:20px;padding:64px;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(61,219,111,.08) 0%,transparent 65%);pointer-events:none}
+.cta h2{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(26px,4vw,44px);letter-spacing:-1.5px;margin-bottom:14px;position:relative}
+.cta p{color:var(--muted);font-size:17px;margin-bottom:36px;position:relative}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:18px;text-decoration:none;color:var(--text)}
+.footer-logo em{font-style:normal;color:var(--green)}
+.footer-links{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-copy{font-family:'Instrument Mono',monospace;font-size:11px;color:var(--muted2)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* MOBILE */
+@media(max-width:900px){
+  nav.topnav{padding:14px 20px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero{padding:110px 20px 60px}
+  h1{letter-spacing:-2px}
+  h1 .outline{-webkit-text-stroke:1.5px var(--green2)}
+  .hero-actions{flex-direction:column;width:100%}
+  .btn-primary,.btn-ghost{width:100%;justify-content:center}
+  .dash{grid-template-columns:1fr}
+  .findings{grid-column:span 1}
+  .frame-url{max-width:160px;font-size:10px}
+  .logos{padding:28px 20px}
+  .logos-row{gap:20px}
+  .section{padding:72px 20px}
+  .section-sub{font-size:15px}
+  .steps{grid-template-columns:1fr 1fr;gap:24px}
+  .steps::before{display:none}
+  .modules-wrap{padding:0 20px 72px}
+  .modules-grid{grid-template-columns:1fr}
+  .mod-wide{grid-column:span 1!important}
+  .mod-list-two{display:flex!important;flex-direction:column!important}
+  .pricing-wrap{padding:0 20px 72px}
+  .pricing-grid{grid-template-columns:1fr}
+  .cta{margin:0 20px 60px;padding:40px 24px}
+  .cta-btns{flex-direction:column}
+  .cta-btns a{width:100%;justify-content:center}
+  footer{padding:28px 20px;flex-direction:column;align-items:flex-start}
+}
+@media(max-width:480px){
+  .steps{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link" id="skipLink">Naar hoofdinhoud</a>
+
+<nav class="topnav" aria-label="Hoofdnavigatie">
+  <a href="/" class="logo">Pry<em>vee</em></a>
+  <div class="nav-right">
+    <ul class="nav-links" id="desktopNav">
+      <li><a href="#how" id="nav-how">Hoe het werkt</a></li>
+      <li><a href="#modules" id="nav-mod">Modules</a></li>
+      <li><a href="#pricing" id="nav-price">Prijzen</a></li>
+      <li><a href="#" class="nav-cta" id="nav-cta">Ga van start &rarr;</a></li>
+    </ul>
+    <div class="lang-sw" role="group" aria-label="Taal kiezen">
+      <button class="lang-btn active" id="btnNL" onclick="setLang('nl')" aria-pressed="true">NL</button>
+      <div class="lang-sep" aria-hidden="true"></div>
+      <button class="lang-btn" id="btnEN" onclick="setLang('en')" aria-pressed="false">EN</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu openen" aria-expanded="false" aria-controls="drawer">&#9776;</button>
+  </div>
+</nav>
+
+<nav class="drawer" id="drawer" aria-label="Mobiele navigatie">
+  <a href="#how" id="drawer-how">Hoe het werkt</a>
+  <a href="#modules" id="drawer-mod">Modules</a>
+  <a href="#pricing" id="drawer-price">Prijzen</a>
+  <a href="#" class="nav-cta" id="drawer-cta">Ga van start &rarr;</a>
+</nav>
+
+<main id="main-content">
+
+<section class="hero" aria-labelledby="hero-h1">
+  <div class="hero-badge" id="hero-badge">Nu in early access</div>
+  <h1 id="hero-h1">Jouw M365-omgeving.<br><em>Volledig</em> <span class="outline">inzichtelijk.</span></h1>
+  <p class="hero-sub" id="hero-sub">Pryvee scant je Microsoft 365-omgeving in minuten &mdash; en brengt beveiligingsgaten, compliance-risico&apos;s en governance-issues in kaart voordat ze incidenten worden.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary" id="btn-cta1">Scan mijn tenant &rarr;</a>
+    <a href="#how" class="btn-ghost" id="btn-ghost1">Hoe werkt het? &darr;</a>
+  </div>
+  <div class="hero-visual" role="img" aria-label="Pryvee dashboard preview">
+    <div class="frame">
+      <div class="frame-bar" aria-hidden="true">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="frame-url">app.pryvee.io / snapshot / contoso</div>
+      </div>
+      <div class="dash" aria-hidden="true">
+        <div class="card red">
+          <div class="card-label">Secure Score</div>
+          <div class="card-val">32%</div>
+          <div class="card-sub" id="cs1">Kritiek &mdash; 18 openstaande bevindingen</div>
+          <div class="card-bar"></div>
+        </div>
+        <div class="card amber">
+          <div class="card-label" id="cl2">MFA-dekking</div>
+          <div class="card-val">58%</div>
+          <div class="card-sub" id="cs2">42% van de gebruikers onbeschermd</div>
+          <div class="card-bar"></div>
+        </div>
+        <div class="card emerald">
+          <div class="card-label" id="cl3">Apparaatcompliance</div>
+          <div class="card-val">87%</div>
+          <div class="card-sub" id="cs3">11 niet-conforme apparaten</div>
+          <div class="card-bar"></div>
+        </div>
+        <div class="findings">
+          <div class="findings-head">
+            <span id="find-label">Risicobevindingen</span>
+            <span class="badge-count" id="find-count">7 kritiek</span>
+          </div>
+          <div class="finding">
+            <div class="f-icon r">&#128275;</div>
+            <div class="f-info">
+              <div class="f-title" id="f1t">MFA uitgeschakeld voor 47 gebruikers</div>
+              <div class="f-detail" id="f1d">Inclusief 3 beheerdersaccounts &mdash; directe actie vereist</div>
+            </div>
+            <span class="f-badge high" id="f1b">Hoog</span>
+          </div>
+          <div class="finding">
+            <div class="f-icon y">&#128101;</div>
+            <div class="f-info">
+              <div class="f-title" id="f2t">124 verlopen gastaccounts</div>
+              <div class="f-detail" id="f2d">Geen activiteit in 180+ dagen, extern delen ingeschakeld</div>
+            </div>
+            <span class="f-badge medium" id="f2b">Gemiddeld</span>
+          </div>
+          <div class="finding">
+            <div class="f-icon r">&#128269;</div>
+            <div class="f-info">
+              <div class="f-title" id="f3t">Geen actief Conditional Access-beleid</div>
+              <div class="f-detail" id="f3d">Aanmeldingen vanaf elke locatie zijn toegestaan</div>
+            </div>
+            <span class="f-badge high" id="f3b">Hoog</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="logos" aria-label="Vertrouwd door">
+  <div class="logos-label" id="logos-label">Vertrouwd door IT-teams en MSP&apos;s door heel Europa</div>
+  <div class="logos-row" aria-hidden="true">
+    <span>ICTGROUP</span><span>CYBERWISE</span><span>NORDCLOUD</span><span>TECHVISION</span><span>CLOUDBASE</span>
+  </div>
+</section>
+
+<section class="section reveal" id="how" aria-labelledby="how-h2">
+  <div class="tag" id="how-tag">Hoe het werkt</div>
+  <h2 class="section-h" id="how-h2">Van nul naar auditrapport<br>in minder dan 5 minuten.</h2>
+  <p class="section-sub" id="how-sub">Geen agents. Geen installatie. Koppel je Microsoft-tenant en krijg direct bruikbare inzichten.</p>
+  <div class="steps" role="list">
+    <div class="step" role="listitem">
+      <div class="step-num-wrap" aria-hidden="true"><span class="step-num">01</span></div>
+      <div class="step-title" id="s1t">Koppel je tenant</div>
+      <p class="step-desc" id="s1d">Log in met je Microsoft-beheerdersaccount. Eenmalige toestemming. Alleen-lezen toegang. Niets te installeren.</p>
+    </div>
+    <div class="step" role="listitem">
+      <div class="step-num-wrap" aria-hidden="true"><span class="step-num">02</span></div>
+      <div class="step-title" id="s2t">Automatische scan</div>
+      <p class="step-desc" id="s2d">Pryvee leest 10+ Microsoft Graph-endpoints &mdash; MFA, Secure Score, Conditional Access, gasten en meer.</p>
+    </div>
+    <div class="step" role="listitem">
+      <div class="step-num-wrap" aria-hidden="true"><span class="step-num">03</span></div>
+      <div class="step-title" id="s3t">Risicoscore berekend</div>
+      <p class="step-desc" id="s3d">Elke bevinding wordt gescoord en geprioriteerd op basis van de CIS M365 Benchmark v6.</p>
+    </div>
+    <div class="step" role="listitem">
+      <div class="step-num-wrap" aria-hidden="true"><span class="step-num">04</span></div>
+      <div class="step-title" id="s4t">Download je rapport</div>
+      <p class="step-desc" id="s4d">Een managementklaar PDF-rapport met samenvatting, risico-overzicht en concrete aanbevelingen.</p>
+    </div>
+  </div>
+</section>
+
+<div class="modules-wrap reveal" id="modules">
+  <div class="tag" id="mod-tag">Productmodules</div>
+  <h2 class="section-h" id="mod-h2">E&eacute;n platform.<br>Vijf lagen controle.</h2>
+  <p class="section-sub" id="mod-sub">Begin met Snapshot. Groei door naar de volledige Pryvee governance-suite.</p>
+  <div class="modules-grid">
+    <div class="mod featured">
+      <div class="mod-status live">&#9679; <span id="badge-live1">Nu beschikbaar</span></div>
+      <div class="mod-title">Pryvee Snapshot</div>
+      <p class="mod-sub" id="m1sub">E&eacute;n-klik CIS L1 compliance-audit. Genereert een volledig risico-PDF in minuten.</p>
+      <ul class="mod-list" id="m1list">
+        <li>79 geautomatiseerde CIS M365 L1-checks</li>
+        <li>Microsoft Secure Score-analyse</li>
+        <li>MFA- en Conditional Access-gaps</li>
+        <li>Gasten- en extern deelrisico&apos;s</li>
+        <li>Managementklare PDF-export</li>
+      </ul>
+      <div class="mod-price"><div class="price-val">&euro;149</div><div class="price-per" id="m1per">per rapport &mdash; of &euro;99/mnd</div></div>
+    </div>
+    <div class="mod">
+      <div class="mod-status soon">&#9680; <span id="badge-soon1">Binnenkort</span></div>
+      <div class="mod-title">Pryvee Guard</div>
+      <p class="mod-sub" id="m2sub">Continue monitoring van gasten en extern delen met geautomatiseerde meldingen.</p>
+      <ul class="mod-list" id="m2list">
+        <li>Volledig overzicht van gastaccounts</li>
+        <li>Detectie van inactieve &amp; verlaten accounts</li>
+        <li>Risicoscore voor extern delen</li>
+        <li>Geautomatiseerde e-mailmeldingen</li>
+        <li>Wekelijks risico-overzicht per mail</li>
+      </ul>
+      <div class="mod-price"><div class="price-val">&euro;49</div><div class="price-per" id="m2per">/mnd per tenant</div></div>
+    </div>
+    <div class="mod">
+      <div class="mod-status soon">&#9680; <span id="badge-soon2">Binnenkort</span></div>
+      <div class="mod-title">Pryvee Clean</div>
+      <p class="mod-sub" id="m3sub">Tenant lifecycle-automatisering &mdash; detecteer verlaten sites, archiveer werkruimten.</p>
+      <ul class="mod-list" id="m3list">
+        <li>Detectie van inactieve sites (180+ dagen)</li>
+        <li>Geautomatiseerde eigenaarsmeldingen</li>
+        <li>Archiveer- en opruimworkflows</li>
+        <li>Governance-dashboard</li>
+        <li>Volledig auditspoor</li>
+      </ul>
+      <div class="mod-price"><div class="price-val">&euro;49</div><div class="price-per" id="m3per">/mnd per tenant</div></div>
+    </div>
+    <div class="mod">
+      <div class="mod-status soon">&#9680; <span id="badge-soon3">Binnenkort</span></div>
+      <div class="mod-title">Pryvee Redact</div>
+      <p class="mod-sub" id="m4sub">Documentredactie volledig in geheugen. Nul opslag &mdash; AVG-compliant by design.</p>
+      <ul class="mod-list" id="m4list">
+        <li>PDF &amp; DOCX redactie</li>
+        <li>NER: namen, BSN, IBAN, adressen</li>
+        <li>Volledig in geheugen &mdash; niets opgeslagen</li>
+        <li>Ideaal v&oacute;&oacute;r Copilot-workflows</li>
+        <li>Nederlands &amp; Engelstalig</li>
+      </ul>
+      <div class="mod-price"><div class="price-val">&euro;29</div><div class="price-per" id="m4per">/mnd of per document</div></div>
+    </div>
+    <div class="mod mod-wide" style="grid-column:span 2">
+      <div class="mod-status future">&#10022; 2026</div>
+      <div class="mod-title">Pryvee AI</div>
+      <p class="mod-sub" id="m5sub">Copilot-blootstellingsscanner. Detecteer overmachtiging voordat AI je gevoelige data bereikt.</p>
+      <ul class="mod-list mod-list-two" style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="m5list">
+        <li>Microsoft Copilot-blootstellingsscore</li>
+        <li>Detectie van overmachtigde data</li>
+        <li>Mapping van hoog-risico mappen</li>
+        <li>AI-gereedheidsassessment</li>
+        <li>Aanbevelingen voor governance-gaps</li>
+        <li>Integratie met Snapshot-bevindingen</li>
+      </ul>
+      <div class="mod-price"><div class="price-val">&euro;99</div><div class="price-per" id="m5per">/mnd per tenant</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="pricing-wrap reveal" id="pricing">
+  <div class="tag" id="price-tag">Prijzen</div>
+  <h2 class="section-h" id="price-h2">Duidelijke prijzen.<br>Geen verrassingen.</h2>
+  <p class="section-sub" id="price-sub">Begin met &eacute;&eacute;n audit. Schaal naar een volledige governance-suite.</p>
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-name">Snapshot</div>
+      <p class="plan-desc" id="p1desc">Eenmalig auditrapport voor &eacute;&eacute;n tenant</p>
+      <div class="plan-price">&euro;149</div>
+      <div class="plan-per" id="p1per">eenmalige betaling</div>
+      <div class="plan-div"></div>
+      <ul class="plan-feats" id="p1feats">
+        <li>Volledige CIS L1 M365-audit</li>
+        <li>Managementklare PDF</li>
+        <li>Risicoscore &amp; samenvatting</li>
+        <li>Geprioriteerde aanbevelingen</li>
+        <li>30 dagen geldig</li>
+      </ul>
+      <a href="#" class="btn-outline" id="p1btn">Ontvang je rapport</a>
+    </div>
+    <div class="plan highlight">
+      <div class="plan-name">Snapshot Pro</div>
+      <p class="plan-desc" id="p2desc">Maandelijkse herhalingsaudits met trendanalyse</p>
+      <div class="plan-price">&euro;99<span id="p2unit">/mnd</span></div>
+      <div class="plan-per" id="p2per">per tenant &middot; maandelijks gefactureerd</div>
+      <div class="plan-div"></div>
+      <ul class="plan-feats" id="p2feats">
+        <li>Alles uit Snapshot</li>
+        <li>Maandelijkse automatische herscans</li>
+        <li>Risicotrend-tracking</li>
+        <li>E-mailmeldingen bij nieuwe bevindingen</li>
+        <li>Prioriteitsondersteuning</li>
+      </ul>
+      <a href="#" class="btn-filled" id="p2btn">Start gratis proefperiode</a>
+    </div>
+    <div class="plan">
+      <div class="plan-name">MSP Partner</div>
+      <p class="plan-desc" id="p3desc">White-label suite voor managed service providers</p>
+      <div class="plan-price" style="font-size:30px;letter-spacing:-1px" id="p3price">Op maat</div>
+      <div class="plan-per" id="p3per">volumeprijzen beschikbaar</div>
+      <div class="plan-div"></div>
+      <ul class="plan-feats" id="p3feats">
+        <li>Onbeperkt tenants</li>
+        <li>White-label PDF-rapporten</li>
+        <li>Multi-tenant dashboard</li>
+        <li>API-toegang</li>
+        <li>Eigen accountmanager</li>
+      </ul>
+      <a href="#" class="btn-outline" id="p3btn">Neem contact op</a>
+    </div>
+  </div>
+</div>
+
+<div class="cta reveal" aria-labelledby="cta-h2">
+  <h2 id="cta-h2">Klaar om het echte risicoprofiel<br>van je tenant te zien?</h2>
+  <p id="cta-p">Verbonden in 60 seconden. Geen installatie. Alleen-lezen toegang.</p>
+  <div class="cta-btns">
+    <a href="#" class="btn-primary" id="cta-btn1">Scan mijn tenant &rarr;</a>
+    <a href="#" class="btn-ghost" id="cta-btn2">Eerst een gesprek</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <a href="/" class="footer-logo">Pry<em>vee</em></a>
+  <ul class="footer-links">
+    <li><a href="#" id="fl1">Product</a></li>
+    <li><a href="#" id="fl2">Prijzen</a></li>
+    <li><a href="#" id="fl3">Privacy</a></li>
+    <li><a href="#" id="fl4">Contact</a></li>
+  </ul>
+  <div class="footer-copy" id="footer-copy">&copy; 2025 Pryvee &middot; Alle rechten voorbehouden</div>
+</footer>
+
+<script>
+// SCROLL REVEAL
+const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:.08});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// MOBILE NAV
+const ham = document.getElementById('hamburger');
+const drawer = document.getElementById('drawer');
+ham.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  ham.setAttribute('aria-expanded', open);
+  ham.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
+  ham.innerHTML = open ? '&#10005;' : '&#9776;';
+});
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  drawer.classList.remove('open');
+  ham.setAttribute('aria-expanded', false);
+  ham.innerHTML = '&#9776;';
+}));
+
+// TRANSLATIONS
+const T = {
+nl:{
+  skip:'Naar hoofdinhoud', title:'Pryvee \u2013 M365 Governance & Risico-intelligentie',
+  desc:'Scan je Microsoft 365-omgeving in minuten op beveiligingsrisico\'s en compliance-gaps.',
+  badge:'Nu in early access',
+  h1:'Jouw M365-omgeving.<br><em>Volledig</em> <span class="outline">inzichtelijk.</span>',
+  sub:'Pryvee scant je Microsoft 365-omgeving in minuten \u2014 en brengt beveiligingsgaten, compliance-risico\'s en governance-issues in kaart voordat ze incidenten worden.',
+  cta1:'Scan mijn tenant \u2192', ghost:'Hoe werkt het? \u2193',
+  cs1:'Kritiek \u2014 18 openstaande bevindingen', cl2:'MFA-dekking', cs2:'42% van de gebruikers onbeschermd',
+  cl3:'Apparaatcompliance', cs3:'11 niet-conforme apparaten',
+  fl:'Risicobevindingen', fc:'7 kritiek',
+  f1t:'MFA uitgeschakeld voor 47 gebruikers', f1d:'Inclusief 3 beheerdersaccounts \u2014 directe actie vereist', f1b:'Hoog',
+  f2t:'124 verlopen gastaccounts', f2d:'Geen activiteit in 180+ dagen, extern delen ingeschakeld', f2b:'Gemiddeld',
+  f3t:'Geen actief Conditional Access-beleid', f3d:'Aanmeldingen vanaf elke locatie zijn toegestaan', f3b:'Hoog',
+  logos:'Vertrouwd door IT-teams en MSP\'s door heel Europa',
+  howTag:'Hoe het werkt', howH:'Van nul naar auditrapport<br>in minder dan 5 minuten.',
+  howSub:'Geen agents. Geen installatie. Koppel je Microsoft-tenant en krijg direct bruikbare inzichten.',
+  s1t:'Koppel je tenant', s1d:'Log in met je Microsoft-beheerdersaccount. Eenmalige toestemming. Alleen-lezen toegang. Niets te installeren.',
+  s2t:'Automatische scan', s2d:'Pryvee leest 10+ Microsoft Graph-endpoints \u2014 MFA, Secure Score, Conditional Access, gasten en meer.',
+  s3t:'Risicoscore berekend', s3d:'Elke bevinding wordt gescoord en geprioriteerd op basis van de CIS M365 Benchmark v6.',
+  s4t:'Download je rapport', s4d:'Een managementklaar PDF-rapport met samenvatting, risico-overzicht en concrete aanbevelingen.',
+  modTag:'Productmodules', modH:'E\u00e9n platform.<br>Vijf lagen controle.', modSub:'Begin met Snapshot. Groei door naar de volledige Pryvee governance-suite.',
+  live:'Nu beschikbaar', soon:'Binnenkort',
+  m1sub:'E\u00e9n-klik CIS L1 compliance-audit. Genereert een volledig risico-PDF in minuten.',
+  m1list:['79 geautomatiseerde CIS M365 L1-checks','Microsoft Secure Score-analyse','MFA- en Conditional Access-gaps','Gasten- en extern deelrisico\'s','Managementklare PDF-export'],
+  m1per:'per rapport \u2014 of \u20ac99/mnd',
+  m2sub:'Continue monitoring van gasten en extern delen met geautomatiseerde meldingen.',
+  m2list:['Volledig overzicht van gastaccounts','Detectie van inactieve & verlaten accounts','Risicoscore voor extern delen','Geautomatiseerde e-mailmeldingen','Wekelijks risico-overzicht per mail'],
+  m2per:'/mnd per tenant',
+  m3sub:'Tenant lifecycle-automatisering \u2014 detecteer verlaten sites, archiveer werkruimten.',
+  m3list:['Detectie van inactieve sites (180+ dagen)','Geautomatiseerde eigenaarsmeldingen','Archiveer- en opruimworkflows','Governance-dashboard','Volledig auditspoor'],
+  m3per:'/mnd per tenant',
+  m4sub:'Documentredactie volledig in geheugen. Nul opslag \u2014 AVG-compliant by design.',
+  m4list:['PDF & DOCX redactie','NER: namen, BSN, IBAN, adressen','Volledig in geheugen \u2014 niets opgeslagen','Ideaal v\u00f3\u00f3r Copilot-workflows','Nederlands & Engelstalig'],
+  m4per:'/mnd of per document',
+  m5sub:'Copilot-blootstellingsscanner. Detecteer overmachtiging voordat AI je gevoelige data bereikt.',
+  m5list:['Microsoft Copilot-blootstellingsscore','Detectie van overmachtigde data','Mapping van hoog-risico mappen','AI-gereedheidsassessment','Aanbevelingen voor governance-gaps','Integratie met Snapshot-bevindingen'],
+  m5per:'/mnd per tenant',
+  priceTag:'Prijzen', priceH:'Duidelijke prijzen.<br>Geen verrassingen.', priceSub:'Begin met \u00e9\u00e9n audit. Schaal naar een volledige governance-suite.',
+  p1desc:'Eenmalig auditrapport voor \u00e9\u00e9n tenant', p1per:'eenmalige betaling',
+  p1feats:['Volledige CIS L1 M365-audit','Managementklare PDF','Risicoscore & samenvatting','Geprioriteerde aanbevelingen','30 dagen geldig'],
+  p1btn:'Ontvang je rapport',
+  p2desc:'Maandelijkse herhalingsaudits met trendanalyse', p2per:'per tenant \u00b7 maandelijks gefactureerd', p2unit:'/mnd',
+  p2feats:['Alles uit Snapshot','Maandelijkse automatische herscans','Risicotrend-tracking','E-mailmeldingen bij nieuwe bevindingen','Prioriteitsondersteuning'],
+  p2btn:'Start gratis proefperiode',
+  p3desc:'White-label suite voor managed service providers', p3price:'Op maat', p3per:'volumeprijzen beschikbaar',
+  p3feats:['Onbeperkt tenants','White-label PDF-rapporten','Multi-tenant dashboard','API-toegang','Eigen accountmanager'],
+  p3btn:'Neem contact op',
+  ctaH:'Klaar om het echte risicoprofiel<br>van je tenant te zien?', ctaP:'Verbonden in 60 seconden. Geen installatie. Alleen-lezen toegang.',
+  ctaBtn1:'Scan mijn tenant \u2192', ctaBtn2:'Eerst een gesprek',
+  copy:'\u00a9 2025 Pryvee \u00b7 Alle rechten voorbehouden',
+  navHow:'Hoe het werkt', navMod:'Modules', navPrice:'Prijzen', navCta:'Ga van start \u2192',
+  fl1:'Product', fl2:'Prijzen', fl3:'Privacy', fl4:'Contact',
+},
+en:{
+  skip:'Skip to main content', title:'Pryvee \u2013 M365 Governance & Risk Intelligence',
+  desc:'Scan your Microsoft 365 tenant for security risks and compliance gaps in minutes.',
+  badge:'Now in early access',
+  h1:'Your M365 tenant.<br><em>Fully</em> <span class="outline">visible.</span>',
+  sub:'Pryvee scans your Microsoft 365 environment in minutes \u2014 surfacing security gaps, compliance risks, and governance issues before they become incidents.',
+  cta1:'Scan my tenant \u2192', ghost:'See how it works \u2193',
+  cs1:'Critical \u2014 18 open findings', cl2:'MFA Coverage', cs2:'42% of users unprotected',
+  cl3:'Device Compliance', cs3:'11 non-compliant devices',
+  fl:'Risk findings', fc:'7 critical',
+  f1t:'MFA disabled for 47 users', f1d:'Including 3 admin accounts \u2014 immediate action required', f1b:'High',
+  f2t:'124 stale guest accounts', f2d:'No activity in 180+ days, external sharing enabled', f2b:'Medium',
+  f3t:'No Conditional Access policies active', f3d:'Sign-ins from any location are permitted', f3b:'High',
+  logos:'Trusted by IT teams and MSPs across Europe',
+  howTag:'How it works', howH:'From zero to audit report<br>in under 5 minutes.',
+  howSub:'No agents. No installation. Connect your Microsoft tenant and get actionable intelligence instantly.',
+  s1t:'Connect your tenant', s1d:'Sign in with your Microsoft admin account. One-time consent. Read-only access. Nothing installed.',
+  s2t:'Automatic scan', s2d:'Pryvee reads 10+ Microsoft Graph endpoints \u2014 MFA, Secure Score, Conditional Access, guests, and more.',
+  s3t:'Risk score generated', s3d:'Every finding is scored and prioritised based on the CIS M365 Benchmark v6.',
+  s4t:'Download your report', s4d:'A management-ready PDF with executive summary, risk breakdown, and concrete recommendations.',
+  modTag:'Product modules', modH:'One platform.<br>Five layers of control.', modSub:'Start with Snapshot. Grow into the full Pryvee governance suite.',
+  live:'Available now', soon:'Coming soon',
+  m1sub:'One-click CIS L1 compliance audit. Generates a complete risk PDF in minutes.',
+  m1list:['79 automated CIS M365 L1 checks','Microsoft Secure Score analysis','MFA & Conditional Access gaps','Guest & external sharing risks','Management-ready PDF export'],
+  m1per:'per report \u2014 or \u20ac99/mo',
+  m2sub:'Continuous guest and external sharing monitoring with automated alerts.',
+  m2list:['Full guest account inventory','Inactive & orphaned account detection','External sharing risk scoring','Automated alert notifications','Weekly risk digest emails'],
+  m2per:'/month per tenant',
+  m3sub:'Tenant lifecycle automation \u2014 detect stale sites, notify owners, archive workspaces.',
+  m3list:['Inactive site detection (180+ days)','Automated owner notifications','Archive & cleanup workflows','Governance dashboard','Full audit trail'],
+  m3per:'/month per tenant',
+  m4sub:'In-memory document redaction. Zero storage \u2014 GDPR compliant by design.',
+  m4list:['PDF & DOCX redaction','NER: names, SSN, IBAN, addresses','Fully in-memory \u2014 nothing stored','Ideal before Copilot workflows','Dutch & English language support'],
+  m4per:'/month or per document',
+  m5sub:'Copilot exposure scanner. Detect overpermissioning before AI reaches your sensitive data.',
+  m5list:['Microsoft Copilot exposure scoring','Over-permissioned data detection','High-risk folder mapping','AI readiness assessment','Governance gap recommendations','Integrates with Snapshot findings'],
+  m5per:'/month per tenant',
+  priceTag:'Pricing', priceH:'Simple pricing.<br>No surprises.', priceSub:'Start with a single audit. Scale to a full governance suite.',
+  p1desc:'One-time audit report for a single tenant', p1per:'one-time payment',
+  p1feats:['Full CIS L1 M365 audit','Management-ready PDF','Risk score & executive summary','Prioritised recommendations','Valid for 30 days'],
+  p1btn:'Get your report',
+  p2desc:'Monthly recurring audits with trend tracking', p2per:'per tenant \u00b7 billed monthly', p2unit:'/mo',
+  p2feats:['Everything in Snapshot','Monthly automated re-scans','Risk trend tracking','Email alerts on new findings','Priority support'],
+  p2btn:'Start free trial',
+  p3desc:'White-label suite for managed service providers', p3price:'Custom', p3per:'volume pricing available',
+  p3feats:['Unlimited tenants','White-label PDF reports','Multi-tenant dashboard','API access','Dedicated account manager'],
+  p3btn:'Contact us',
+  ctaH:'Ready to see your tenant\'s<br>real risk profile?', ctaP:'Connected in 60 seconds. No installation. Read-only access.',
+  ctaBtn1:'Scan my tenant \u2192', ctaBtn2:'Talk to us first',
+  copy:'\u00a9 2025 Pryvee \u00b7 All rights reserved',
+  navHow:'How it works', navMod:'Modules', navPrice:'Pricing', navCta:'Get started \u2192',
+  fl1:'Product', fl2:'Pricing', fl3:'Privacy', fl4:'Contact',
+}};
+
+function txt(id, val){ const el=document.getElementById(id); if(el) el.textContent=val; }
+function html(id, val){ const el=document.getElementById(id); if(el) el.innerHTML=val; }
+function list(id, items){ const el=document.getElementById(id); if(!el) return; el.innerHTML=items.map(i=>'<li>'+i+'</li>').join(''); }
+
+function setLang(lang) {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.title = t.title;
+  document.getElementById('metaDesc').content = t.desc;
+  document.getElementById('btnNL').classList.toggle('active', lang==='nl');
+  document.getElementById('btnEN').classList.toggle('active', lang==='en');
+  document.getElementById('btnNL').setAttribute('aria-pressed', lang==='nl');
+  document.getElementById('btnEN').setAttribute('aria-pressed', lang==='en');
+
+  txt('skipLink', t.skip);
+  txt('hero-badge', t.badge);
+  html('hero-h1', t.h1);
+  txt('hero-sub', t.sub);
+  txt('btn-cta1', t.cta1); txt('btn-ghost1', t.ghost);
+  txt('cs1', t.cs1); txt('cl2', t.cl2); txt('cs2', t.cs2);
+  txt('cl3', t.cl3); txt('cs3', t.cs3);
+  txt('find-label', t.fl); txt('find-count', t.fc);
+  txt('f1t', t.f1t); txt('f1d', t.f1d); txt('f1b', t.f1b);
+  txt('f2t', t.f2t); txt('f2d', t.f2d); txt('f2b', t.f2b);
+  txt('f3t', t.f3t); txt('f3d', t.f3d); txt('f3b', t.f3b);
+  txt('logos-label', t.logos);
+  txt('how-tag', t.howTag); html('how-h2', t.howH); txt('how-sub', t.howSub);
+  txt('s1t', t.s1t); txt('s1d', t.s1d);
+  txt('s2t', t.s2t); txt('s2d', t.s2d);
+  txt('s3t', t.s3t); txt('s3d', t.s3d);
+  txt('s4t', t.s4t); txt('s4d', t.s4d);
+  txt('mod-tag', t.modTag); html('mod-h2', t.modH); txt('mod-sub', t.modSub);
+  txt('badge-live1', t.live);
+  ['badge-soon1','badge-soon2','badge-soon3'].forEach(id => txt(id, t.soon));
+  txt('m1sub', t.m1sub); list('m1list', t.m1list); txt('m1per', t.m1per);
+  txt('m2sub', t.m2sub); list('m2list', t.m2list); txt('m2per', t.m2per);
+  txt('m3sub', t.m3sub); list('m3list', t.m3list); txt('m3per', t.m3per);
+  txt('m4sub', t.m4sub); list('m4list', t.m4list); txt('m4per', t.m4per);
+  txt('m5sub', t.m5sub); list('m5list', t.m5list); txt('m5per', t.m5per);
+  txt('price-tag', t.priceTag); html('price-h2', t.priceH); txt('price-sub', t.priceSub);
+  txt('p1desc', t.p1desc); txt('p1per', t.p1per); list('p1feats', t.p1feats); txt('p1btn', t.p1btn);
+  txt('p2desc', t.p2desc); txt('p2per', t.p2per); txt('p2unit', t.p2unit); list('p2feats', t.p2feats); txt('p2btn', t.p2btn);
+  txt('p3desc', t.p3desc); txt('p3price', t.p3price); txt('p3per', t.p3per); list('p3feats', t.p3feats); txt('p3btn', t.p3btn);
+  html('cta-h2', t.ctaH); txt('cta-p', t.ctaP); txt('cta-btn1', t.ctaBtn1); txt('cta-btn2', t.ctaBtn2);
+  txt('footer-copy', t.copy);
+  txt('nav-how', t.navHow); txt('nav-mod', t.navMod); txt('nav-price', t.navPrice); txt('nav-cta', t.navCta);
+  txt('drawer-how', t.navHow); txt('drawer-mod', t.navMod); txt('drawer-price', t.navPrice); txt('drawer-cta', t.navCta);
+  txt('fl1', t.fl1); txt('fl2', t.fl2); txt('fl3', t.fl3); txt('fl4', t.fl4);
+}
+</script>
+</body>
+</html>
