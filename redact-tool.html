@@ -34,8 +34,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);display:
 main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:32px 32px 100px}
 
 /* PAYWALL */
-#paywall{position:fixed;inset:0;z-index:500;background:rgba(18,5,32,0.97);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:24px}
-.pw-card{background:rgba(60,25,80,0.5);border:1px solid rgba(255,235,85,0.2);border-radius:var(--r-xl);padding:48px 40px;max-width:460px;width:100%;text-align:center}
+#paywall{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(18,5,32,0.98);display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box}
+.pw-card{background:#2a0f3d;border:1px solid rgba(255,235,85,0.3);border-radius:20px;padding:48px 40px;max-width:460px;width:100%;text-align:center;position:relative;z-index:100000;box-shadow:0 40px 80px rgba(0,0,0,0.8)}
 .pw-card h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:28px;letter-spacing:-1px;margin-bottom:10px}
 .pw-card p{color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:32px}
 .pay-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
@@ -198,33 +198,15 @@ main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:32px 32p
   Verwerking volledig in jouw browser · 0 bytes verzonden · Niets opgeslagen
 </div>
 
-<!-- PAYWALL -->
-<div id="paywall" role="dialog" aria-modal="true" aria-labelledby="pw-title">
-  <div class="pw-card">
-    <div style="font-size:44px;margin-bottom:20px" aria-hidden="true">🔒</div>
-    <h2 id="pw-title">Pryvee Redact</h2>
-    <p>Verwijder persoonsgegevens uit PDF en DOCX — volledig in jouw browser. Wij zien nooit jouw documenten.</p>
-    <div class="pay-opts" role="group" aria-label="Kies een plan">
-      <div class="pay-opt sel" id="opt-doc" onclick="selPlan('doc')" role="radio" aria-checked="true" tabindex="0">
-        <div class="pay-price">€2,50</div>
-        <div class="pay-name">Per document</div>
-        <div class="pay-desc">Eenmalig · geen account</div>
-      </div>
-      <div class="pay-opt" id="opt-mnd" onclick="selPlan('mnd')" role="radio" aria-checked="false" tabindex="0">
-        <div class="pay-price">€29<span style="font-size:14px;font-weight:400;color:var(--muted)">/mnd</span></div>
-        <div class="pay-name">Onbeperkt</div>
-        <div class="pay-desc">Batch · alle functies</div>
-      </div>
-    </div>
-    <button class="btn-pay" onclick="doCheckout()">Doorgaan naar betaling →</button>
-    <div class="pw-demo"><a onclick="demoMode()" tabindex="0" role="button">Probeer gratis met voorbeelddocument</a></div>
-    <div class="pw-trust">
-      <span>🔒 0 bytes verzonden</span>
-      <span>🇪🇺 EU hosting</span>
-      <span>✅ AVG-compliant</span>
-    </div>
+<!-- BETA BANNER -->
+<div id="beta-banner" style="position:relative;z-index:1;background:rgba(255,235,85,0.07);border-bottom:1px solid rgba(255,235,85,0.2);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+  <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)">
+    <span style="background:rgba(255,235,85,0.15);color:var(--gold);font-family:'Geist Mono',monospace;font-size:10px;padding:3px 10px;border-radius:100px;border:1px solid rgba(255,235,85,0.3);text-transform:uppercase;letter-spacing:0.1em">Beta</span>
+    Pryvee Redact is gratis in beta. Betalingen komen binnenkort.
   </div>
+  <button onclick="document.getElementById('beta-banner').style.display='none'" style="background:none;border:none;color:var(--muted2);cursor:pointer;font-size:18px;line-height:1;padding:0 4px" aria-label="Sluiten">×</button>
 </div>
+
 
 <main id="main">
 
@@ -375,8 +357,8 @@ function doCheckout(){
   // window.location.href=urls[selPlanVal];
   showToast('⚠️ Stripe nog niet gekoppeld — gebruik demo-modus','warn');
 }
-function demoMode(){document.getElementById('paywall').style.display='none';loadDemo();showToast('✅ Demo-modus actief','ok')}
-function checkStripe(){const p=new URLSearchParams(location.search);if(p.get('success')==='1'){document.getElementById('paywall').style.display='none';showToast('✅ Betaling geslaagd!','ok');history.replaceState({},'',location.pathname)}}
+function demoMode(){loadDemo();showToast('✅ Demo-modus actief','ok')}
+function checkStripe(){/* paywall tijdelijk uitgeschakeld — beta */}
 
 // FILE HANDLING
 const dz=document.getElementById('dz'),fi=document.getElementById('fi');
