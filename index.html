@@ -3,307 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Pryvee brengt beveiligingsgaten, compliance-risico's en governance-issues in je Microsoft 365-omgeving in kaart — voordat ze incidenten worden.">
-<title>Pryvee — M365 Governance & Risico-intelligentie</title>
+<meta name="description" content="Pryvee — het M365 governance platform voor IT-teams en MSPs. Audit, redactie, monitoring en AI-gereedheid in één suite.">
+<title>Pryvee — M365 Governance Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --ink:        #1a0827;
-  --ink-d:      #120520;
-  --plum:       #3c1950;
-  --plum-l:     #53256f;
-  --plum-xl:    #6d3390;
-  --gold:       #ffeb55;
-  --gold-d:     #e8d400;
-  --gold-pale:  rgba(255,235,85,0.08);
-  --surface:    rgba(60,25,80,0.5);
-  --surface2:   rgba(60,25,80,0.3);
-  --border:     rgba(255,235,85,0.1);
-  --border2:    rgba(255,235,85,0.2);
-  --text:       #f0e8ff;
-  --muted:      #b8a0cc;
-  --muted2:     #7a5a90;
-  --danger:     #ff6b6b;
-  --warn:       #ffb347;
-  --ok:         #4dd9a0;
-  --r:          6px;
-  --r-lg:       12px;
-  --r-xl:       20px;
-  --nav-h:      72px;
+:root{
+  --ink:#120520;--plum:#1a0827;--plum2:#2a0f3d;--plum3:#3c1950;
+  --gold:#ffeb55;--gold-d:#e8d400;
+  --border:rgba(255,235,85,0.1);--border2:rgba(255,235,85,0.2);
+  --text:#f0e8ff;--muted:#b8a0cc;--muted2:#7a5a90;
+  --ok:#4dd9a0;--warn:#ffb347;--danger:#ff6b6b;
+  --r:6px;--r-lg:12px;--r-xl:20px;--nav:72px
 }
-*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
-html { scroll-behavior:smooth }
-body {
-  background: var(--ink-d);
-  color: var(--text);
-  font-family: 'Instrument Sans', sans-serif;
-  font-weight: 400;
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:'Instrument Sans',sans-serif;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,235,85,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,235,85,.018) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}.reveal{opacity:1!important;transform:none!important}}
+.skip{position:absolute;top:-100px;left:20px;background:var(--gold);color:var(--ink);padding:10px 22px;border-radius:0 0 var(--r) var(--r);font-weight:600;font-size:13px;text-decoration:none;z-index:9999;transition:top .2s}
+.skip:focus{top:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
 
-/* Subtle grid */
-body::before {
-  content:'';
-  position:fixed; inset:0;
-  background-image:
-    linear-gradient(rgba(255,235,85,0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,235,85,0.018) 1px, transparent 1px);
-  background-size: 64px 64px;
-  pointer-events:none; z-index:0;
-}
+/* ORB */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
+.orb-1{width:800px;height:600px;background:radial-gradient(ellipse,rgba(109,51,144,.35) 0%,transparent 70%);top:-200px;left:-200px}
+.orb-2{width:500px;height:500px;background:radial-gradient(ellipse,rgba(255,235,85,.05) 0%,transparent 70%);bottom:0;right:-100px}
 
-/* WCAG */
-.skip { position:absolute; top:-100px; left:20px; background:var(--gold); color:var(--ink-d); padding:10px 22px; border-radius:0 0 var(--r) var(--r); font-weight:600; font-size:13px; text-decoration:none; z-index:9999; transition:top .2s; font-family:'Bricolage Grotesque',sans-serif }
-.skip:focus { top:0 }
-:focus-visible { outline:2px solid var(--gold); outline-offset:3px; border-radius:3px }
-@media(prefers-reduced-motion:reduce){ *,*::before,*::after{ animation-duration:.01ms!important; transition-duration:.01ms!important } .reveal,.anim-up{ opacity:1!important; transform:none!important } }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);display:flex;align-items:center;justify-content:space-between;padding:0 52px;background:rgba(18,5,32,.88);backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:20px;letter-spacing:-.3px;color:var(--text);text-decoration:none}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2px;list-style:none;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;padding:9px 15px;border-radius:var(--r);min-height:42px;display:flex;align-items:center;transition:all .18s}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-nav{background:var(--gold);color:var(--ink);padding:9px 20px;border-radius:var(--r);font-weight:600;font-size:13px;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;transition:all .18s;min-height:38px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-nav:hover{background:var(--gold-d);transform:translateY(-1px)}
+.ham{display:none;background:none;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;color:var(--muted);min-height:42px;min-width:42px;align-items:center;justify-content:center;font-size:18px;transition:all .18s}
+.ham:hover{color:var(--text)}
+.drawer{display:none;flex-direction:column;position:fixed;top:var(--nav);left:0;right:0;background:rgba(18,5,32,.97);backdrop-filter:blur(28px);border-bottom:1px solid var(--border);padding:16px 24px 28px;z-index:190}
+.drawer.open{display:flex}
+.drawer a{color:var(--muted);text-decoration:none;font-size:16px;padding:14px 16px;border-radius:var(--r-lg);min-height:50px;display:flex;align-items:center;transition:all .2s}
+.drawer a:hover{color:var(--text);background:rgba(255,235,85,.05)}
+.drawer .btn-nav{margin-top:8px;justify-content:center;border:none}
 
-/* ── ORBS ── */
-.orb { position:fixed; border-radius:50%; pointer-events:none; z-index:0; filter:blur(100px) }
-.orb-1 { width:900px; height:700px; background:radial-gradient(ellipse, rgba(109,51,144,0.35) 0%, transparent 70%); top:-300px; left:-200px }
-.orb-2 { width:600px; height:600px; background:radial-gradient(ellipse, rgba(255,235,85,0.06) 0%, transparent 70%); bottom:0; right:-100px }
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:calc(var(--nav) + 80px) 24px 100px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,235,85,.25);background:rgba(255,235,85,.06);border-radius:100px;padding:6px 18px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:40px;opacity:0;animation:up .6s .1s forwards}
+.edot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);animation:blink 2.4s ease-in-out infinite}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(42px,8vw,92px);line-height:.92;letter-spacing:-3.5px;max-width:980px;margin-bottom:30px;opacity:0;animation:up .7s .2s forwards}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero h1 .hl{-webkit-text-stroke:1.5px var(--gold);color:transparent}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--muted);max-width:520px;line-height:1.8;margin-bottom:52px;opacity:0;animation:up .7s .35s forwards}
+.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;opacity:0;animation:up .7s .5s forwards}
+.btn-primary{background:var(--gold);color:var(--ink);padding:14px 30px;border-radius:var(--r);font-weight:600;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.3px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:48px;transition:all .2s;box-shadow:0 0 40px rgba(255,235,85,.2);white-space:nowrap}
+.btn-primary:hover{background:var(--gold-d);transform:translateY(-2px);box-shadow:0 4px 60px rgba(255,235,85,.3)}
+.btn-secondary{color:var(--muted);padding:14px 22px;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:48px;border:1px solid var(--border2);border-radius:var(--r);transition:all .2s;white-space:nowrap}
+.btn-secondary:hover{color:var(--text);border-color:rgba(255,235,85,.35)}
 
-/* ── NAV ── */
-nav.bar {
-  position:fixed; top:0; left:0; right:0; z-index:200;
-  height:var(--nav-h);
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 52px;
-  background: rgba(18,5,32,0.85);
-  backdrop-filter: blur(28px) saturate(1.6);
-  border-bottom: 1px solid var(--border);
-}
-.logo { font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:20px; letter-spacing:-0.3px; color:var(--text); text-decoration:none; display:flex; align-items:center; gap:3px }
-.logo-accent { color:var(--gold) }
-.nav-center { display:flex; gap:2px; list-style:none; align-items:center }
-.nav-center a { color:var(--muted); text-decoration:none; font-size:14px; font-weight:400; padding:9px 15px; border-radius:var(--r); min-height:42px; display:flex; align-items:center; transition:color .18s, background .18s; letter-spacing:-0.1px }
-.nav-center a:hover { color:var(--text); background:rgba(255,255,255,0.05) }
-.nav-right { display:flex; align-items:center; gap:10px }
-.btn-nav { background:var(--gold); color:var(--ink-d); padding:9px 20px; border-radius:var(--r); font-weight:600; font-size:13px; text-decoration:none; font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-0.2px; transition:all .18s; min-height:38px; display:flex; align-items:center; gap:6px }
-.btn-nav:hover { background:var(--gold-d); transform:translateY(-1px) }
-
-/* hamburger */
-.ham { display:none; background:none; border:1px solid var(--border2); border-radius:var(--r); cursor:pointer; color:var(--muted); min-height:42px; min-width:42px; align-items:center; justify-content:center; font-size:18px; transition:all .18s }
-.ham:hover { color:var(--text); border-color:rgba(255,235,85,0.35) }
-.drawer { display:none; flex-direction:column; position:fixed; top:var(--nav-h); left:0; right:0; background:rgba(18,5,32,0.97); backdrop-filter:blur(28px); border-bottom:1px solid var(--border); padding:16px 24px 28px; z-index:190 }
-.drawer.open { display:flex }
-.drawer a { color:var(--muted); text-decoration:none; font-size:16px; padding:14px 16px; border-radius:var(--r-lg); min-height:50px; display:flex; align-items:center; transition:all .2s; border:1px solid transparent }
-.drawer a:hover { color:var(--text); background:rgba(255,235,85,0.05); border-color:var(--border2) }
-.drawer .btn-nav { margin-top:8px; justify-content:center; border:none }
-
-/* ── HERO ── */
-.hero {
-  position:relative; z-index:1;
-  min-height:100vh; display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  text-align:center; padding:calc(var(--nav-h) + 80px) 24px 100px;
-}
-.eyebrow {
-  display:inline-flex; align-items:center; gap:8px;
-  border:1px solid rgba(255,235,85,0.25);
-  background:rgba(255,235,85,0.06);
-  border-radius:100px; padding:6px 18px;
-  font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
-  color:var(--gold); margin-bottom:44px;
-  opacity:0; animation:up .6s .1s forwards;
-}
-.eyebrow-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); box-shadow:0 0 8px var(--gold); animation:blink 2.4s ease-in-out infinite }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
-@keyframes up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-
-.hero h1 {
-  font-family:'Bricolage Grotesque',sans-serif; font-weight:800;
-  font-size:clamp(44px,8vw,96px); line-height:.92; letter-spacing:-3.5px;
-  max-width:1000px; margin-bottom:32px;
-  opacity:0; animation:up .7s .2s forwards;
-}
-.hero h1 em { font-style:normal; color:var(--gold) }
-.hero h1 .hollow { -webkit-text-stroke:1.5px var(--gold); color:transparent }
-
-.hero-sub {
-  font-size:clamp(15px,1.8vw,18px); color:var(--muted); max-width:520px;
-  line-height:1.8; margin-bottom:56px; font-weight:400;
-  opacity:0; animation:up .7s .35s forwards;
-}
-.hero-actions {
-  display:flex; gap:14px; align-items:center; flex-wrap:wrap; justify-content:center;
-  opacity:0; animation:up .7s .5s forwards;
-}
-.btn-primary { background:var(--gold); color:var(--ink-d); padding:14px 30px; border-radius:var(--r); font-weight:600; font-size:15px; font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-0.3px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; min-height:48px; transition:all .2s; box-shadow:0 0 40px rgba(255,235,85,0.2); white-space:nowrap }
-.btn-primary:hover { background:var(--gold-d); transform:translateY(-2px); box-shadow:0 4px 60px rgba(255,235,85,0.3) }
-.btn-secondary { color:var(--muted); padding:14px 22px; font-size:15px; font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-0.2px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; min-height:48px; border:1px solid var(--border2); border-radius:var(--r); transition:all .2s; white-space:nowrap }
-.btn-secondary:hover { color:var(--text); border-color:rgba(255,235,85,0.35) }
-
-/* ── HERO MOCK ── */
-.hero-mock {
-  margin-top:80px; max-width:1020px; width:100%; position:relative;
-  opacity:0; animation:up .9s .7s forwards;
-}
-.hero-mock::before {
-  content:''; position:absolute; inset:-1px;
-  background:linear-gradient(175deg, rgba(255,235,85,0.18) 0%, transparent 50%);
-  border-radius:calc(var(--r-xl)+1px); z-index:-1; pointer-events:none;
-}
-.mock-frame { background:rgba(26,8,39,0.95); border:1px solid var(--border2); border-radius:var(--r-xl); overflow:hidden }
-.mock-bar { display:flex; align-items:center; gap:7px; padding:14px 20px; background:rgba(18,5,32,0.8); border-bottom:1px solid var(--border) }
-.mdot { width:10px; height:10px; border-radius:50% }
-.mdot:nth-child(1){background:#ff5f57} .mdot:nth-child(2){background:#febc2e} .mdot:nth-child(3){background:#28c840}
-.mock-url { font-family:'Geist Mono',monospace; font-size:11px; color:var(--muted2); background:rgba(255,255,255,0.04); padding:4px 14px; border-radius:4px; margin-left:auto; letter-spacing:0.03em }
-.mock-body { padding:20px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px }
-.mc { background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:var(--r-lg); padding:20px; position:relative; overflow:hidden }
-.mc.r{border-color:rgba(255,107,107,0.2)} .mc.a{border-color:rgba(255,179,71,0.2)} .mc.g{border-color:rgba(77,217,160,0.2)}
-.mc-lbl { font-family:'Geist Mono',monospace; font-size:10px; color:var(--muted2); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px }
-.mc-val { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:38px; line-height:1; letter-spacing:-1.5px }
-.mc.r .mc-val{color:var(--danger)} .mc.a .mc-val{color:var(--warn)} .mc.g .mc-val{color:var(--ok)}
-.mc-sub { font-size:11px; color:var(--muted); margin-top:5px }
-.mc-bar { position:absolute; bottom:0; left:0; height:2px }
-.mc.r .mc-bar{background:var(--danger);width:32%;box-shadow:0 0 8px var(--danger)}
-.mc.a .mc-bar{background:var(--warn);width:58%;box-shadow:0 0 8px var(--warn)}
-.mc.g .mc-bar{background:var(--ok);width:87%;box-shadow:0 0 8px var(--ok)}
-.mfinds { grid-column:span 3; background:rgba(255,255,255,0.025); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden }
-.mf-head { padding:11px 18px; border-bottom:1px solid var(--border); font-family:'Geist Mono',monospace; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; display:flex; justify-content:space-between; align-items:center }
-.mf-badge { background:rgba(255,107,107,0.12); color:var(--danger); border-radius:4px; padding:2px 9px; font-size:10px }
-.mfind { display:flex; align-items:center; gap:12px; padding:12px 18px; border-bottom:1px solid var(--border) }
+/* MOCK */
+.hero-mock{margin-top:72px;max-width:1000px;width:100%;position:relative;opacity:0;animation:up .9s .7s forwards}
+.hero-mock::before{content:'';position:absolute;inset:-1px;background:linear-gradient(175deg,rgba(255,235,85,.18) 0%,transparent 50%);border-radius:21px;z-index:-1;pointer-events:none}
+.mock-frame{background:rgba(26,8,39,.95);border:1px solid var(--border2);border-radius:var(--r-xl);overflow:hidden}
+.mock-bar{display:flex;align-items:center;gap:7px;padding:13px 20px;background:rgba(18,5,32,.8);border-bottom:1px solid var(--border)}
+.mdot{width:10px;height:10px;border-radius:50%}
+.mdot:nth-child(1){background:#ff5f57}.mdot:nth-child(2){background:#febc2e}.mdot:nth-child(3){background:#28c840}
+.mock-url{font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2);background:rgba(255,255,255,.04);padding:4px 14px;border-radius:4px;margin-left:auto}
+.mock-body{padding:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mc{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;position:relative;overflow:hidden}
+.mc.r{border-color:rgba(255,107,107,.2)}.mc.a{border-color:rgba(255,179,71,.2)}.mc.g{border-color:rgba(77,217,160,.2)}
+.mc-lbl{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.mc-val{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:36px;line-height:1;letter-spacing:-1.5px}
+.mc.r .mc-val{color:var(--danger)}.mc.a .mc-val{color:var(--warn)}.mc.g .mc-val{color:var(--ok)}
+.mc-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.mc-bar{position:absolute;bottom:0;left:0;height:2px}
+.mc.r .mc-bar{background:var(--danger);width:32%}.mc.a .mc-bar{background:var(--warn);width:58%}.mc.g .mc-bar{background:var(--ok);width:87%}
+.mfinds{grid-column:span 3;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.mf-head{padding:10px 16px;border-bottom:1px solid var(--border);font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center}
+.mf-badge{background:rgba(255,107,107,.12);color:var(--danger);border-radius:4px;padding:2px 9px;font-size:10px}
+.mfind{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border)}
 .mfind:last-child{border-bottom:none}
-.mf-icon { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0 }
-.mf-icon.r{background:rgba(255,107,107,0.1)} .mf-icon.y{background:rgba(255,179,71,0.1)}
-.mf-info { flex:1; min-width:0 }
-.mf-t { font-size:13px; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-.mf-d { font-size:11px; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-.mf-b { font-family:'Geist Mono',monospace; font-size:10px; padding:3px 9px; border-radius:4px; text-transform:uppercase; flex-shrink:0 }
-.mf-b.h{background:rgba(255,107,107,0.12);color:var(--danger)} .mf-b.m{background:rgba(255,179,71,0.12);color:var(--warn)}
+.mf-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.mf-icon.r{background:rgba(255,107,107,.1)}.mf-icon.y{background:rgba(255,179,71,.1)}
+.mf-info{flex:1;min-width:0}
+.mf-t{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mf-d{font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mf-b{font-family:'Geist Mono',monospace;font-size:10px;padding:3px 9px;border-radius:4px;text-transform:uppercase;flex-shrink:0}
+.mf-b.h{background:rgba(255,107,107,.12);color:var(--danger)}.mf-b.m{background:rgba(255,179,71,.12);color:var(--warn)}
 
-/* ── SECTION WRAPPER ── */
-.wrap { position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:0 52px }
-.sec { padding:120px 0 }
-.tag { font-family:'Geist Mono',monospace; font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:18px; display:flex; align-items:center; gap:10px }
-.tag::before { content:''; width:22px; height:1px; background:var(--gold) }
-.h2 { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:clamp(32px,4.5vw,56px); line-height:.93; letter-spacing:-2.5px; margin-bottom:16px }
-.lead { color:var(--muted); font-size:17px; max-width:500px; line-height:1.8; margin-bottom:64px; font-weight:400 }
+/* SECTIONS */
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 52px}
+.sec{padding:120px 0}
+.tag{font-family:'Geist Mono',monospace;font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.15em;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.tag::before{content:'';width:22px;height:1px;background:var(--gold)}
+.h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(30px,4.5vw,54px);line-height:.93;letter-spacing:-2.5px;margin-bottom:16px}
+.lead{color:var(--muted);font-size:17px;max-width:500px;line-height:1.8;margin-bottom:60px}
 
-/* ── LOGOS ── */
-.logos-sec { position:relative; z-index:1; padding:36px 52px; border-top:1px solid var(--border); border-bottom:1px solid var(--border) }
-.logos-lbl { font-family:'Geist Mono',monospace; font-size:10px; color:var(--muted2); text-transform:uppercase; letter-spacing:0.15em; text-align:center; margin-bottom:24px }
-.logos-row { display:flex; gap:48px; align-items:center; justify-content:center; flex-wrap:wrap; opacity:0.35 }
-.logos-row span { font-family:'Bricolage Grotesque',sans-serif; font-weight:600; font-size:13px; color:var(--muted); letter-spacing:0.1em }
+/* LOGOS */
+.logos-sec{position:relative;z-index:1;padding:32px 52px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.logos-lbl{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.15em;text-align:center;margin-bottom:20px}
+.logos-row{display:flex;gap:44px;align-items:center;justify-content:center;flex-wrap:wrap;opacity:.35}
+.logos-row span{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:13px;color:var(--muted);letter-spacing:.1em}
 
-/* ── PROBLEM ── */
-.prob-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px }
-.prob-card { background:rgba(60,25,80,0.3); border:1px solid var(--border); border-radius:var(--r-xl); padding:36px; transition:transform .3s,border-color .3s; position:relative; overflow:hidden }
-.prob-card:hover { transform:translateY(-4px); border-color:var(--border2) }
-.prob-card::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),transparent); opacity:0; transition:opacity .3s }
-.prob-card:hover::after { opacity:1 }
-.prob-ico { font-size:26px; margin-bottom:22px; width:52px; height:52px; border-radius:var(--r-lg); background:rgba(255,235,85,0.08); border:1px solid rgba(255,235,85,0.15); display:flex; align-items:center; justify-content:center }
-.prob-t { font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:17px; margin-bottom:10px; letter-spacing:-0.5px }
-.prob-d { font-size:14px; color:var(--muted); line-height:1.75 }
+/* MODULES */
+.modules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.mod{background:rgba(42,15,61,.5);border:1px solid var(--border);border-radius:var(--r-xl);padding:32px;display:flex;flex-direction:column;transition:all .3s;position:relative;overflow:hidden;text-decoration:none;color:inherit}
+.mod:hover{transform:translateY(-4px);border-color:var(--border2)}
+.mod.live{border-color:rgba(255,235,85,.18);background:linear-gradient(145deg,rgba(255,235,85,.05) 0%,rgba(42,15,61,.5) 60%)}
+.mod.live:hover{border-color:rgba(255,235,85,.35)}
+.mod-glow{position:absolute;top:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,235,85,.06) 0%,transparent 70%);pointer-events:none}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;padding:4px 11px;border-radius:4px;margin-bottom:20px;width:fit-content}
+.pill-live{background:rgba(77,217,160,.1);color:var(--ok)}.pill-soon{background:rgba(255,179,71,.1);color:var(--warn)}.pill-future{background:rgba(255,235,85,.08);color:var(--gold)}
+.pdot{width:5px;height:5px;border-radius:50%;background:currentColor}.pill-live .pdot{animation:blink 2s infinite}
+.mod-ico{font-size:22px;width:50px;height:50px;border-radius:var(--r-lg);background:rgba(255,235,85,.07);border:1px solid rgba(255,235,85,.14);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.mod-t{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.8px;margin-bottom:8px}
+.mod-d{color:var(--muted);font-size:13px;line-height:1.75;flex:1;margin-bottom:20px}
+.mod-feats{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:22px}
+.mod-feats li{font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:8px}
+.mod-feats li::before{content:'';width:14px;height:14px;flex-shrink:0;margin-top:1px;border-radius:3px;background:rgba(255,235,85,.07);border:1px solid rgba(255,235,85,.18);background-image:url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%23ffeb55' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.mod-price{padding-top:16px;border-top:1px solid var(--border);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.5px;margin-bottom:14px}
+.mod-price span{font-size:13px;font-weight:400;color:var(--muted)}
+.btn-mod{display:flex;align-items:center;justify-content:center;padding:11px;border-radius:var(--r);font-size:13px;font-weight:600;font-family:'Bricolage Grotesque',sans-serif;text-decoration:none;transition:all .2s;border:none;cursor:pointer}
+.btn-mod.fill{background:var(--gold);color:var(--ink)}.btn-mod.fill:hover{background:var(--gold-d);transform:translateY(-1px)}
+.btn-mod.out{border:1px solid var(--border2);color:var(--text);background:none}.btn-mod.out:hover{border-color:rgba(255,235,85,.35);color:var(--gold)}
+.mod-wide{grid-column:span 3}
+.mod-wide .mod-feats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px 24px}
+.cs-over{position:absolute;inset:0;border-radius:var(--r-xl);background:rgba(18,5,32,.7);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;z-index:2}
+.cs-t{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;letter-spacing:-.4px}
+.cs-d{font-size:13px;color:var(--muted)}
+.cs-link{margin-top:8px;padding:9px 20px;border:1px solid rgba(255,235,85,.3);border-radius:var(--r);color:var(--gold);font-size:13px;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;background:rgba(18,5,32,.8);transition:all .18s}
+.cs-link:hover{background:rgba(255,235,85,.08)}
 
-/* ── HOW ── */
-.steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative }
-.steps::before { content:''; position:absolute; top:22px; left:11%; width:78%; height:1px; background:linear-gradient(90deg,transparent,var(--border2) 15%,var(--border2) 85%,transparent) }
-.step-n { width:44px; height:44px; border-radius:var(--r-lg); border:1px solid var(--border2); background:rgba(60,25,80,0.5); display:flex; align-items:center; justify-content:center; margin-bottom:26px; position:relative; z-index:1 }
-.step-n span { font-family:'Geist Mono',monospace; font-size:14px; color:var(--gold) }
-.step-t { font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:16px; margin-bottom:10px; letter-spacing:-0.4px }
-.step-d { font-size:13px; color:var(--muted); line-height:1.7; padding-right:20px }
+/* HOW */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.steps::before{content:'';position:absolute;top:22px;left:11%;width:78%;height:1px;background:linear-gradient(90deg,transparent,var(--border2) 15%,var(--border2) 85%,transparent)}
+.step-n{width:44px;height:44px;border-radius:var(--r-lg);border:1px solid var(--border2);background:rgba(60,25,80,.5);display:flex;align-items:center;justify-content:center;margin-bottom:24px;position:relative;z-index:1}
+.step-n span{font-family:'Geist Mono',monospace;font-size:14px;color:var(--gold)}
+.step-t{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;margin-bottom:9px;letter-spacing:-.4px}
+.step-d{font-size:13px;color:var(--muted);line-height:1.7;padding-right:16px}
 
-/* ── PRODUCTS ── */
-.prod-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px }
-.prod { background:rgba(60,25,80,0.3); border:1px solid var(--border); border-radius:var(--r-xl); padding:40px; display:flex; flex-direction:column; position:relative; overflow:hidden; transition:transform .3s,border-color .3s }
-.prod:hover { transform:translateY(-4px); border-color:var(--border2) }
-.prod.active { border-color:rgba(255,235,85,0.22); background:linear-gradient(145deg,rgba(255,235,85,0.05) 0%,rgba(60,25,80,0.3) 55%) }
-.prod.active:hover { border-color:rgba(255,235,85,0.38) }
-.prod-glow { position:absolute; top:-100px; right:-100px; width:300px; height:300px; background:radial-gradient(circle,rgba(255,235,85,0.06) 0%,transparent 70%); pointer-events:none }
-.pill { display:inline-flex; align-items:center; gap:6px; font-family:'Geist Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; padding:4px 12px; border-radius:4px; margin-bottom:22px; width:fit-content }
-.pill-live { background:rgba(77,217,160,0.1); color:var(--ok) }
-.pill-soon { background:rgba(255,179,71,0.1); color:var(--warn) }
-.pill-future { background:rgba(255,235,85,0.1); color:var(--gold) }
-.pill-dot { width:5px; height:5px; border-radius:50%; background:currentColor }
-.pill-live .pill-dot { animation:blink 2s infinite }
-.prod-ico { font-size:24px; width:54px; height:54px; border-radius:var(--r-lg); background:rgba(255,235,85,0.08); border:1px solid rgba(255,235,85,0.15); display:flex; align-items:center; justify-content:center; margin-bottom:22px; flex-shrink:0 }
-.prod-t { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:26px; letter-spacing:-1px; margin-bottom:10px }
-.prod-sub { color:var(--muted); font-size:14px; line-height:1.75; margin-bottom:22px; flex:1 }
-.feat-list { list-style:none; display:flex; flex-direction:column; gap:8px; margin-bottom:28px }
-.feat-list li { font-size:13px; color:var(--muted); display:flex; align-items:flex-start; gap:10px }
-.feat-list li::before { content:''; width:16px; height:16px; flex-shrink:0; margin-top:1px; border-radius:4px; background:rgba(255,235,85,0.08); border:1px solid rgba(255,235,85,0.2); background-image:url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%23ffeb55' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:center }
-.prod-price { padding-top:20px; border-top:1px solid var(--border); display:flex; align-items:baseline; gap:6px; margin-bottom:16px }
-.price-n { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:28px; letter-spacing:-1px }
-.price-s { font-size:13px; color:var(--muted) }
-.btn-prod { display:flex; align-items:center; justify-content:center; padding:13px; min-height:48px; border-radius:var(--r); font-size:14px; font-weight:600; font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-0.2px; text-decoration:none; transition:all .2s; cursor:pointer; border:none }
-.btn-prod.fill { background:var(--gold); color:var(--ink-d); box-shadow:0 0 30px rgba(255,235,85,0.2) }
-.btn-prod.fill:hover { background:var(--gold-d); transform:translateY(-1px) }
-.btn-prod.out { background:transparent; color:var(--text); border:1px solid var(--border2) }
-.btn-prod.out:hover { border-color:rgba(255,235,85,0.35); color:var(--gold) }
+/* PRICING */
+.price-tabs{display:flex;gap:6px;margin-bottom:40px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-lg);padding:5px;width:fit-content}
+.ptab{padding:9px 22px;border-radius:var(--r);font-size:13px;font-weight:600;font-family:'Bricolage Grotesque',sans-serif;cursor:pointer;border:none;background:none;color:var(--muted);transition:all .2s}
+.ptab.active{background:var(--gold);color:var(--ink)}
+.price-panel{display:none}.price-panel.active{display:block}
 
-/* coming soon overlay */
-.cs-over { position:absolute; inset:0; border-radius:var(--r-xl); background:rgba(18,5,32,0.65); backdrop-filter:blur(3px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; z-index:2 }
-.cs-t { font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:20px; color:var(--text); letter-spacing:-0.5px }
-.cs-d { font-size:13px; color:var(--muted) }
+/* LOSSE MODULES PRIJZEN */
+.price-modules{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px}
+.pm{background:rgba(42,15,61,.4);border:1px solid var(--border);border-radius:var(--r-xl);padding:28px 32px;display:flex;align-items:center;gap:24px}
+.pm-ico{font-size:22px;width:48px;height:48px;border-radius:var(--r-lg);background:rgba(255,235,85,.07);border:1px solid rgba(255,235,85,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pm-info{flex:1}
+.pm-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.4px;margin-bottom:3px}
+.pm-desc{font-size:13px;color:var(--muted);margin-bottom:10px}
+.pm-prices{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.pm-price{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.5px;color:var(--gold)}
+.pm-price span{font-size:12px;font-weight:400;color:var(--muted)}
+.pm-or{font-size:11px;color:var(--muted2);font-family:'Geist Mono',monospace}
+.pm-cta{font-size:12px;font-weight:600;font-family:'Bricolage Grotesque',sans-serif;color:var(--gold);text-decoration:none;border:1px solid rgba(255,235,85,.2);padding:6px 14px;border-radius:var(--r);transition:all .18s;white-space:nowrap}
+.pm-cta:hover{background:rgba(255,235,85,.08)}
+.pm-soon{font-size:11px;font-family:'Geist Mono',monospace;color:var(--warn);background:rgba(255,179,71,.08);padding:4px 10px;border-radius:4px}
 
-/* wide */
-.prod.wide { grid-column:span 2 }
-.prod.wide .feat-list { display:grid; grid-template-columns:1fr 1fr; gap:8px 28px }
+/* SUITE PRIJZEN */
+.suite-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.plan{background:rgba(42,15,61,.4);border:1px solid var(--border);border-radius:var(--r-xl);padding:36px;position:relative;transition:transform .3s;display:flex;flex-direction:column}
+.plan:hover{transform:translateY(-4px)}
+.plan.hi{border-color:rgba(255,235,85,.25);background:linear-gradient(160deg,rgba(255,235,85,.06) 0%,rgba(42,15,61,.4) 55%)}
+.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-family:'Geist Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:4px 16px;border-radius:100px;white-space:nowrap}
+.plan-n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;margin-bottom:5px;letter-spacing:-.5px}
+.plan-d{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55}
+.plan-p{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;letter-spacing:-2.5px;line-height:1;margin-bottom:3px}
+.plan-p sub{font-size:20px;font-weight:400;color:var(--muted)}
+.plan-per{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:22px;text-transform:uppercase;letter-spacing:.06em}
+.plan-div{height:1px;background:var(--border);margin-bottom:20px}
+.plan-inc{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px;flex:1}
+.plan-feats li{font-size:13px;color:var(--muted);display:flex;gap:9px;align-items:flex-start}
+.plan-feats li::before{content:'';width:16px;height:16px;flex-shrink:0;margin-top:1px;background-image:url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7.5' stroke='rgba(255,235,85,0.25)'/%3E%3Cpath d='M5 8L7 10L11 6' stroke='%23ffeb55' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.btn-plan{display:flex;align-items:center;justify-content:center;padding:13px;min-height:48px;border-radius:var(--r);font-size:14px;font-weight:600;font-family:'Bricolage Grotesque',sans-serif;text-decoration:none;transition:all .2s;margin-top:auto}
+.btn-plan.out{border:1px solid var(--border2);color:var(--text)}.btn-plan.out:hover{border-color:rgba(255,235,85,.35);color:var(--gold)}
+.btn-plan.fill{background:var(--gold);color:var(--ink);box-shadow:0 0 30px rgba(255,235,85,.2)}.btn-plan.fill:hover{background:var(--gold-d)}
 
-/* ── PRICING ── */
-.price-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px }
-.plan { background:rgba(60,25,80,0.3); border:1px solid var(--border); border-radius:var(--r-xl); padding:36px; position:relative; transition:transform .3s }
-.plan:hover { transform:translateY(-4px) }
-.plan.hi { border-color:rgba(255,235,85,0.25); background:linear-gradient(160deg,rgba(255,235,85,0.06) 0%,rgba(60,25,80,0.3) 55%) }
-.plan-badge { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--gold); color:var(--ink-d); font-family:'Geist Mono',monospace; font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; padding:4px 16px; border-radius:100px; white-space:nowrap }
-.plan-n { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:20px; margin-bottom:6px; letter-spacing:-0.5px }
-.plan-d { font-size:13px; color:var(--muted); margin-bottom:24px; line-height:1.55 }
-.plan-p { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:48px; letter-spacing:-2.5px; line-height:1; margin-bottom:4px }
-.plan-p sub { font-size:22px; font-weight:400; color:var(--muted) }
-.plan-per { font-family:'Geist Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:24px; text-transform:uppercase; letter-spacing:0.06em }
-.plan-div { height:1px; background:var(--border); margin-bottom:22px }
-.plan-feats { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:28px }
-.plan-feats li { font-size:13px; color:var(--muted); display:flex; gap:10px; align-items:flex-start }
-.plan-feats li::before { content:''; width:16px; height:16px; flex-shrink:0; margin-top:1px; background-image:url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7.5' stroke='rgba(255,235,85,0.25)'/%3E%3Cpath d='M5 8L7 10L11 6' stroke='%23ffeb55' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:center }
-.btn-plan { display:flex; align-items:center; justify-content:center; padding:13px; min-height:48px; border-radius:var(--r); font-size:14px; font-weight:600; font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-0.2px; text-decoration:none; transition:all .2s }
-.btn-plan.out { border:1px solid var(--border2); color:var(--text) }
-.btn-plan.out:hover { border-color:rgba(255,235,85,0.35); color:var(--gold) }
-.btn-plan.fill { background:var(--gold); color:var(--ink-d); box-shadow:0 0 30px rgba(255,235,85,0.2) }
-.btn-plan.fill:hover { background:var(--gold-d) }
+/* SAVE BADGE */
+.save-badge{background:rgba(77,217,160,.1);color:var(--ok);font-family:'Geist Mono',monospace;font-size:10px;padding:3px 10px;border-radius:4px;margin-left:8px;vertical-align:middle}
 
-/* ── CTA STRIP ── */
-.cta-strip { position:relative; z-index:1; margin:0 52px 100px; padding:80px 64px; text-align:center; border-radius:var(--r-xl); border:1px solid rgba(255,235,85,0.18); overflow:hidden }
-.cta-strip::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,235,85,0.07) 0%,rgba(60,25,80,0.4) 55%,rgba(109,51,144,0.12) 100%); z-index:0 }
-.cta-strip > * { position:relative; z-index:1 }
-.cta-strip h2 { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:clamp(28px,4vw,50px); letter-spacing:-2px; margin-bottom:16px; line-height:.95 }
-.cta-strip p { color:var(--muted); font-size:17px; margin-bottom:44px }
-.cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap }
+/* CTA */
+.cta-strip{position:relative;z-index:1;margin:0 52px 100px;padding:80px 64px;text-align:center;border-radius:var(--r-xl);border:1px solid rgba(255,235,85,.18);overflow:hidden}
+.cta-strip::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,235,85,.07) 0%,rgba(60,25,80,.4) 55%,rgba(109,51,144,.12) 100%);z-index:0}
+.cta-strip>*{position:relative;z-index:1}
+.cta-strip h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(26px,4vw,48px);letter-spacing:-2px;margin-bottom:14px;line-height:.95}
+.cta-strip p{color:var(--muted);font-size:17px;margin-bottom:40px}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
-/* ── FOOTER ── */
-footer { position:relative; z-index:1; border-top:1px solid var(--border); padding:36px 52px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px }
-.f-links { display:flex; gap:28px; list-style:none; flex-wrap:wrap }
-.f-links a { font-size:13px; color:var(--muted); text-decoration:none; transition:color .18s }
-.f-links a:hover { color:var(--text) }
-.f-copy { font-family:'Geist Mono',monospace; font-size:11px; color:var(--muted2) }
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36px 52px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.f-links{display:flex;gap:28px;list-style:none;flex-wrap:wrap}
+.f-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .18s}
+.f-links a:hover{color:var(--text)}
+.f-copy{font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2)}
 
-/* ── REVEAL ── */
-.reveal { opacity:0; transform:translateY(24px); transition:opacity .65s ease,transform .65s ease }
-.reveal.in { opacity:1; transform:translateY(0) }
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media(max-width:960px){
-  nav.bar{padding:0 20px}
-  .nav-center{display:none}
+  nav{padding:0 20px}
+  .nav-links{display:none}
   .ham{display:flex}
   .wrap{padding:0 20px}
-  .logos-sec{padding:28px 20px}
-  .prob-grid{grid-template-columns:1fr}
+  .logos-sec{padding:24px 20px}
+  .modules-grid{grid-template-columns:1fr}
+  .mod-wide{grid-column:span 1}
+  .mod-wide .mod-feats{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr;gap:24px}
   .steps::before{display:none}
-  .prod-grid{grid-template-columns:1fr}
-  .prod.wide{grid-column:span 1}
-  .prod.wide .feat-list{grid-template-columns:1fr}
-  .price-grid{grid-template-columns:1fr}
-  .cta-strip{margin:0 20px 60px;padding:48px 28px}
+  .price-modules{grid-template-columns:1fr}
+  .suite-grid{grid-template-columns:1fr}
+  .pm{flex-direction:column;align-items:flex-start;gap:14px}
+  .cta-strip{margin:0 20px 60px;padding:48px 24px}
   .cta-btns{flex-direction:column}
   .cta-btns a{width:100%;justify-content:center}
-  footer{padding:28px 20px;flex-direction:column;align-items:flex-start}
-  .hero-mock{margin-top:60px}
+  footer{padding:24px 20px;flex-direction:column;align-items:flex-start}
+  .hero-mock{margin-top:56px}
   .hero-actions{flex-direction:column;width:100%;max-width:380px}
   .btn-primary,.btn-secondary{width:100%;justify-content:center}
   .mock-body{grid-template-columns:1fr}
@@ -312,7 +236,7 @@ footer { position:relative; z-index:1; border-top:1px solid var(--border); paddi
 @media(max-width:560px){
   .steps{grid-template-columns:1fr}
   .hero h1{letter-spacing:-2px}
-  .hero h1 .hollow{-webkit-text-stroke:1px var(--gold)}
+  .hero h1 .hl{-webkit-text-stroke:1px var(--gold)}
 }
 </style>
 </head>
@@ -320,61 +244,58 @@ footer { position:relative; z-index:1; border-top:1px solid var(--border); paddi
 
 <div class="orb orb-1" aria-hidden="true"></div>
 <div class="orb orb-2" aria-hidden="true"></div>
-
 <a href="#main" class="skip">Naar hoofdinhoud</a>
 
 <!-- NAV -->
-<nav class="bar" aria-label="Hoofdnavigatie">
-  <a href="index.html" class="logo">Pry<span class="logo-accent">vee</span></a>
-  <ul class="nav-center" id="dnav">
+<nav aria-label="Hoofdnavigatie">
+  <a href="index.html" class="logo">Pry<span>vee</span></a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#modules">Modules</a></li>
     <li><a href="#how">Hoe het werkt</a></li>
-    <li><a href="#products">Producten</a></li>
     <li><a href="#pricing">Prijzen</a></li>
   </ul>
   <div class="nav-right">
-    <a href="#" class="btn-nav" style="display:none" id="dnav-cta">Ga van start →</a>
-    <button class="ham" id="ham" aria-label="Menu openen" aria-expanded="false" aria-controls="drawer">☰</button>
+    <button class="ham" id="ham" aria-label="Menu openen" aria-expanded="false">&#9776;</button>
+    <a href="snapshot.html" class="btn-nav">Aan de slag &#8594;</a>
   </div>
-  <a href="#" class="btn-nav" id="cta-nav" style="position:relative;z-index:1">Ga van start →</a>
 </nav>
 
 <nav class="drawer" id="drawer" aria-label="Mobiele navigatie">
-  <a href="#how"      onclick="closeD()">Hoe het werkt</a>
-  <a href="#products" onclick="closeD()">Producten</a>
-  <a href="#pricing"  onclick="closeD()">Prijzen</a>
-  <a href="#" class="btn-nav" onclick="closeD()">Ga van start →</a>
+  <a href="#modules" onclick="closeD()">Modules</a>
+  <a href="#how" onclick="closeD()">Hoe het werkt</a>
+  <a href="#pricing" onclick="closeD()">Prijzen</a>
+  <a href="snapshot.html" class="btn-nav" onclick="closeD()">Aan de slag &#8594;</a>
 </nav>
 
 <main id="main">
 
 <!-- HERO -->
-<section class="hero" aria-labelledby="h1">
-  <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Nu in early access</div>
-  <h1 id="h1">
-    Jouw M365-omgeving.<br>
-    <em>Volledig</em> <span class="hollow">inzichtelijk.</span>
+<section class="hero" aria-labelledby="hero-h1">
+  <div class="eyebrow"><span class="edot" aria-hidden="true"></span>Early access — nu beschikbaar</div>
+  <h1 id="hero-h1">
+    M365 governance.<br>
+    <em>Eenvoudig</em> <span class="hl">inzichtelijk.</span>
   </h1>
-  <p class="hero-sub">Pryvee brengt beveiligingsgaten, compliance-risico's en governance-issues in je Microsoft 365-omgeving in kaart — voordat ze incidenten worden.</p>
+  <p class="hero-sub">Pryvee geeft IT-teams en MSPs directe controle over beveiliging, compliance en privacy in Microsoft 365 — zonder complexe tooling.</p>
   <div class="hero-actions">
-    <a href="#products" class="btn-primary">Ontdek de producten ↓</a>
-    <a href="#how"      class="btn-secondary">Hoe werkt het? ↓</a>
+    <a href="snapshot.html" class="btn-primary">Start met Snapshot &#8594;</a>
+    <a href="#modules" class="btn-secondary">Bekijk alle modules &#8595;</a>
   </div>
-
-  <div class="hero-mock" role="img" aria-label="Pryvee dashboard preview">
+  <div class="hero-mock" role="img" aria-label="Pryvee Snapshot dashboard preview">
     <div class="mock-frame">
       <div class="mock-bar" aria-hidden="true">
         <div class="mdot"></div><div class="mdot"></div><div class="mdot"></div>
         <div class="mock-url">app.pryvee.io / snapshot / contoso</div>
       </div>
       <div class="mock-body" aria-hidden="true">
-        <div class="mc r"><div class="mc-lbl">Secure Score</div><div class="mc-val">32%</div><div class="mc-sub">Kritiek — 18 openstaande bevindingen</div><div class="mc-bar"></div></div>
-        <div class="mc a"><div class="mc-lbl">MFA-dekking</div><div class="mc-val">58%</div><div class="mc-sub">42% van de gebruikers onbeschermd</div><div class="mc-bar"></div></div>
-        <div class="mc g"><div class="mc-lbl">Apparaatcompliance</div><div class="mc-val">87%</div><div class="mc-sub">11 niet-conforme apparaten</div><div class="mc-bar"></div></div>
+        <div class="mc r"><div class="mc-lbl">Secure Score</div><div class="mc-val">32%</div><div class="mc-sub">18 openstaande bevindingen</div><div class="mc-bar"></div></div>
+        <div class="mc a"><div class="mc-lbl">MFA-dekking</div><div class="mc-val">58%</div><div class="mc-sub">42% onbeschermd</div><div class="mc-bar"></div></div>
+        <div class="mc g"><div class="mc-lbl">Apparaatcompliance</div><div class="mc-val">87%</div><div class="mc-sub">11 niet-conform</div><div class="mc-bar"></div></div>
         <div class="mfinds">
           <div class="mf-head"><span>Risicobevindingen</span><span class="mf-badge">7 kritiek</span></div>
-          <div class="mfind"><div class="mf-icon r">🔓</div><div class="mf-info"><div class="mf-t">MFA uitgeschakeld voor 47 gebruikers</div><div class="mf-d">Inclusief 3 beheerdersaccounts — directe actie vereist</div></div><span class="mf-b h">Hoog</span></div>
-          <div class="mfind"><div class="mf-icon y">👥</div><div class="mf-info"><div class="mf-t">124 verlopen gastaccounts</div><div class="mf-d">Geen activiteit in 180+ dagen, extern delen ingeschakeld</div></div><span class="mf-b m">Gemiddeld</span></div>
-          <div class="mfind"><div class="mf-icon r">🔍</div><div class="mf-info"><div class="mf-t">Geen actief Conditional Access-beleid</div><div class="mf-d">Aanmeldingen vanaf elke locatie zijn toegestaan</div></div><span class="mf-b h">Hoog</span></div>
+          <div class="mfind"><div class="mf-icon r">&#128275;</div><div class="mf-info"><div class="mf-t">MFA uitgeschakeld voor 47 gebruikers</div><div class="mf-d">Inclusief 3 beheerdersaccounts</div></div><span class="mf-b h">Hoog</span></div>
+          <div class="mfind"><div class="mf-icon y">&#128101;</div><div class="mf-info"><div class="mf-t">124 verlopen gastaccounts</div><div class="mf-d">Geen activiteit in 180+ dagen</div></div><span class="mf-b m">Gemiddeld</span></div>
+          <div class="mfind"><div class="mf-icon r">&#128269;</div><div class="mf-info"><div class="mf-t">Geen Conditional Access-beleid</div><div class="mf-d">Aanmeldingen vanaf elke locatie</div></div><span class="mf-b h">Hoog</span></div>
         </div>
       </div>
     </div>
@@ -383,33 +304,123 @@ footer { position:relative; z-index:1; border-top:1px solid var(--border); paddi
 
 <!-- LOGOS -->
 <div class="logos-sec" aria-label="Vertrouwd door">
-  <div class="logos-lbl">Vertrouwd door IT-teams en MSP's door heel Europa</div>
+  <div class="logos-lbl">Vertrouwd door IT-teams en MSPs door heel Europa</div>
   <div class="logos-row" aria-hidden="true">
     <span>ICTGROUP</span><span>CYBERWISE</span><span>NORDCLOUD</span><span>TECHVISION</span><span>CLOUDBASE</span>
   </div>
 </div>
 
-<!-- PROBLEM -->
-<section class="reveal" aria-labelledby="prob-h">
+<!-- MODULES -->
+<section class="reveal" id="modules" aria-labelledby="mod-h">
   <div class="wrap sec">
-    <div class="tag">Het probleem</div>
-    <h2 class="h2" id="prob-h">Microsoft 365 groeit.<br>Je risico ook.</h2>
-    <p class="lead">Elke nieuwe gebruiker, elk gastaccount en elke app-koppeling vergroot het aanvalsoppervlak. Zonder zichtbaarheid ben je blind voor de risico's die al in je tenant zitten.</p>
-    <div class="prob-grid" role="list">
-      <div class="prob-card" role="listitem">
-        <div class="prob-ico" aria-hidden="true">🔐</div>
-        <h3 class="prob-t">Zwakke identiteitsbeveiliging</h3>
-        <p class="prob-d">MFA-gaps, verlopen gastaccounts en afwezige Conditional Access zijn de meest voorkomende instappunten bij inbreuken. Ze zitten al in je tenant — vaak zonder dat iemand het weet.</p>
+    <div class="tag">Modules</div>
+    <h2 class="h2" id="mod-h">&#201;&#233;n platform.<br>Vijf lagen controle.</h2>
+    <p class="lead">Begin vandaag met Snapshot of Redact. Breid uit met de rest van de suite naarmate je behoeften groeien.</p>
+
+    <div class="modules-grid">
+      <!-- Snapshot -->
+      <a href="snapshot.html" class="mod live">
+        <div class="mod-glow" aria-hidden="true"></div>
+        <div class="pill pill-live"><span class="pdot" aria-hidden="true"></span>Nu beschikbaar</div>
+        <div class="mod-ico" aria-hidden="true">&#128202;</div>
+        <div class="mod-t">Snapshot</div>
+        <p class="mod-d">&#201;&#233;n-klik CIS L1 compliance-audit. Verbind je tenant, scan, en ontvang binnen minuten een volledig risico-PDF-rapport klaar voor management en auditors.</p>
+        <ul class="mod-feats">
+          <li>79 geautomatiseerde CIS M365 L1-checks</li>
+          <li>MFA- en Conditional Access-gaps</li>
+          <li>Microsoft Secure Score-analyse</li>
+          <li>Managementklare PDF-export</li>
+          <li>Gasten- en extern deelrisico&#39;s</li>
+        </ul>
+        <div class="mod-price">€149 <span>eenmalig &nbsp;·&nbsp; of €99/mnd</span></div>
+        <div class="btn-mod fill">Bekijk Snapshot &#8594;</div>
+      </a>
+
+      <!-- Redact -->
+      <a href="redact.html" class="mod live">
+        <div class="mod-glow" aria-hidden="true"></div>
+        <div class="pill pill-live"><span class="pdot" aria-hidden="true"></span>Nu beschikbaar</div>
+        <div class="mod-ico" aria-hidden="true">&#128274;</div>
+        <div class="mod-t">Redact</div>
+        <p class="mod-d">Persoonsgegevens verwijderen uit PDF en DOCX — volledig in het geheugen van jouw browser. Niets opgeslagen bij Pryvee. AVG-compliant by design.</p>
+        <ul class="mod-feats">
+          <li>PDF &amp; DOCX redactie</li>
+          <li>NER: namen, BSN, IBAN, adressen</li>
+          <li>100% in-browser — geen upload</li>
+          <li>Nederlands &amp; Engelstalig</li>
+          <li>Audit-log export</li>
+        </ul>
+        <div class="mod-price">€2,50 <span>per doc &nbsp;·&nbsp; of €29/mnd</span></div>
+        <div class="btn-mod fill">Bekijk Redact &#8594;</div>
+      </a>
+
+      <!-- Guard -->
+      <div class="mod" style="position:relative">
+        <div class="pill pill-soon"><span class="pdot" aria-hidden="true"></span>Binnenkort</div>
+        <div class="mod-ico" aria-hidden="true">&#128737;</div>
+        <div class="mod-t">Guard</div>
+        <p class="mod-d">Continue monitoring van gastaccounts en extern delen. Geautomatiseerde meldingen bij risico&#39;s — voordat het een incident wordt.</p>
+        <ul class="mod-feats">
+          <li>Volledig gastaccountoverzicht</li>
+          <li>Detectie inactieve accounts</li>
+          <li>Risicoscore extern delen</li>
+          <li>Geautomatiseerde meldingen</li>
+        </ul>
+        <div class="mod-price">€49 <span>/mnd per tenant</span></div>
+        <div class="cs-over" aria-label="Binnenkort beschikbaar">
+          <div class="pill pill-soon" style="margin:0"><span class="pdot"></span>Binnenkort</div>
+          <div class="cs-t">Coming soon</div>
+          <div class="cs-d">Meld je aan voor early access</div>
+          <a href="#" class="cs-link">Blijf op de hoogte &#8594;</a>
+        </div>
       </div>
-      <div class="prob-card" role="listitem">
-        <div class="prob-ico" aria-hidden="true">📋</div>
-        <h3 class="prob-t">Compliance zonder bewijs</h3>
-        <p class="prob-d">Auditors en klanten vragen steeds vaker om bewijs van je M365-beveiliging. Zonder gestructureerde rapportage kost het weken om dat te verzamelen — als het al lukt.</p>
+    </div>
+
+    <!-- Tweede rij -->
+    <div class="modules-grid">
+      <!-- Clean -->
+      <div class="mod" style="position:relative">
+        <div class="pill pill-soon"><span class="pdot" aria-hidden="true"></span>Binnenkort</div>
+        <div class="mod-ico" aria-hidden="true">&#129529;</div>
+        <div class="mod-t">Clean</div>
+        <p class="mod-d">Tenant lifecycle-automatisering. Detecteer verlaten sites, archiveer werkruimten en houd je omgeving opgeruimd.</p>
+        <ul class="mod-feats">
+          <li>Detectie inactieve sites (180+ dagen)</li>
+          <li>Eigenaarsmeldingen</li>
+          <li>Archiveer- en opruimworkflows</li>
+          <li>Volledig auditspoor</li>
+        </ul>
+        <div class="mod-price">€49 <span>/mnd per tenant</span></div>
+        <div class="cs-over" aria-label="Binnenkort beschikbaar">
+          <div class="pill pill-soon" style="margin:0"><span class="pdot"></span>Binnenkort</div>
+          <div class="cs-t">Coming soon</div>
+          <div class="cs-d">Meld je aan voor early access</div>
+          <a href="#" class="cs-link">Blijf op de hoogte &#8594;</a>
+        </div>
       </div>
-      <div class="prob-card" role="listitem">
-        <div class="prob-ico" aria-hidden="true">🤖</div>
-        <h3 class="prob-t">AI vergroot het risico</h3>
-        <p class="prob-d">Microsoft Copilot kan bij alles wat een gebruiker kan zien. Overmachtigde data, verlaten mappen en brede deelrechten worden met AI plotseling een groot probleem.</p>
+
+      <!-- AI -->
+      <div class="mod mod-wide" style="position:relative;grid-column:span 2">
+        <div class="mod-glow" aria-hidden="true"></div>
+        <div class="pill pill-future"><span class="pdot" aria-hidden="true"></span>2026</div>
+        <div class="mod-ico" aria-hidden="true">&#10024;</div>
+        <div class="mod-t">Pryvee AI</div>
+        <p class="mod-d" style="max-width:500px">Copilot-blootstellingsscanner. Detecteer overmachtiging voordat AI je gevoelige data bereikt — de governance-laag die elke M365 Copilot-uitrol nodig heeft.</p>
+        <ul class="mod-feats" style="display:grid;grid-template-columns:1fr 1fr;gap:7px 24px">
+          <li>Microsoft Copilot-blootstellingsscore</li>
+          <li>Detectie overmachtigde data</li>
+          <li>Mapping hoog-risico mappen</li>
+          <li>AI-gereedheidsassessment</li>
+          <li>Governance-gap aanbevelingen</li>
+          <li>Integratie met Snapshot</li>
+        </ul>
+        <div class="mod-price">€99 <span>/mnd per tenant</span></div>
+        <div class="cs-over" aria-label="Beschikbaar in 2026">
+          <div class="pill pill-future" style="margin:0"><span class="pdot"></span>2026</div>
+          <div class="cs-t">Beschikbaar in 2026</div>
+          <div class="cs-d">Zet je op de waitlist</div>
+          <a href="#" class="cs-link">Zet me op de lijst &#8594;</a>
+        </div>
       </div>
     </div>
   </div>
@@ -422,110 +433,10 @@ footer { position:relative; z-index:1; border-top:1px solid var(--border); paddi
     <h2 class="h2" id="how-h">Van nul naar auditrapport<br>in minder dan 5 minuten.</h2>
     <p class="lead">Geen agents. Geen installatie. Koppel je tenant en krijg direct bruikbare inzichten.</p>
     <div class="steps" role="list">
-      <div class="step" role="listitem"><div class="step-n"><span>01</span></div><h3 class="step-t">Koppel je tenant</h3><p class="step-d">Log in met je Microsoft-beheerdersaccount. Eenmalige toestemming. Alleen-lezen toegang.</p></div>
-      <div class="step" role="listitem"><div class="step-n"><span>02</span></div><h3 class="step-t">Automatische scan</h3><p class="step-d">Pryvee leest 10+ Microsoft Graph-endpoints — MFA, Secure Score, Conditional Access en meer.</p></div>
+      <div class="step" role="listitem"><div class="step-n"><span>01</span></div><h3 class="step-t">Log in met Microsoft</h3><p class="step-d">Verbind met je Microsoft account. Eenmalige toestemming. Alleen-lezen toegang tot je tenant.</p></div>
+      <div class="step" role="listitem"><div class="step-n"><span>02</span></div><h3 class="step-t">Automatische scan</h3><p class="step-d">Pryvee leest je M365-configuratie via de Microsoft Graph API — MFA, Secure Score, Conditional Access en meer.</p></div>
       <div class="step" role="listitem"><div class="step-n"><span>03</span></div><h3 class="step-t">Risicoscore berekend</h3><p class="step-d">Elke bevinding wordt gescoord op basis van de CIS M365 Benchmark v6 en geprioriteerd naar impact.</p></div>
       <div class="step" role="listitem"><div class="step-n"><span>04</span></div><h3 class="step-t">Download je rapport</h3><p class="step-d">Een managementklare PDF met samenvatting, risico-overzicht en concrete aanbevelingen.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- PRODUCTS -->
-<section class="reveal" id="products" aria-labelledby="prod-h">
-  <div class="wrap" style="padding-bottom:120px">
-    <div class="tag">Producten</div>
-    <h2 class="h2" id="prod-h">Eén platform.<br>Vijf lagen controle.</h2>
-    <p class="lead">Begin vandaag met Snapshot of Redact. De rest van de suite volgt snel.</p>
-    <div class="prod-grid">
-
-      <!-- Snapshot -->
-      <div class="prod active">
-        <div class="prod-glow" aria-hidden="true"></div>
-        <div class="pill pill-live"><span class="pill-dot" aria-hidden="true"></span>Nu beschikbaar</div>
-        <div class="prod-ico" aria-hidden="true">📊</div>
-        <h3 class="prod-t">Pryvee Snapshot</h3>
-        <p class="prod-sub">Eén-klik CIS L1 compliance-audit. Verbind je tenant, klik op scannen en ontvang binnen minuten een volledig risico-PDF-rapport — klaar voor management én auditors.</p>
-        <ul class="feat-list" aria-label="Snapshot functies">
-          <li>79 geautomatiseerde CIS M365 L1-checks</li>
-          <li>Microsoft Secure Score-analyse</li>
-          <li>MFA- en Conditional Access-gaps</li>
-          <li>Gasten- en extern deelrisico's</li>
-          <li>Managementklare PDF-export</li>
-        </ul>
-        <div class="prod-price"><span class="price-n">€149</span><span class="price-s">per rapport — of €99/mnd</span></div>
-        <a href="snapshot.html" class="btn-prod fill">Bekijk Snapshot →</a>
-      </div>
-
-      <!-- Redact -->
-      <div class="prod active">
-        <div class="prod-glow" aria-hidden="true"></div>
-        <div class="pill pill-live"><span class="pill-dot" aria-hidden="true"></span>Nu beschikbaar</div>
-        <div class="prod-ico" aria-hidden="true">🔒</div>
-        <h3 class="prod-t">Pryvee Redact</h3>
-        <p class="prod-sub">Persoonsgegevens verwijderen uit documenten — volledig in het geheugen van jouw browser. Geen upload naar onze servers. Jouw data blijft bij jou. AVG-compliant by design.</p>
-        <ul class="feat-list" aria-label="Redact functies">
-          <li>PDF &amp; DOCX redactie</li>
-          <li>NER: namen, BSN, IBAN, adressen</li>
-          <li>100% in-browser — niets opgeslagen bij Pryvee</li>
-          <li>Ideaal vóór Copilot-workflows</li>
-          <li>Nederlands &amp; Engelstalig</li>
-        </ul>
-        <div class="prod-price"><span class="price-n">€29</span><span class="price-s">/mnd of per document</span></div>
-        <a href="redact.html" class="btn-prod fill">Bekijk Redact →</a>
-      </div>
-
-      <!-- Guard -->
-      <div class="prod" style="position:relative">
-        <div class="pill pill-soon"><span class="pill-dot" aria-hidden="true"></span>Binnenkort</div>
-        <div class="prod-ico" aria-hidden="true">🛡️</div>
-        <h3 class="prod-t">Pryvee Guard</h3>
-        <p class="prod-sub">Continue monitoring van gasten en extern delen met geautomatiseerde meldingen.</p>
-        <ul class="feat-list"><li>Volledig gastaccountoverzicht</li><li>Detectie inactieve accounts</li><li>Risicoscore extern delen</li><li>Geautomatiseerde meldingen</li></ul>
-        <div class="prod-price"><span class="price-n">€49</span><span class="price-s">/mnd per tenant</span></div>
-        <div class="cs-over" aria-label="Binnenkort beschikbaar">
-          <div class="pill pill-soon" style="margin:0"><span class="pill-dot" aria-hidden="true"></span>Binnenkort</div>
-          <div class="cs-t">Coming soon</div>
-          <div class="cs-d">Meld je aan voor early access</div>
-          <a href="#" style="margin-top:10px;padding:10px 20px;border:1px solid rgba(255,235,85,0.3);border-radius:6px;color:var(--gold);font-size:13px;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;background:rgba(18,5,32,0.8)">Blijf op de hoogte →</a>
-        </div>
-      </div>
-
-      <!-- Clean -->
-      <div class="prod" style="position:relative">
-        <div class="pill pill-soon"><span class="pill-dot" aria-hidden="true"></span>Binnenkort</div>
-        <div class="prod-ico" aria-hidden="true">🧹</div>
-        <h3 class="prod-t">Pryvee Clean</h3>
-        <p class="prod-sub">Tenant lifecycle-automatisering — detecteer verlaten sites, archiveer werkruimten.</p>
-        <ul class="feat-list"><li>Detectie inactieve sites (180+ dagen)</li><li>Eigenaarsmeldingen</li><li>Archiveer- en opruimworkflows</li><li>Volledig auditspoor</li></ul>
-        <div class="prod-price"><span class="price-n">€49</span><span class="price-s">/mnd per tenant</span></div>
-        <div class="cs-over" aria-label="Binnenkort beschikbaar">
-          <div class="pill pill-soon" style="margin:0"><span class="pill-dot" aria-hidden="true"></span>Binnenkort</div>
-          <div class="cs-t">Coming soon</div>
-          <div class="cs-d">Meld je aan voor early access</div>
-          <a href="#" style="margin-top:10px;padding:10px 20px;border:1px solid rgba(255,235,85,0.3);border-radius:6px;color:var(--gold);font-size:13px;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;background:rgba(18,5,32,0.8)">Blijf op de hoogte →</a>
-        </div>
-      </div>
-
-      <!-- AI wide -->
-      <div class="prod wide" style="position:relative">
-        <div class="prod-glow" aria-hidden="true"></div>
-        <div class="pill pill-future"><span class="pill-dot" aria-hidden="true"></span>2026</div>
-        <div class="prod-ico" aria-hidden="true">✨</div>
-        <h3 class="prod-t">Pryvee AI</h3>
-        <p class="prod-sub" style="max-width:540px">Copilot-blootstellingsscanner. Detecteer overmachtiging voordat AI je gevoelige data bereikt — de governance-laag die elke M365-Copilot-uitrol nodig heeft.</p>
-        <ul class="feat-list" aria-label="Pryvee AI functies">
-          <li>Microsoft Copilot-blootstellingsscore</li><li>Detectie overmachtigde data</li>
-          <li>Mapping hoog-risico mappen</li><li>AI-gereedheidsassessment</li>
-          <li>Governance-gap aanbevelingen</li><li>Integratie met Snapshot-bevindingen</li>
-        </ul>
-        <div class="prod-price"><span class="price-n">€99</span><span class="price-s">/mnd per tenant</span></div>
-        <div class="cs-over" aria-label="Beschikbaar in 2026">
-          <div class="pill pill-future" style="margin:0"><span class="pill-dot" aria-hidden="true"></span>2026</div>
-          <div class="cs-t">Beschikbaar in 2026</div>
-          <div class="cs-d">Zet je op de waitlist</div>
-          <a href="#" style="margin-top:10px;padding:10px 20px;border:1px solid rgba(255,235,85,0.3);border-radius:6px;color:var(--gold);font-size:13px;text-decoration:none;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;background:rgba(18,5,32,0.8)">Zet me op de lijst →</a>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -535,88 +446,209 @@ footer { position:relative; z-index:1; border-top:1px solid var(--border); paddi
   <div class="wrap" style="padding-bottom:120px">
     <div class="tag">Prijzen</div>
     <h2 class="h2" id="price-h">Duidelijke prijzen.<br>Geen verrassingen.</h2>
-    <p class="lead">Begin met één audit. Schaal naar een volledige governance-suite.</p>
-    <div class="price-grid">
-      <div class="plan">
-        <h3 class="plan-n">Snapshot</h3>
-        <p class="plan-d">Eenmalig auditrapport voor één tenant</p>
-        <div class="plan-p">€149</div>
-        <div class="plan-per">eenmalige betaling</div>
-        <div class="plan-div"></div>
-        <ul class="plan-feats"><li>Volledige CIS L1 M365-audit</li><li>Managementklare PDF</li><li>Risicoscore &amp; samenvatting</li><li>Geprioriteerde aanbevelingen</li><li>30 dagen geldig</li></ul>
-        <a href="#" class="btn-plan out">Ontvang je rapport</a>
+    <p class="lead">Betaal per module, of kies een suite voor meer waarde. Altijd eerlijk geprijsd.</p>
+
+    <!-- TABS -->
+    <div class="price-tabs" role="tablist" aria-label="Prijsoverzicht">
+      <button class="ptab active" role="tab" aria-selected="true" onclick="switchTab('losse')">Losse modules</button>
+      <button class="ptab" role="tab" aria-selected="false" onclick="switchTab('suite')">Suite &amp; MSP</button>
+    </div>
+
+    <!-- LOSSE MODULES -->
+    <div class="price-panel active" id="panel-losse">
+      <div class="price-modules">
+
+        <div class="pm">
+          <div class="pm-ico" aria-hidden="true">&#128202;</div>
+          <div class="pm-info">
+            <div class="pm-name">Snapshot</div>
+            <div class="pm-desc">CIS M365 L1 audit + PDF rapport</div>
+            <div class="pm-prices">
+              <div class="pm-price">€149 <span>eenmalig</span></div>
+              <div class="pm-or">of</div>
+              <div class="pm-price">€99 <span>/mnd</span></div>
+            </div>
+          </div>
+          <a href="snapshot.html" class="pm-cta">Probeer nu &#8594;</a>
+        </div>
+
+        <div class="pm">
+          <div class="pm-ico" aria-hidden="true">&#128274;</div>
+          <div class="pm-info">
+            <div class="pm-name">Redact</div>
+            <div class="pm-desc">PII redactie uit PDF &amp; DOCX</div>
+            <div class="pm-prices">
+              <div class="pm-price">€2,50 <span>per doc</span></div>
+              <div class="pm-or">of</div>
+              <div class="pm-price">€29 <span>/mnd</span></div>
+            </div>
+          </div>
+          <a href="redact.html" class="pm-cta">Probeer nu &#8594;</a>
+        </div>
+
+        <div class="pm">
+          <div class="pm-ico" aria-hidden="true">&#128737;</div>
+          <div class="pm-info">
+            <div class="pm-name">Guard</div>
+            <div class="pm-desc">Gastaccounts &amp; extern delen monitoring</div>
+            <div class="pm-prices">
+              <div class="pm-price">€49 <span>/mnd</span></div>
+            </div>
+          </div>
+          <span class="pm-soon">Binnenkort</span>
+        </div>
+
+        <div class="pm">
+          <div class="pm-ico" aria-hidden="true">&#129529;</div>
+          <div class="pm-info">
+            <div class="pm-name">Clean</div>
+            <div class="pm-desc">Tenant lifecycle automatisering</div>
+            <div class="pm-prices">
+              <div class="pm-price">€49 <span>/mnd</span></div>
+            </div>
+          </div>
+          <span class="pm-soon">Binnenkort</span>
+        </div>
+
       </div>
-      <div class="plan hi">
-        <div class="plan-badge">Meest gekozen</div>
-        <h3 class="plan-n">Snapshot Pro</h3>
-        <p class="plan-d">Maandelijkse herhalingsaudits met trendanalyse</p>
-        <div class="plan-p">€99<sub>/mnd</sub></div>
-        <div class="plan-per">per tenant · maandelijks gefactureerd</div>
-        <div class="plan-div"></div>
-        <ul class="plan-feats"><li>Alles uit Snapshot</li><li>Maandelijkse automatische herscans</li><li>Risicotrend-tracking</li><li>E-mailmeldingen bij nieuwe bevindingen</li><li>Prioriteitsondersteuning</li></ul>
-        <a href="#" class="btn-plan fill">Start gratis proefperiode</a>
-      </div>
-      <div class="plan">
-        <h3 class="plan-n">MSP Partner</h3>
-        <p class="plan-d">White-label suite voor managed service providers</p>
-        <div class="plan-p" style="font-size:34px;letter-spacing:-1px">Op maat</div>
-        <div class="plan-per">volumeprijzen beschikbaar</div>
-        <div class="plan-div"></div>
-        <ul class="plan-feats"><li>Onbeperkt tenants</li><li>White-label PDF-rapporten</li><li>Multi-tenant dashboard</li><li>API-toegang</li><li>Eigen accountmanager</li></ul>
-        <a href="#" class="btn-plan out">Neem contact op</a>
+
+      <!-- AI los -->
+      <div class="pm">
+        <div class="pm-ico" aria-hidden="true">&#10024;</div>
+        <div class="pm-info">
+          <div class="pm-name">Pryvee AI</div>
+          <div class="pm-desc">Copilot-blootstellingsscanner — governance-laag voor M365 Copilot uitrollen</div>
+          <div class="pm-prices">
+            <div class="pm-price">€99 <span>/mnd</span></div>
+          </div>
+        </div>
+        <span class="pm-soon">2026</span>
       </div>
     </div>
+
+    <!-- SUITE & MSP -->
+    <div class="price-panel" id="panel-suite">
+      <div class="suite-grid">
+
+        <div class="plan">
+          <h3 class="plan-n">Starter</h3>
+          <p class="plan-d">Voor IT-teams die willen beginnen met audit en redactie</p>
+          <div class="plan-p">€99<sub>/mnd</sub></div>
+          <div class="plan-per">per tenant &nbsp;·&nbsp; maandelijks</div>
+          <div class="plan-div"></div>
+          <div class="plan-inc">Inclusief</div>
+          <ul class="plan-feats">
+            <li>Snapshot Pro — maandelijkse audits</li>
+            <li>Redact — onbeperkte documenten</li>
+            <li>Managementklare PDF-rapporten</li>
+            <li>Risicotrend-tracking</li>
+            <li>E-mailmeldingen</li>
+          </ul>
+          <a href="snapshot.html" class="btn-plan out">Start gratis proefperiode</a>
+        </div>
+
+        <div class="plan hi">
+          <div class="plan-badge">Meest gekozen</div>
+          <h3 class="plan-n">Complete Suite</h3>
+          <p class="plan-d">Alle modules voor volledige M365 governance controle</p>
+          <div class="plan-p">€199<sub>/mnd</sub></div>
+          <div class="plan-per">per tenant &nbsp;·&nbsp; <span class="save-badge">Bespaar €76/mnd</span></div>
+          <div class="plan-div"></div>
+          <div class="plan-inc">Alles in Starter, plus</div>
+          <ul class="plan-feats">
+            <li>Guard — gastaccounts monitoring</li>
+            <li>Clean — tenant lifecycle</li>
+            <li>Multi-tenant overzicht</li>
+            <li>Prioriteitsondersteuning</li>
+            <li>Vroege toegang nieuwe modules</li>
+          </ul>
+          <a href="#" class="btn-plan fill">Start gratis proefperiode</a>
+        </div>
+
+        <div class="plan">
+          <h3 class="plan-n">MSP Partner</h3>
+          <p class="plan-d">White-label suite voor managed service providers met meerdere klanten</p>
+          <div class="plan-p" style="font-size:32px;letter-spacing:-1px">Op maat</div>
+          <div class="plan-per">volumeprijzen &nbsp;·&nbsp; eigen contract</div>
+          <div class="plan-div"></div>
+          <div class="plan-inc">Inclusief</div>
+          <ul class="plan-feats">
+            <li>Onbeperkt tenants beheren</li>
+            <li>White-label PDF-rapporten</li>
+            <li>Multi-tenant dashboard</li>
+            <li>API-toegang</li>
+            <li>Eigen accountmanager</li>
+            <li>SLA-garanties</li>
+          </ul>
+          <a href="mailto:sales@pryvee.io" class="btn-plan out">Neem contact op</a>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </section>
 
 <!-- CTA -->
 <div class="cta-strip reveal" aria-labelledby="cta-h">
-  <h2 id="cta-h">Klaar om het echte risicoprofiel<br>van je tenant te zien?</h2>
+  <h2 id="cta-h">Klaar om je M365-omgeving<br>echt te begrijpen?</h2>
   <p>Verbonden in 60 seconden. Geen installatie. Alleen-lezen toegang.</p>
   <div class="cta-btns">
-    <a href="#" class="btn-primary">Scan mijn tenant →</a>
-    <a href="#" class="btn-secondary">Eerst een gesprek</a>
+    <a href="snapshot.html" class="btn-primary">Start met Snapshot &#8594;</a>
+    <a href="redact.html" class="btn-secondary">Probeer Redact gratis</a>
   </div>
 </div>
 
 </main>
 
 <footer>
-  <a href="index.html" class="logo">Pry<span class="logo-accent">vee</span></a>
+  <a href="index.html" class="logo">Pry<span>vee</span></a>
   <ul class="f-links">
-    <li><a href="#">Product</a></li>
+    <li><a href="#modules">Modules</a></li>
     <li><a href="snapshot.html">Snapshot</a></li>
     <li><a href="redact.html">Redact</a></li>
-    <li><a href="#">Prijzen</a></li>
+    <li><a href="#pricing">Prijzen</a></li>
     <li><a href="#">Privacy</a></li>
     <li><a href="#">Contact</a></li>
   </ul>
-  <div class="f-copy">© 2025 Pryvee · Alle rechten voorbehouden</div>
+  <div class="f-copy">&copy; 2025 Pryvee &middot; Alle rechten voorbehouden</div>
 </footer>
 
 <script>
-const obs = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.07});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+// Reveal on scroll
+const obs = new IntersectionObserver(
+  es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); }),
+  { threshold: .07 }
+);
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-const ham=document.getElementById('ham'),drawer=document.getElementById('drawer');
-ham.addEventListener('click',()=>{
-  const o=drawer.classList.toggle('open');
-  ham.setAttribute('aria-expanded',String(o));
-  ham.setAttribute('aria-label',o?'Menu sluiten':'Menu openen');
-  ham.innerHTML=o?'✕':'☰';
+// Mobile menu
+const ham = document.getElementById('ham');
+const drawer = document.getElementById('drawer');
+ham.addEventListener('click', () => {
+  const o = drawer.classList.toggle('open');
+  ham.setAttribute('aria-expanded', String(o));
+  ham.innerHTML = o ? '&#10005;' : '&#9776;';
 });
-function closeD(){drawer.classList.remove('open');ham.setAttribute('aria-expanded','false');ham.innerHTML='☰';}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeD();});
-drawer.addEventListener('keydown',e=>{
-  if(e.key!=='Tab')return;
-  const f=Array.from(drawer.querySelectorAll('a'));
-  if(e.shiftKey&&document.activeElement===f[0]){e.preventDefault();f[f.length-1].focus();}
-  else if(!e.shiftKey&&document.activeElement===f[f.length-1]){e.preventDefault();f[0].focus();}
+function closeD() {
+  drawer.classList.remove('open');
+  ham.setAttribute('aria-expanded', 'false');
+  ham.innerHTML = '&#9776;';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && drawer.classList.contains('open')) closeD();
 });
-// Hide duplicate nav CTA on mobile
-const mq=window.matchMedia('(max-width:960px)');
-function handleNav(m){document.getElementById('cta-nav').style.display=m.matches?'none':'flex';}
-mq.addEventListener('change',handleNav); handleNav(mq);
+
+// Pricing tabs
+function switchTab(tab) {
+  document.querySelectorAll('.ptab').forEach((t, i) => {
+    const isActive = (i === 0 && tab === 'losse') || (i === 1 && tab === 'suite');
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive);
+  });
+  document.getElementById('panel-losse').classList.toggle('active', tab === 'losse');
+  document.getElementById('panel-suite').classList.toggle('active', tab === 'suite');
+}
 </script>
 </body>
 </html>
