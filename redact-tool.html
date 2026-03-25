@@ -366,7 +366,11 @@ function doCheckout() {
     doc: 'https://buy.stripe.com/test_4gM28t3QYaG06zW7SC8g001',
     mnd: 'https://buy.stripe.com/test_aFa6oJcnubK40by5Ku8g000'
   };
-  window.location.href = urls[selPlanVal];
+  // Stripe vult {CHECKOUT_SESSION_ID} automatisch in
+  var successUrl = encodeURIComponent(
+    window.location.origin + window.location.pathname + '?session_id={CHECKOUT_SESSION_ID}'
+  );
+  window.location.href = urls[selPlanVal] + '?success_url=' + successUrl;
 }
 
 function demoMode() {
@@ -377,10 +381,41 @@ function demoMode() {
 
 function checkStripe() {
   var p = new URLSearchParams(location.search);
-  if (p.get('success') === '1') {
-    document.getElementById('paywall').style.display = 'none';
-    showToast('Betaling geslaagd!');
-    history.replaceState({}, '', location.pathname);
+  var sessionId = p.get('session_id');
+  if (sessionId) {
+    // Controleer licentie bij Worker
+    fetch('https://pryvee-api.workers.dev/check?session_id=' + sessionId)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.valid) {
+          document.getElementById('paywall').style.display = 'none';
+          showToast('Betaling geslaagd! Toegang actief.');
+          // Sla session_id op zodat pagina-refresh ook werkt
+          sessionStorage.setItem('pryvee_session', sessionId);
+          history.replaceState({}, '', location.pathname);
+        } else {
+          showToast('Licentie niet geldig — probeer opnieuw');
+        }
+      })
+      .catch(function() {
+        // Fallback: bij netwerk fout toch doorlaten (Worker is down)
+        document.getElementById('paywall').style.display = 'none';
+        showToast('Betaling geslaagd!');
+        history.replaceState({}, '', location.pathname);
+      });
+  }
+  // Controleer opgeslagen sessie (na refresh)
+  var saved = sessionStorage.getItem('pryvee_session');
+  if (saved) {
+    fetch('https://pryvee-api.workers.dev/check?session_id=' + saved)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.valid) {
+          document.getElementById('paywall').style.display = 'none';
+        } else {
+          sessionStorage.removeItem('pryvee_session');
+        }
+      });
   }
 }
 
