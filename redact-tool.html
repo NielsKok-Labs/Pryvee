@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pryvee Redact</title>
-<script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_Z2VudWluZS1kb3ZlLTAuY2xlcmsuYWNjb3VudHMuZGV2JA" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-authentication-library/2.38.0/msal-browser.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#120520;--plum:#1a0827;--gold:#ffeb55;--ok:#4dd9a0;--muted:#b8a0cc;--muted2:#7a5a90;--border:rgba(255,235,85,0.12);--border2:rgba(255,235,85,0.22);--text:#f0e8ff;--r:8px;--nav:64px}
@@ -177,10 +177,10 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
 <!-- ═══ SCHERM 1: LOGIN ═══ -->
 <div id="screen-login" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(18,5,32,.98);display:flex;align-items:center;justify-content:center;padding:24px">
   <div style="background:#2a0f3d;border:1px solid rgba(255,235,85,.3);border-radius:20px;padding:44px 36px;max-width:420px;width:100%;text-align:center">
-    <div style="font-size:42px;margin-bottom:16px">🔒</div>
+    <div style="font-size:42px;margin-bottom:16px">&#128274;</div>
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;letter-spacing:-1px;color:#f0e8ff;margin-bottom:10px">Pryvee Redact</h2>
-    <p style="color:#b8a0cc;font-size:14px;line-height:1.75;margin-bottom:28px">Log in met je Microsoft account om door te gaan. Volledig in jouw browser — wij zien nooit jouw documenten.</p>
-    <button onclick="doMicrosoftLogin()" style="width:100%;background:#f0e8ff;color:#120520;padding:14px;border-radius:8px;font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px">
+    <p style="color:#b8a0cc;font-size:14px;line-height:1.75;margin-bottom:28px">Log in met je Microsoft account om door te gaan. Volledig in jouw browser &mdash; wij zien nooit jouw documenten.</p>
+    <button id="btn-ms-login" onclick="doMicrosoftLogin()" style="width:100%;background:#f0e8ff;color:#120520;padding:14px;border-radius:8px;font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px">
       <svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
       Inloggen met Microsoft
     </button>
@@ -192,6 +192,7 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
       <span style="font-size:11px;color:#7a5a90">&#127466;&#127482; EU hosting</span>
       <span style="font-size:11px;color:#7a5a90">&#9989; AVG-compliant</span>
     </div>
+    <div id="login-error" style="display:none;margin-top:14px;padding:10px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2);border-radius:8px;font-size:12px;color:#ff6b6b"></div>
   </div>
 </div>
 
@@ -386,45 +387,118 @@ function doCheckout() {
 }
 
 function demoMode() {
-  document.getElementById('paywall').style.display = 'none';
+  document.getElementById('screen-login').style.display = 'none';
+  document.getElementById('screen-plan').style.display = 'none';
   loadDemo();
   showToast('Demo-modus actief');
 }
 
-// ── AUTH & LICENTIE ───────────────────────────────────────
+// ── AUTH & LICENTIE met MSAL.js ───────────────────────────
 var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
-var clerkUser = null;
+var msalInstance = null;
+var currentEmail = null;
 
-// Initialiseer Clerk zodra het script geladen is
+var msalConfig = {
+  auth: {
+    clientId: '091cc4ab-3f4f-4579-8ca7-e0ddb5590644',
+    authority: 'https://login.microsoftonline.com/common',
+    redirectUri: window.location.origin + window.location.pathname
+  },
+  cache: {
+    cacheLocation: 'sessionStorage',
+    storeAuthStateInCookie: false
+  }
+};
+
+var loginRequest = {
+  scopes: ['openid', 'profile', 'email', 'User.Read']
+};
+
+// Init MSAL zodra pagina laadt
 window.addEventListener('load', function() {
-  var waitForClerk = setInterval(function() {
-    if (window.Clerk) {
-      clearInterval(waitForClerk);
-      initClerk();
+  var wait = setInterval(function() {
+    if (window.msal) {
+      clearInterval(wait);
+      initMsal();
     }
   }, 100);
+  // Timeout na 5 seconden
+  setTimeout(function() { clearInterval(wait); }, 5000);
 });
 
-function initClerk() {
-  window.Clerk.load().then(function() {
-    var user = window.Clerk.user;
-    if (user) {
-      // Al ingelogd — check licentie
-      clerkUser = user;
-      var email = user.primaryEmailAddress
-        ? user.primaryEmailAddress.emailAddress
-        : (user.externalAccounts && user.externalAccounts[0]
-            ? user.externalAccounts[0].emailAddress
-            : null);
-      if (!email) { showLoginScreen(); return; }
-      checkLicense(email, false);
-    } else {
-      // Niet ingelogd — toon login scherm
+function initMsal() {
+  try {
+    msalInstance = new window.msal.PublicClientApplication(msalConfig);
+
+    // Verwerk redirect na Microsoft login
+    msalInstance.handleRedirectPromise().then(function(response) {
+      if (response && response.account) {
+        // Succesvol teruggekeerd van Microsoft login
+        handleLoginSuccess(response.account);
+      } else {
+        // Check of er al een account in cache zit
+        var accounts = msalInstance.getAllAccounts();
+        if (accounts.length > 0) {
+          handleLoginSuccess(accounts[0]);
+        } else {
+          // Niet ingelogd
+          checkStripeReturn();
+          showLoginScreen();
+        }
+      }
+    }).catch(function(err) {
+      console.error('MSAL redirect error:', err);
       showLoginScreen();
-    }
-  }).catch(function() {
+      showError('Inloggen mislukt. Probeer opnieuw.');
+    });
+  } catch(err) {
+    console.error('MSAL init error:', err);
     showLoginScreen();
+  }
+}
+
+function handleLoginSuccess(account) {
+  var email = account.username || account.idTokenClaims?.email || account.idTokenClaims?.preferred_username;
+  if (!email) {
+    showLoginScreen();
+    showError('Kon e-mailadres niet ophalen. Probeer opnieuw.');
+    return;
+  }
+  currentEmail = email.toLowerCase();
+  localStorage.setItem('pryvee_email', currentEmail);
+
+  // Check of er een Stripe betaling is
+  var p = new URLSearchParams(location.search);
+  if (p.get('paid') === '1') {
+    history.replaceState({}, '', location.pathname);
+    checkLicense(currentEmail, true);
+  } else {
+    checkLicense(currentEmail, false);
+  }
+}
+
+function doMicrosoftLogin() {
+  if (!msalInstance) {
+    showToast('Laden... probeer opnieuw');
+    return;
+  }
+  var btn = document.getElementById('btn-ms-login');
+  if (btn) { btn.textContent = 'Verbinden met Microsoft...'; btn.disabled = true; }
+
+  // Gebruik redirect (werkt beter dan popup voor GitHub Pages)
+  msalInstance.loginRedirect(loginRequest).catch(function(err) {
+    console.error('Login error:', err);
+    if (btn) { btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg> Inloggen met Microsoft'; btn.disabled = false; }
+    showError('Inloggen mislukt: ' + (err.message || 'onbekende fout'));
   });
+}
+
+function doSignOut() {
+  if (msalInstance) {
+    localStorage.removeItem('pryvee_email');
+    currentEmail = null;
+    msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.href });
+  }
 }
 
 function showLoginScreen() {
@@ -442,15 +516,18 @@ function showPlanScreen(email) {
 function unlockTool(plan, email) {
   document.getElementById('screen-login').style.display = 'none';
   document.getElementById('screen-plan').style.display = 'none';
+  var name = email ? email.split('@')[0] : '';
   showToast(plan === 'mnd'
-    ? 'Welkom ' + (email ? email.split('@')[0] : '') + '! Onbeperkte toegang actief.'
-    : 'Betaling geslaagd! Toegang voor 24 uur actief.');
+    ? 'Welkom ' + name + '! Onbeperkte toegang actief.'
+    : 'Toegang actief voor 24 uur. Succes!');
+}
+
+function showError(msg) {
+  var el = document.getElementById('login-error');
+  if (el) { el.textContent = msg; el.style.display = 'block'; }
 }
 
 function checkLicense(email, isAfterPayment) {
-  // Sla email op voor na Stripe redirect
-  if (email) localStorage.setItem('pryvee_email', email);
-
   fetch(WORKER + '/check-email?email=' + encodeURIComponent(email))
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -458,12 +535,13 @@ function checkLicense(email, isAfterPayment) {
         unlockTool(data.plan, email);
       } else {
         if (isAfterPayment) {
-          // Net betaald maar Worker nog niet bijgewerkt — even wachten en opnieuw
+          // Stripe webhook kan iets vertraagd zijn — wacht 3s en probeer opnieuw
+          showToast('Betaling verwerken...');
           setTimeout(function() {
             fetch(WORKER + '/check-email?email=' + encodeURIComponent(email))
               .then(function(r) { return r.json(); })
-              .then(function(data2) {
-                if (data2.valid) { unlockTool(data2.plan, email); }
+              .then(function(d2) {
+                if (d2.valid) { unlockTool(d2.plan, email); }
                 else { showPlanScreen(email); showToast('Betaling niet gevonden — neem contact op'); }
               });
           }, 3000);
@@ -473,43 +551,22 @@ function checkLicense(email, isAfterPayment) {
       }
     })
     .catch(function() {
-      // Worker niet bereikbaar — geen toegang
       showLoginScreen();
-      showToast('Verbindingsfout. Probeer opnieuw.');
+      showToast('Verbindingsfout. Controleer je internet.');
     });
 }
 
-function doMicrosoftLogin() {
-  if (!window.Clerk) { showToast('Laden... probeer opnieuw'); return; }
-  window.Clerk.openSignIn({
-    afterSignInUrl: window.location.href,
-    afterSignUpUrl: window.location.href
-  });
-}
-
-function doSignOut() {
-  if (window.Clerk) {
-    window.Clerk.signOut().then(function() {
-      localStorage.removeItem('pryvee_email');
-      showLoginScreen();
-    });
-  }
-}
-
-function checkStripe() {
-  // Na Stripe betaling — check licentie met opgeslagen email
+function checkStripeReturn() {
   var p = new URLSearchParams(location.search);
   if (p.get('paid') === '1') {
     history.replaceState({}, '', location.pathname);
     var savedEmail = localStorage.getItem('pryvee_email');
-    if (savedEmail) {
-      checkLicense(savedEmail, true);
-    }
+    if (savedEmail) checkLicense(savedEmail, true);
   }
 }
 
 function doCheckout() {
-  var email = localStorage.getItem('pryvee_email') || '';
+  var email = currentEmail || localStorage.getItem('pryvee_email') || '';
   var urls = {
     doc: 'https://buy.stripe.com/test_4gM28t3QYaG06zW7SC8g001',
     mnd: 'https://buy.stripe.com/test_aFa6oJcnubK40by5Ku8g000'
@@ -517,7 +574,6 @@ function doCheckout() {
   var successUrl = encodeURIComponent(
     window.location.origin + window.location.pathname + '?paid=1'
   );
-  // Geef email mee als prefill zodat Stripe het email matcht
   window.location.href = urls[selPlanVal]
     + '?prefilled_email=' + encodeURIComponent(email)
     + '&success_url=' + successUrl;
@@ -981,7 +1037,7 @@ function showToast(msg) {
 }
 
 // ── INIT ──────────────────────────────────────────────────────
-checkStripe();
+// Auth wordt gestart via window.addEventListener('load') hierboven
 </script>
 </body>
 </html>
