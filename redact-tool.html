@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pryvee Redact</title>
+<script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_Z2VudWluZS1kb3ZlLTAuY2xlcmsuYWNjb3VudHMuZGV2JA" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#120520;--plum:#1a0827;--gold:#ffeb55;--ok:#4dd9a0;--muted:#b8a0cc;--muted2:#7a5a90;--border:rgba(255,235,85,0.12);--border2:rgba(255,235,85,0.22);--text:#f0e8ff;--r:8px;--nav:64px}
@@ -173,19 +174,38 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
   Verwerking volledig in jouw browser &middot; 0 bytes verzonden &middot; Niets opgeslagen
 </div>
 
-<!-- ═══ PAYWALL ═══ -->
-<div id="paywall" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(18,5,32,.98);display:flex;align-items:center;justify-content:center;padding:24px">
-  <div style="background:#2a0f3d;border:1px solid rgba(255,235,85,.3);border-radius:20px;padding:44px 36px;max-width:440px;width:100%;text-align:center">
-
-    <div style="font-size:42px;margin-bottom:18px">🔒</div>
+<!-- ═══ SCHERM 1: LOGIN ═══ -->
+<div id="screen-login" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(18,5,32,.98);display:flex;align-items:center;justify-content:center;padding:24px">
+  <div style="background:#2a0f3d;border:1px solid rgba(255,235,85,.3);border-radius:20px;padding:44px 36px;max-width:420px;width:100%;text-align:center">
+    <div style="font-size:42px;margin-bottom:16px">🔒</div>
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;letter-spacing:-1px;color:#f0e8ff;margin-bottom:10px">Pryvee Redact</h2>
-    <p style="color:#b8a0cc;font-size:14px;line-height:1.75;margin-bottom:28px">Verwijder persoonsgegevens uit PDF en DOCX &mdash; volledig in jouw browser. Wij zien nooit jouw documenten.</p>
+    <p style="color:#b8a0cc;font-size:14px;line-height:1.75;margin-bottom:28px">Log in met je Microsoft account om door te gaan. Volledig in jouw browser — wij zien nooit jouw documenten.</p>
+    <button onclick="doMicrosoftLogin()" style="width:100%;background:#f0e8ff;color:#120520;padding:14px;border-radius:8px;font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px">
+      <svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+      Inloggen met Microsoft
+    </button>
+    <button onclick="demoMode()" style="width:100%;background:none;border:none;color:#b8a0cc;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:'Instrument Sans',sans-serif;padding:4px">
+      Probeer gratis met voorbeelddocument
+    </button>
+    <div style="display:flex;justify-content:center;gap:18px;margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,235,85,.1)">
+      <span style="font-size:11px;color:#7a5a90">&#128274; 0 bytes verzonden</span>
+      <span style="font-size:11px;color:#7a5a90">&#127466;&#127482; EU hosting</span>
+      <span style="font-size:11px;color:#7a5a90">&#9989; AVG-compliant</span>
+    </div>
+  </div>
+</div>
 
+<!-- ═══ SCHERM 2: KIES PLAN ═══ -->
+<div id="screen-plan" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(18,5,32,.98);display:none;align-items:center;justify-content:center;padding:24px">
+  <div style="background:#2a0f3d;border:1px solid rgba(255,235,85,.3);border-radius:20px;padding:44px 36px;max-width:440px;width:100%;text-align:center">
+    <div id="plan-user" style="font-size:13px;color:#7a5a90;margin-bottom:16px;font-family:'Geist Mono',monospace"></div>
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-1px;color:#f0e8ff;margin-bottom:8px">Kies je plan</h2>
+    <p style="color:#b8a0cc;font-size:13px;line-height:1.75;margin-bottom:24px">Je hebt nog geen actieve licentie.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
       <div id="opt-doc" style="padding:18px 14px;border-radius:12px;border:2px solid #ffeb55;background:rgba(255,235,85,.06);cursor:pointer;text-align:center" onclick="selPlan('doc')">
         <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#ffeb55">&#8364;2,50</div>
         <div style="font-size:13px;font-weight:600;color:#f0e8ff;margin-top:6px">Per document</div>
-        <div style="font-size:11px;color:#7a5a90;margin-top:3px">Eenmalig &middot; geen account</div>
+        <div style="font-size:11px;color:#7a5a90;margin-top:3px">Eenmalig &middot; 24 uur</div>
       </div>
       <div id="opt-mnd" style="padding:18px 14px;border-radius:12px;border:1px solid rgba(255,235,85,.2);background:rgba(255,255,255,.02);cursor:pointer;text-align:center" onclick="selPlan('mnd')">
         <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#ffeb55">&#8364;29<span style="font-size:13px;font-weight:400;color:#b8a0cc">/mnd</span></div>
@@ -193,20 +213,12 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
         <div style="font-size:11px;color:#7a5a90;margin-top:3px">Batch &middot; alle functies</div>
       </div>
     </div>
-
     <button id="btn-pay" onclick="doCheckout()" style="width:100%;background:#ffeb55;color:#120520;padding:14px;border-radius:8px;font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:14px;display:block">
       Doorgaan naar betaling &#8594;
     </button>
-
-    <button id="btn-demo" onclick="demoMode()" style="width:100%;background:none;border:none;color:#b8a0cc;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:'Instrument Sans',sans-serif;padding:4px">
-      Probeer gratis met voorbeelddocument
+    <button onclick="doSignOut()" style="width:100%;background:none;border:none;color:#7a5a90;font-size:12px;cursor:pointer;font-family:'Instrument Sans',sans-serif;padding:4px">
+      Uitloggen
     </button>
-
-    <div style="display:flex;justify-content:center;gap:18px;margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,235,85,.1)">
-      <span style="font-size:11px;color:#7a5a90">&#128274; 0 bytes verzonden</span>
-      <span style="font-size:11px;color:#7a5a90">&#127466;&#127482; EU hosting</span>
-      <span style="font-size:11px;color:#7a5a90">&#9989; AVG-compliant</span>
-    </div>
   </div>
 </div>
 
@@ -379,68 +391,136 @@ function demoMode() {
   showToast('Demo-modus actief');
 }
 
-function checkStripe() {
-  var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
+// ── AUTH & LICENTIE ───────────────────────────────────────
+var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
+var clerkUser = null;
 
-  // Toon laad-indicator in paywall terwijl we checken
-  function showChecking() {
-    var btn = document.getElementById('btn-pay');
-    if (btn) btn.textContent = 'Licentie controleren...';
-  }
-  function hideChecking() {
-    var btn = document.getElementById('btn-pay');
-    if (btn) btn.textContent = 'Doorgaan naar betaling →';
-  }
+// Initialiseer Clerk zodra het script geladen is
+window.addEventListener('load', function() {
+  var waitForClerk = setInterval(function() {
+    if (window.Clerk) {
+      clearInterval(waitForClerk);
+      initClerk();
+    }
+  }, 100);
+});
 
-  // Unlock ALLEEN als Worker bevestigt — nooit op basis van lokale data
-  function verifyWithWorker(sessionId, isNew) {
-    showChecking();
-    fetch(WORKER + '/check?session_id=' + encodeURIComponent(sessionId))
-      .then(function(r) {
-        if (!r.ok) throw new Error('Worker error');
-        return r.json();
-      })
-      .then(function(data) {
-        hideChecking();
-        if (data.valid) {
-          // Sla alleen de session_id op — NOOIT de geldigheid zelf
-          localStorage.setItem('pryvee_sid', sessionId);
-          document.getElementById('paywall').style.display = 'none';
-          if (isNew) {
-            showToast(data.plan === 'mnd'
-              ? 'Welkom! Onbeperkte toegang actief.'
-              : 'Betaling geslaagd! Toegang voor 24 uur.');
-          }
-          if (isNew) history.replaceState({}, '', location.pathname);
+function initClerk() {
+  window.Clerk.load().then(function() {
+    var user = window.Clerk.user;
+    if (user) {
+      // Al ingelogd — check licentie
+      clerkUser = user;
+      var email = user.primaryEmailAddress
+        ? user.primaryEmailAddress.emailAddress
+        : (user.externalAccounts && user.externalAccounts[0]
+            ? user.externalAccounts[0].emailAddress
+            : null);
+      if (!email) { showLoginScreen(); return; }
+      checkLicense(email, false);
+    } else {
+      // Niet ingelogd — toon login scherm
+      showLoginScreen();
+    }
+  }).catch(function() {
+    showLoginScreen();
+  });
+}
+
+function showLoginScreen() {
+  document.getElementById('screen-login').style.display = 'flex';
+  document.getElementById('screen-plan').style.display = 'none';
+}
+
+function showPlanScreen(email) {
+  document.getElementById('screen-login').style.display = 'none';
+  document.getElementById('screen-plan').style.display = 'flex';
+  var el = document.getElementById('plan-user');
+  if (el) el.textContent = 'Ingelogd als ' + email;
+}
+
+function unlockTool(plan, email) {
+  document.getElementById('screen-login').style.display = 'none';
+  document.getElementById('screen-plan').style.display = 'none';
+  showToast(plan === 'mnd'
+    ? 'Welkom ' + (email ? email.split('@')[0] : '') + '! Onbeperkte toegang actief.'
+    : 'Betaling geslaagd! Toegang voor 24 uur actief.');
+}
+
+function checkLicense(email, isAfterPayment) {
+  // Sla email op voor na Stripe redirect
+  if (email) localStorage.setItem('pryvee_email', email);
+
+  fetch(WORKER + '/check-email?email=' + encodeURIComponent(email))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.valid) {
+        unlockTool(data.plan, email);
+      } else {
+        if (isAfterPayment) {
+          // Net betaald maar Worker nog niet bijgewerkt — even wachten en opnieuw
+          setTimeout(function() {
+            fetch(WORKER + '/check-email?email=' + encodeURIComponent(email))
+              .then(function(r) { return r.json(); })
+              .then(function(data2) {
+                if (data2.valid) { unlockTool(data2.plan, email); }
+                else { showPlanScreen(email); showToast('Betaling niet gevonden — neem contact op'); }
+              });
+          }, 3000);
         } else {
-          // Verlopen of ongeldig — verwijder en toon paywall
-          localStorage.removeItem('pryvee_sid');
-          hideChecking();
-          if (isNew) showToast('Licentie niet geldig — probeer opnieuw');
+          showPlanScreen(email);
         }
-      })
-      .catch(function() {
-        // Worker niet bereikbaar — GEEN toegang verlenen
-        hideChecking();
-        localStorage.removeItem('pryvee_sid');
-        showToast('Kon licentie niet verifiëren. Controleer je verbinding.');
-      });
-  }
+      }
+    })
+    .catch(function() {
+      // Worker niet bereikbaar — geen toegang
+      showLoginScreen();
+      showToast('Verbindingsfout. Probeer opnieuw.');
+    });
+}
 
-  // 1. Verse betaling — session_id komt van Stripe via URL
+function doMicrosoftLogin() {
+  if (!window.Clerk) { showToast('Laden... probeer opnieuw'); return; }
+  window.Clerk.openSignIn({
+    afterSignInUrl: window.location.href,
+    afterSignUpUrl: window.location.href
+  });
+}
+
+function doSignOut() {
+  if (window.Clerk) {
+    window.Clerk.signOut().then(function() {
+      localStorage.removeItem('pryvee_email');
+      showLoginScreen();
+    });
+  }
+}
+
+function checkStripe() {
+  // Na Stripe betaling — check licentie met opgeslagen email
   var p = new URLSearchParams(location.search);
-  var sessionId = p.get('session_id');
-  if (sessionId) {
-    verifyWithWorker(sessionId, true);
-    return;
+  if (p.get('paid') === '1') {
+    history.replaceState({}, '', location.pathname);
+    var savedEmail = localStorage.getItem('pryvee_email');
+    if (savedEmail) {
+      checkLicense(savedEmail, true);
+    }
   }
+}
 
-  // 2. Terugkerende bezoeker — haal session_id op uit localStorage
-  //    maar verifieer ALTIJD bij de Worker, nooit lokaal
-  var saved = localStorage.getItem('pryvee_sid');
-  if (saved) {
-    verifyWithWorker(saved, false);
-  }
+function doCheckout() {
+  var email = localStorage.getItem('pryvee_email') || '';
+  var urls = {
+    doc: 'https://buy.stripe.com/test_4gM28t3QYaG06zW7SC8g001',
+    mnd: 'https://buy.stripe.com/test_aFa6oJcnubK40by5Ku8g000'
+  };
+  var successUrl = encodeURIComponent(
+    window.location.origin + window.location.pathname + '?paid=1'
+  );
+  // Geef email mee als prefill zodat Stripe het email matcht
+  window.location.href = urls[selPlanVal]
+    + '?prefilled_email=' + encodeURIComponent(email)
+    + '&success_url=' + successUrl;
 }
 
 // ── FILE HANDLING ──────────────────────────────────────────────
