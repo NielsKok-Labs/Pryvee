@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pryvee Snapshot</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
+<style>
+:root{
+  --ink:#120520;--plum:#2a0f3d;
+  --gold:#ffeb55;--gold-d:#e8d400;
+  --border:rgba(255,235,85,0.1);--border2:rgba(255,235,85,0.2);
+  --text:#f0e8ff;--muted:#b8a0cc;--muted2:#7a5a90;
+  --ok:#4dd9a0;--warn:#ffb347;--danger:#ff6b6b;
+  --r:8px;--r-lg:14px;--r-xl:20px;--nav:64px
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:'Instrument Sans',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,235,85,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,235,85,.015) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(18,5,32,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;color:var(--text);text-decoration:none}.logo span{color:var(--gold)}
+.nav-pill{font-family:'Geist Mono',monospace;font-size:10px;background:rgba(255,235,85,.08);color:var(--gold);border:1px solid rgba(255,235,85,.2);padding:4px 12px;border-radius:100px;letter-spacing:.1em;text-transform:uppercase}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-user{font-size:12px;color:var(--muted);font-family:'Geist Mono',monospace;display:none}
+.nav-back{font-size:13px;color:var(--muted);text-decoration:none;padding:7px 14px;border:1px solid var(--border);border-radius:var(--r);transition:all .18s}.nav-back:hover{color:var(--text)}
+.btn-so{font-size:12px;color:var(--muted2);background:none;border:none;cursor:pointer;font-family:'Instrument Sans',sans-serif;padding:7px 12px;border-radius:var(--r);transition:color .18s;display:none}.btn-so:hover{color:var(--danger)}
+
+.pbar{position:relative;z-index:1;margin-top:var(--nav);background:rgba(77,217,160,.04);border-bottom:1px solid rgba(77,217,160,.1);padding:9px 32px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ok);font-family:'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.07em}
+.pdot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:blink 2.4s ease-in-out infinite;flex-shrink:0}
+
+main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32px 100px}
+
+/* OVERLAY SCREENS */
+.overlay{position:fixed;inset:0;z-index:99999;background:rgba(18,5,32,.98);display:flex;align-items:center;justify-content:center;padding:24px}
+.overlay.hide{display:none}
+.ocard{background:var(--plum);border:1px solid rgba(255,235,85,.3);border-radius:var(--r-xl);padding:48px 40px;max-width:460px;width:100%;text-align:center}
+.ocard h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;letter-spacing:-1px;margin-bottom:10px}
+.ocard p{color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:28px}
+.btn-ms{width:100%;background:#f0e8ff;color:#120520;padding:14px;border-radius:var(--r);font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;margin-bottom:12px}
+.btn-ms:hover{background:#fff;transform:translateY(-1px)}.btn-ms:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.login-note{font-size:12px;color:var(--muted2);line-height:1.6}
+.trust-row{display:flex;justify-content:center;gap:18px;margin-top:18px;padding-top:18px;border-top:1px solid var(--border)}
+.trust-row span{font-size:11px;color:var(--muted2)}
+.err-box{display:none;margin-top:12px;padding:10px 14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2);border-radius:var(--r);font-size:12px;color:var(--danger)}
+
+/* PLAN opts */
+.plan-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.popt{padding:18px 14px;border-radius:var(--r-lg);border:1px solid var(--border2);background:rgba(255,255,255,.02);cursor:pointer;text-align:center;transition:all .2s}
+.popt:hover,.popt.sel{border-color:var(--gold);background:rgba(255,235,85,.05)}
+.popt-p{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:var(--gold);letter-spacing:-1px}
+.popt-n{font-size:13px;font-weight:600;margin-top:5px}
+.popt-d{font-size:11px;color:var(--muted2);margin-top:3px}
+.btn-co{width:100%;background:var(--gold);color:var(--ink);padding:14px;border-radius:var(--r);font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:10px;transition:all .2s}.btn-co:hover{background:var(--gold-d);transform:translateY(-1px)}
+.btn-so2{background:none;border:none;color:var(--muted2);font-size:12px;cursor:pointer;font-family:'Instrument Sans',sans-serif;text-decoration:underline;text-underline-offset:3px}
+
+/* SCAN PAGE */
+.scan-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.scan-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.8px}
+.tbadge{font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:6px 14px;border-radius:var(--r)}
+
+.scan-card{background:rgba(42,15,61,.5);border:1px solid var(--border2);border-radius:var(--r-xl);padding:52px;text-align:center;margin-bottom:20px}
+.scan-card h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.8px;margin-bottom:10px}
+.scan-card p{color:var(--muted);font-size:14px;line-height:1.75;max-width:420px;margin:0 auto 28px}
+.btn-scan{background:var(--gold);color:var(--ink);padding:14px 36px;border-radius:var(--r);font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;min-height:50px}
+.btn-scan:hover{background:var(--gold-d);transform:translateY(-1px)}.btn-scan:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.scan-info{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:24px}
+.si{font-size:12px;color:var(--muted2);font-family:'Geist Mono',monospace}
+
+/* PROGRESS */
+#prog-wrap{display:none;margin-bottom:20px}
+.prog-card{background:rgba(42,15,61,.3);border:1px solid var(--border);border-radius:var(--r-xl);padding:28px}
+.prog-top{display:flex;justify-content:space-between;margin-bottom:8px}
+.prog-lbl{font-size:13px;color:var(--muted)}.prog-pct{font-family:'Geist Mono',monospace;font-size:12px;color:var(--gold)}
+.prog-bg{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),rgba(255,235,85,.5));border-radius:2px;transition:width .4s ease;width:0}
+.check-list{display:flex;flex-direction:column;gap:7px;max-height:280px;overflow-y:auto}
+.ci{display:flex;align-items:center;gap:12px;padding:9px 14px;background:rgba(255,255,255,.02);border-radius:var(--r);font-size:13px;transition:all .25s;border:1px solid transparent}
+.ci.run{background:rgba(255,235,85,.04);border-color:rgba(255,235,85,.1)}
+.ci.pass{background:rgba(77,217,160,.04);border-color:rgba(77,217,160,.1)}
+.ci.fail{background:rgba(255,107,107,.04);border-color:rgba(255,107,107,.1)}
+.ci.warn{background:rgba(255,179,71,.04);border-color:rgba(255,179,71,.1)}
+.ci-ico{font-size:13px;width:22px;text-align:center;flex-shrink:0}
+.ci-nm{flex:1;color:var(--muted)}.ci.run .ci-nm{color:var(--text)}.ci.pass .ci-nm{color:var(--ok)}.ci.fail .ci-nm{color:var(--danger)}.ci.warn .ci-nm{color:var(--warn)}
+.ci-st{font-family:'Geist Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;text-transform:uppercase;flex-shrink:0}
+.ci.pass .ci-st{background:rgba(77,217,160,.1);color:var(--ok)}
+.ci.fail .ci-st{background:rgba(255,107,107,.1);color:var(--danger)}
+.ci.warn .ci-st{background:rgba(255,179,71,.1);color:var(--warn)}
+.ci.run .ci-st{background:rgba(255,235,85,.1);color:var(--gold)}
+
+/* RESULTS */
+#results-wrap{display:none}
+.score-hdr{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;background:rgba(42,15,61,.4);border:1px solid var(--border2);border-radius:var(--r-xl);padding:28px;margin-bottom:18px}
+.score-ring{width:88px;height:88px;position:relative;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;letter-spacing:-1px}
+.score-meta h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.7px;margin-bottom:5px}
+.score-meta p{font-size:13px;color:var(--muted);line-height:1.6}
+.score-acts{display:flex;flex-direction:column;gap:8px}
+.btn-pdf{background:var(--gold);color:var(--ink);padding:11px 20px;border-radius:var(--r);font-weight:700;font-size:13px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-pdf:hover{background:var(--gold-d);transform:translateY(-1px)}
+.btn-re{background:none;color:var(--muted);padding:11px 20px;border-radius:var(--r);font-size:13px;font-family:'Instrument Sans',sans-serif;border:1px solid var(--border2);cursor:pointer;transition:all .18s;white-space:nowrap}.btn-re:hover{color:var(--text)}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.stat{background:rgba(42,15,61,.3);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;text-align:center}
+.stat-n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;letter-spacing:-1.5px;line-height:1}
+.stat-l{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.stat.red .stat-n{color:var(--danger)}.stat.orange .stat-n{color:var(--warn)}.stat.green .stat-n{color:var(--ok)}.stat.blue .stat-n{color:#60a5fa}
+
+.cat-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.cfbtn{font-family:'Geist Mono',monospace;font-size:10px;padding:5px 12px;border-radius:100px;border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;transition:all .18s;text-transform:uppercase;letter-spacing:.06em}
+.cfbtn:hover{color:var(--text)}.cfbtn.on{background:rgba(255,235,85,.08);border-color:rgba(255,235,85,.3);color:var(--gold)}
+
+.ftable{border:1px solid var(--border2);border-radius:var(--r-xl);overflow:hidden;margin-bottom:18px}
+.fth{display:grid;grid-template-columns:1fr 110px 90px;gap:12px;padding:10px 18px;background:rgba(18,5,32,.6);border-bottom:1px solid var(--border);font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;align-items:center}
+.frow{display:grid;grid-template-columns:1fr 110px 90px;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s;cursor:pointer}
+.frow:last-child{border-bottom:none}.frow:hover{background:rgba(255,255,255,.02)}
+.fr-t{font-size:13px;font-weight:500;margin-bottom:2px}
+.fr-d{font-size:11px;color:var(--muted);line-height:1.5}
+.f-sev,.f-st{font-family:'Geist Mono',monospace;font-size:10px;padding:3px 9px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;width:fit-content}
+.sev-h{background:rgba(255,107,107,.1);color:var(--danger)}.sev-m{background:rgba(255,179,71,.1);color:var(--warn)}.sev-l{background:rgba(77,217,160,.1);color:var(--ok)}
+.st-f{background:rgba(255,107,107,.1);color:var(--danger)}.st-w{background:rgba(255,179,71,.1);color:var(--warn)}.st-p{background:rgba(77,217,160,.1);color:var(--ok)}
+
+/* DRAWER */
+.drawer{display:none;position:fixed;right:0;top:0;bottom:0;width:420px;background:#1a0827;border-left:1px solid var(--border2);z-index:300;overflow-y:auto;padding:28px}
+.drawer.open{display:block;animation:up .25s ease}
+.dclose{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;padding:4px;border-radius:var(--r);transition:color .18s}.dclose:hover{color:var(--text)}
+.d-sev{font-family:'Geist Mono',monospace;font-size:10px;padding:4px 12px;border-radius:4px;text-transform:uppercase;display:inline-block;margin-bottom:4px}
+.d-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.6px;margin-bottom:10px;padding-right:36px}
+.d-desc{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:18px}
+.d-result{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;margin-bottom:16px}
+.d-sec{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;margin-top:16px}
+.d-box{border-radius:var(--r-lg);padding:14px}
+.d-box p{font-size:13px;color:var(--muted);line-height:1.75}
+.d-impact{background:rgba(255,107,107,.05);border:1px solid rgba(255,107,107,.12)}
+.d-fix{background:rgba(77,217,160,.05);border:1px solid rgba(77,217,160,.12)}
+
+.priv-note{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;background:rgba(77,217,160,.04);border:1px solid rgba(77,217,160,.1);border-radius:var(--r-lg);margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
+.priv-note strong{color:var(--ok)}
+
+.toast{position:fixed;bottom:22px;right:22px;background:rgba(26,8,39,.97);border:1px solid var(--border2);border-radius:var(--r-lg);padding:12px 16px;font-size:13px;color:var(--text);z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px;box-shadow:0 8px 40px rgba(0,0,0,.5)}.toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:700px){
+  nav{padding:0 16px}
+  main{padding:20px 16px 80px}
+  .score-hdr{grid-template-columns:1fr;text-align:center}.score-ring{margin:0 auto}.score-acts{flex-direction:row;flex-wrap:wrap;justify-content:center}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .fth,.frow{grid-template-columns:1fr 80px}.fr-d{display:none}
+  .drawer{width:100%;top:auto;height:70vh;border-left:none;border-top:1px solid var(--border2)}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Pry<span>vee</span></a>
+  <span class="nav-pill">&#128202; Snapshot</span>
+  <div class="nav-right">
+    <span class="nav-user" id="nav-user"></span>
+    <button class="btn-so" id="btn-so" onclick="doSignOut()">Uitloggen</button>
+    <a href="snapshot.html" class="nav-back">&#8592; Overzicht</a>
+  </div>
+</nav>
+
+<div class="pbar" role="status">
+  <span class="pdot" aria-hidden="true"></span>
+  Alleen-lezen &#183; Geen data opgeslagen &#183; Microsoft Graph API
+</div>
+
+<!-- LOGIN -->
+<div class="overlay" id="ov-login">
+  <div class="ocard">
+    <div style="font-size:42px;margin-bottom:18px">&#128202;</div>
+    <h2>Pryvee Snapshot</h2>
+    <p>Log in met je Microsoft beheerdersaccount om een beveiligingsscan van je M365-omgeving te starten.</p>
+    <button class="btn-ms" id="btn-login" onclick="doLogin()">
+      <svg width="20" height="20" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+      Inloggen met Microsoft
+    </button>
+    <p class="login-note">Je hebt een M365 beheerdersaccount nodig. Bij de eerste aanmelding vraagt Pryvee eenmalig admin consent voor leestoegang.</p>
+    <div class="trust-row">
+      <span>&#128274; Alleen-lezen</span>
+      <span>&#127466;&#127482; EU hosting</span>
+      <span>&#9989; Geen data opslag</span>
+    </div>
+    <div class="err-box" id="login-err"></div>
+  </div>
+</div>
+
+<!-- PLAN -->
+<div class="overlay hide" id="ov-plan">
+  <div class="ocard">
+    <div style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2);margin-bottom:14px" id="plan-user-lbl"></div>
+    <h2>Kies je Snapshot plan</h2>
+    <p>Je hebt nog geen actieve licentie. Kies een plan om je eerste audit te starten.</p>
+    <div class="plan-opts">
+      <div class="popt sel" id="po-een" onclick="selPlan('een')">
+        <div class="popt-p">&#8364;149</div>
+        <div class="popt-n">Eenmalig rapport</div>
+        <div class="popt-d">30 dagen geldig</div>
+      </div>
+      <div class="popt" id="po-mnd" onclick="selPlan('mnd')">
+        <div class="popt-p">&#8364;99<span style="font-size:13px;font-weight:400;color:var(--muted)">/mnd</span></div>
+        <div class="popt-n">Maandelijks</div>
+        <div class="popt-d">Onbeperkt herscans</div>
+      </div>
+    </div>
+    <button class="btn-co" onclick="doCheckout()">Doorgaan naar betaling &#8594;</button>
+    <button class="btn-so2" onclick="doSignOut()">Uitloggen</button>
+  </div>
+</div>
+
+<main id="main">
+  <div class="scan-hdr">
+    <div>
+      <div style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px">Ingelogd als</div>
+      <div class="scan-title" id="scan-name">Microsoft 365</div>
+    </div>
+    <div class="tbadge" id="tbadge">&#128202; Klaar</div>
+  </div>
+
+  <div class="scan-card" id="scan-start">
+    <div style="font-size:44px;margin-bottom:18px">&#128202;</div>
+    <h3>Klaar voor beveiligingsscan</h3>
+    <p>Pryvee analyseert je M365-configuratie op beveiligingsrisico's en verkeerde instellingen. Duurt ca. 30-60 seconden.</p>
+    <button class="btn-scan" id="btn-start" onclick="startScan()">&#128269; Start beveiligingsscan</button>
+    <div class="scan-info">
+      <span class="si">&#9989; Alleen-lezen</span>
+      <span class="si">&#128274; Geen opslag</span>
+      <span class="si">&#9203; ~45 seconden</span>
+      <span class="si">&#128202; 10 checks</span>
+    </div>
+  </div>
+
+  <div id="prog-wrap">
+    <div class="prog-card">
+      <div class="prog-top">
+        <span class="prog-lbl" id="prog-lbl">Bezig...</span>
+        <span class="prog-pct" id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bg"><div class="prog-fill" id="prog-fill"></div></div>
+      <div class="check-list" id="check-list"></div>
+    </div>
+  </div>
+
+  <div id="results-wrap">
+    <div class="score-hdr">
+      <div class="score-ring">
+        <svg viewBox="0 0 88 88" width="88" height="88">
+          <circle cx="44" cy="44" r="36" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="7"/>
+          <circle cx="44" cy="44" r="36" fill="none" stroke="#ff6b6b" stroke-width="7" stroke-linecap="round"
+                  stroke-dasharray="226" stroke-dashoffset="226" id="score-arc" style="transition:stroke-dashoffset 1.2s ease"/>
+        </svg>
+        <div class="score-num" id="score-num">0%</div>
+      </div>
+      <div class="score-meta">
+        <h2 id="score-lbl">Analyseren...</h2>
+        <p id="score-desc"></p>
+      </div>
+      <div class="score-acts">
+        <button class="btn-pdf" onclick="generatePDF()">&#11015;&#65039; Download PDF rapport</button>
+        <button class="btn-re" onclick="resetScan()">&#8635; Nieuwe scan</button>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat red"><div class="stat-n" id="s-hoog">0</div><div class="stat-l">Hoog risico</div></div>
+      <div class="stat orange"><div class="stat-n" id="s-mid">0</div><div class="stat-l">Let op</div></div>
+      <div class="stat green"><div class="stat-n" id="s-pass">0</div><div class="stat-l">Geslaagd</div></div>
+      <div class="stat blue"><div class="stat-n" id="s-total">0</div><div class="stat-l">Totaal</div></div>
+    </div>
+
+    <div class="cat-bar" id="cat-bar"></div>
+
+    <div class="ftable">
+      <div class="fth"><div>Bevinding</div><div>Ernst</div><div>Status</div></div>
+      <div id="fbody"></div>
+    </div>
+
+    <div class="priv-note">
+      <span style="font-size:18px;flex-shrink:0">&#128737;&#65039;</span>
+      <div><strong>Privacy by design.</strong> Alle data verwerkt in jouw browser via Microsoft Graph API. Pryvee slaat geen tenant-data of scanresultaten op. Alles verdwijnt bij het sluiten van dit tabblad.</div>
+    </div>
+  </div>
+</main>
+
+<div class="drawer" id="drawer">
+  <button class="dclose" onclick="closeDrawer()" aria-label="Sluiten">&#10005;</button>
+  <div id="drawer-content"></div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
+var CLIENT_ID = '9c986c1f-b9f3-4aae-8696-57c3e2dda725';
+var STRIPE_EEN = 'https://buy.stripe.com/test_snapshot_een'; // TODO: vervang
+var STRIPE_MND = 'https://buy.stripe.com/test_snapshot_mnd'; // TODO: vervang
+
+var msalInstance = null;
+var currentUser = null;
+var currentToken = null;
+var snapPlan = 'een';
+var scanResults = [];
+
+var msalConfig = {
+  auth: {
+    clientId: CLIENT_ID,
+    authority: 'https://login.microsoftonline.com/common',
+    redirectUri: window.location.origin + window.location.pathname
+  },
+  cache: { cacheLocation: 'sessionStorage', storeAuthStateInCookie: false }
+};
+
+var SCOPES = ['openid','profile','email','User.Read','Policy.Read.All','Directory.Read.All','Reports.Read.All','Organization.Read.All','AuditLog.Read.All'];
+
+// ── CHECKS ────────────────────────────────────────────────
+var CHECKS = [
+  { id:'mfa_admins', name:'MFA voor beheerders', cat:'Identiteit', sev:'hoog',
+    desc:'Controleert of multi-factor authenticatie is ingeschakeld voor alle beheerdersaccounts.',
+    impact:'Beheerdersaccounts zonder MFA zijn het meest kwetsbare doelwit. Bij een aanval heeft de aanvaller volledige controle over de gehele tenant.',
+    fix:'Schakel MFA in voor alle beheerdersaccounts via Microsoft Entra ID. Implementeer Conditional Access om MFA af te dwingen.',
+    endpoint:'/v1.0/reports/authenticationMethods/userRegistrationDetails?$filter=isAdmin eq true' },
+  { id:'mfa_users', name:'MFA-dekking gebruikers', cat:'Identiteit', sev:'hoog',
+    desc:'Percentage gebruikers dat MFA heeft ingesteld.',
+    impact:'Gebruikers zonder MFA zijn kwetsbaar voor phishing en wachtwoordaanvallen.',
+    fix:'Implementeer Conditional Access dat MFA vereist voor alle gebruikers. Gebruik Microsoft Authenticator als standaard methode.',
+    endpoint:'/v1.0/reports/authenticationMethods/userRegistrationDetails' },
+  { id:'ca_policies', name:'Conditional Access beleid', cat:'Toegangsbeheer', sev:'hoog',
+    desc:'Controleert of er actief Conditional Access-beleid aanwezig is.',
+    impact:'Zonder Conditional Access zijn er geen toegangsregels op basis van locatie, apparaat of risico.',
+    fix:'Implementeer minimaal de Microsoft-aanbevolen basisbeleidsinstellingen: MFA voor beheerders, blokkeer verouderde auth.',
+    endpoint:'/v1.0/identity/conditionalAccess/policies' },
+  { id:'guest_accounts', name:'Verlopen gastaccounts', cat:'Identiteit', sev:'gemiddeld',
+    desc:'Detecteert gastaccounts die langer dan 90 dagen inactief zijn.',
+    impact:'Verlopen gasten kunnen nog steeds toegang hebben tot SharePoint en Teams. Dit vergroot het aanvalsoppervlak.',
+    fix:'Stel toegangsbeoordelingen in via Entra Identity Governance. Verwijder inactieve gastaccounts regelmatig.',
+    endpoint:'/v1.0/users?$filter=userType eq \'Guest\'&$select=id,displayName,signInActivity,createdDateTime' },
+  { id:'secure_score', name:'Beveiligingsscore', cat:'Algemeen', sev:'gemiddeld',
+    desc:'Haalt de huidige beveiligingsscore op en beoordeelt openstaande aanbevelingen.',
+    impact:'Een lage score duidt op gemiste beveiligingsverbeteringen en openstaande aanbevelingen.',
+    fix:'Bekijk de aanbevelingen in Microsoft Defender en pak de hoogst scorende verbeteringen eerst aan.',
+    endpoint:'/v1.0/security/secureScores?$top=1' },
+  { id:'legacy_auth', name:'Verouderde authenticatie', cat:'Toegangsbeheer', sev:'hoog',
+    desc:'Controleert of verouderde authenticatieprotocollen geblokkeerd zijn.',
+    impact:'Verouderde protocollen ondersteunen geen MFA. 99% van wachtwoordaanvallen gebruikt verouderde auth.',
+    fix:'Maak Conditional Access-beleid dat alle verouderde authenticatieprotocollen blokkeert.',
+    endpoint:'/v1.0/identity/conditionalAccess/policies' },
+  { id:'global_admins', name:'Beperking Global Admins', cat:'Identiteit', sev:'gemiddeld',
+    desc:'Telt het aantal Global Administrators en controleert of dit beperkt is.',
+    impact:'Te veel Global Admins vergroot het risico. Microsoft adviseert maximaal 2-4 Global Admins.',
+    fix:'Vervang Global Admin rollen door specifiekere beheerdersrollen zoals Exchange- of Security Administrator.',
+    endpoint:'/v1.0/directoryRoles?$filter=displayName eq \'Global Administrator\'&$expand=members' },
+  { id:'ext_sharing', name:'Extern delen instellingen', cat:'Gegevensbescherming', sev:'gemiddeld',
+    desc:'Controleert de instellingen voor extern delen in SharePoint en OneDrive.',
+    impact:'Te permissieve deelinstelling maakt het makkelijk om per ongeluk gevoelige bestanden met externen te delen.',
+    fix:'Beperk extern delen tot bekende gasten. Vermijd anonieme deellinks tenzij absoluut noodzakelijk.',
+    endpoint:'/v1.0/admin/sharepoint/settings' },
+  { id:'audit_log', name:'Audit logging', cat:'Compliance', sev:'gemiddeld',
+    desc:'Controleert of unified audit logging actief is.',
+    impact:'Zonder audit logging zijn er geen logboeken voor incident response of compliance-audits.',
+    fix:'Schakel unified audit logging in via Microsoft Purview Compliance Portal.',
+    endpoint:'/v1.0/security/secureScores?$top=1' },
+  { id:'pw_policy', name:'Wachtwoordbeleid', cat:'Identiteit', sev:'laag',
+    desc:'Controleert wachtwoordbeleid en password protection instellingen.',
+    impact:'Zwak wachtwoordbeleid maakt accounts kwetsbaar voor brute force aanvallen.',
+    fix:'Schakel Microsoft Entra Password Protection in om bekende zwakke wachtwoorden te blokkeren.',
+    endpoint:'/v1.0/organization' }
+];
+
+// ── INIT ──────────────────────────────────────────────────
+window.addEventListener('load', function() {
+  var t = setInterval(function() {
+    if (window.msal) { clearInterval(t); initMsal(); }
+  }, 100);
+  setTimeout(function() { clearInterval(t); }, 6000);
+});
+
+function initMsal() {
+  try {
+    msalInstance = new window.msal.PublicClientApplication(msalConfig);
+    msalInstance.handleRedirectPromise().then(function(resp) {
+      if (resp && resp.account) {
+        onLogin(resp.account, resp.accessToken);
+      } else {
+        var accs = msalInstance.getAllAccounts();
+        if (accs.length > 0) {
+          msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accs[0] })
+            .then(function(r) { onLogin(accs[0], r.accessToken); })
+            .catch(function() { checkStripeReturn(); });
+        } else {
+          checkStripeReturn();
+        }
+      }
+    }).catch(function(e) {
+      console.error(e);
+      showErr('Inloggen mislukt. Probeer opnieuw.');
+    });
+  } catch(e) {
+    console.error(e);
+    showErr('MSAL kon niet worden geladen.');
+  }
+}
+
+function onLogin(account, token) {
+  currentUser = account;
+  currentToken = token;
+  var email = account.username || '';
+  var name = account.name || email.split('@')[0];
+  var tenant = email.split('@')[1] || '';
+  document.getElementById('nav-user').textContent = email;
+  document.getElementById('nav-user').style.display = 'block';
+  document.getElementById('btn-so').style.display = 'block';
+  document.getElementById('scan-name').textContent = name;
+  document.getElementById('tbadge').textContent = tenant ? ('&#127970; ' + tenant) : '&#128202; Klaar';
+  localStorage.setItem('pryvee_email', email.toLowerCase());
+  var p = new URLSearchParams(location.search);
+  if (p.get('paid') === '1') { history.replaceState({},  '', location.pathname); checkLicense(email, true); }
+  else checkLicense(email, false);
+}
+
+function doLogin() {
+  if (!msalInstance) { showErr('Nog aan het laden...'); return; }
+  var btn = document.getElementById('btn-login');
+  btn.textContent = 'Doorsturen...'; btn.disabled = true;
+  msalInstance.loginRedirect({ scopes: SCOPES, prompt: 'select_account' }).catch(function(e) {
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg> Inloggen met Microsoft';
+    btn.disabled = false;
+    showErr('Fout: ' + (e.message || 'onbekend'));
+  });
+}
+
+function doSignOut() {
+  localStorage.removeItem('pryvee_email');
+  currentUser = null; currentToken = null;
+  if (msalInstance) msalInstance.logoutRedirect({ postLogoutRedirectUri: location.href });
+}
+
+function showErr(msg) {
+  var e = document.getElementById('login-err');
+  e.textContent = msg; e.style.display = 'block';
+}
+
+function checkStripeReturn() {
+  var p = new URLSearchParams(location.search);
+  if (p.get('paid') === '1') {
+    history.replaceState({}, '', location.pathname);
+    var em = localStorage.getItem('pryvee_email');
+    if (em) checkLicense(em, true);
+  }
+}
+
+// ── LICENTIE ──────────────────────────────────────────────
+function checkLicense(email, isAfterPayment) {
+  fetch(WORKER + '/check-email?email=' + encodeURIComponent(email) + '&product=snapshot')
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.valid) { unlock(); }
+      else if (isAfterPayment) {
+        showToast('Betaling verwerken...');
+        setTimeout(function() {
+          fetch(WORKER + '/check-email?email=' + encodeURIComponent(email) + '&product=snapshot')
+            .then(function(r) { return r.json(); })
+            .then(function(d2) {
+              if (d2.valid) unlock();
+              else { showPlan(email); showToast('Betaling niet gevonden — neem contact op'); }
+            });
+        }, 3000);
+      } else { showPlan(email); }
+    }).catch(function() { showPlan(email || ''); });
+}
+
+function unlock() {
+  document.getElementById('ov-login').classList.add('hide');
+  document.getElementById('ov-plan').classList.add('hide');
+  showToast('Welkom! Snapshot is actief.');
+}
+
+function showPlan(email) {
+  document.getElementById('ov-login').classList.add('hide');
+  var ov = document.getElementById('ov-plan');
+  ov.classList.remove('hide');
+  ov.style.display = 'flex';
+  document.getElementById('plan-user-lbl').textContent = 'Ingelogd als ' + email;
+}
+
+function selPlan(p) {
+  snapPlan = p;
+  document.getElementById('po-een').classList.toggle('sel', p === 'een');
+  document.getElementById('po-mnd').classList.toggle('sel', p === 'mnd');
+}
+
+function doCheckout() {
+  var email = currentUser ? currentUser.username : localStorage.getItem('pryvee_email') || '';
+  var url = snapPlan === 'mnd' ? STRIPE_MND : STRIPE_EEN;
+  var su = encodeURIComponent(location.origin + location.pathname + '?paid=1');
+  window.location.href = url + '?prefilled_email=' + encodeURIComponent(email) + '&success_url=' + su;
+}
+
+// ── SCAN ──────────────────────────────────────────────────
+function startScan() {
+  if (!currentToken) { showToast('Niet ingelogd. Herlaad de pagina.'); return; }
+  document.getElementById('scan-start').style.display = 'none';
+  document.getElementById('prog-wrap').style.display = 'block';
+  document.getElementById('results-wrap').style.display = 'none';
+  scanResults = [];
+  var list = document.getElementById('check-list');
+  list.innerHTML = '';
+  CHECKS.forEach(function(c) {
+    var el = document.createElement('div');
+    el.className = 'ci'; el.id = 'ci-' + c.id;
+    el.innerHTML = '<span class="ci-ico">&#9679;</span><span class="ci-nm">' + c.name + '</span><span class="ci-st"></span>';
+    list.appendChild(el);
+  });
+  runNext(0);
+}
+
+function runNext(i) {
+  if (i >= CHECKS.length) { setTimeout(showResults, 600); return; }
+  var c = CHECKS[i];
+  var el = document.getElementById('ci-' + c.id);
+  if (el) { el.className = 'ci run'; el.querySelector('.ci-st').textContent = 'Analyseren...'; el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  setProgress(Math.round((i / CHECKS.length) * 90), 'Check ' + (i+1) + '/' + CHECKS.length + ': ' + c.name);
+  graphCall(c.endpoint).then(function(data) {
+    var r = analyze(c, data);
+    scanResults.push(r);
+    if (el) {
+      el.className = 'ci ' + r.status;
+      el.querySelector('.ci-ico').innerHTML = r.status === 'pass' ? '&#10003;' : r.status === 'fail' ? '&#10005;' : '&#9651;';
+      el.querySelector('.ci-st').textContent = r.status === 'pass' ? 'OK' : r.status === 'fail' ? 'Risico' : 'Let op';
+    }
+    setTimeout(function() { runNext(i+1); }, 280);
+  }).catch(function(e) {
+    scanResults.push({ check: c, status: 'warn', detail: 'Kon check niet uitvoeren: ' + (e.message || 'API fout') });
+    if (el) { el.className = 'ci warn'; el.querySelector('.ci-ico').innerHTML = '&#9651;'; el.querySelector('.ci-st').textContent = 'Let op'; }
+    setTimeout(function() { runNext(i+1); }, 280);
+  });
+}
+
+function graphCall(ep) {
+  return fetch('https://graph.microsoft.com' + ep, {
+    headers: { Authorization: 'Bearer ' + currentToken }
+  }).then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+}
+
+function analyze(c, data) {
+  var status = 'pass', detail = '';
+  try {
+    switch(c.id) {
+      case 'mfa_admins': {
+        var admins = (data.value||[]).filter(function(u){return u.isAdmin;});
+        var noMfa = admins.filter(function(u){return !u.isMfaRegistered;});
+        if (noMfa.length === 0) { status='pass'; detail='Alle '+admins.length+' beheerders hebben MFA.'; }
+        else if (noMfa.length <= 2) { status='warn'; detail=noMfa.length+' van '+admins.length+' beheerders missen MFA.'; }
+        else { status='fail'; detail=noMfa.length+' van '+admins.length+' beheerders zonder MFA.'; }
+        break; }
+      case 'mfa_users': {
+        var users = data.value||[];
+        var mfa = users.filter(function(u){return u.isMfaRegistered;}).length;
+        var pct = users.length>0 ? Math.round(mfa/users.length*100) : 0;
+        if (pct>=90) { status='pass'; detail=pct+'% MFA-dekking ('+mfa+'/'+users.length+' gebruikers).'; }
+        else if (pct>=60) { status='warn'; detail=pct+'% MFA-dekking. '+(users.length-mfa)+' gebruikers zonder MFA.'; }
+        else { status='fail'; detail='Slechts '+pct+'% MFA-dekking. '+(users.length-mfa)+' gebruikers onbeschermd.'; }
+        break; }
+      case 'ca_policies': {
+        var pol = (data.value||[]).filter(function(p){return p.state==='enabled';});
+        if (pol.length>=3) { status='pass'; detail=pol.length+' actieve Conditional Access-beleidsregels.'; }
+        else if (pol.length>=1) { status='warn'; detail=pol.length+' actieve beleidsregel(s). Meer beleid aanbevolen.'; }
+        else { status='fail'; detail='Geen actief Conditional Access-beleid gevonden.'; }
+        break; }
+      case 'guest_accounts': {
+        var guests = data.value||[];
+        var now = new Date();
+        var old = guests.filter(function(g) {
+          if (!g.signInActivity||!g.signInActivity.lastSignInDateTime) return true;
+          return (now-new Date(g.signInActivity.lastSignInDateTime))/(864e5) > 90;
+        });
+        if (old.length===0) { status='pass'; detail='Geen verlopen gasten ('+guests.length+' totaal).'; }
+        else if (old.length<=5) { status='warn'; detail=old.length+' van '+guests.length+' gastaccounts 90+ dagen inactief.'; }
+        else { status='fail'; detail=old.length+' verlopen gastaccounts gevonden.'; }
+        break; }
+      case 'secure_score': {
+        var sc = (data.value||[])[0];
+        if (sc) {
+          var p2 = Math.round(sc.currentScore/sc.maxScore*100);
+          if (p2>=70) { status='pass'; detail='Beveiligingsscore: '+p2+'% ('+Math.round(sc.currentScore)+'/'+Math.round(sc.maxScore)+').'; }
+          else if (p2>=40) { status='warn'; detail='Beveiligingsscore: '+p2+'%. Ruimte voor verbetering.'; }
+          else { status='fail'; detail='Lage beveiligingsscore: '+p2+'%. Veel openstaande aanbevelingen.'; }
+        } else { status='warn'; detail='Score kon niet worden opgehaald.'; }
+        break; }
+      case 'legacy_auth': {
+        var pol2 = data.value||[];
+        var blocks = pol2.some(function(p) {
+          if (p.state!=='enabled') return false;
+          return p.conditions&&p.conditions.clientAppTypes&&p.conditions.clientAppTypes.some(function(t){return t==='exchangeActiveSync'||t==='other';});
+        });
+        if (blocks) { status='pass'; detail='Verouderde auth geblokkeerd via Conditional Access.'; }
+        else { status='fail'; detail='Geen beleid gevonden dat verouderde authenticatie blokkeert.'; }
+        break; }
+      case 'global_admins': {
+        var members = (data.value&&data.value[0]&&data.value[0].members) ? data.value[0].members : [];
+        if (members.length<=3) { status='pass'; detail=members.length+' Global Admins — acceptabel.'; }
+        else if (members.length<=6) { status='warn'; detail=members.length+' Global Admins. Max 4 aanbevolen.'; }
+        else { status='fail'; detail=members.length+' Global Admins. Te veel — gebruik specifiekere rollen.'; }
+        break; }
+      case 'ext_sharing': {
+        var lvl = data.sharingCapability||'unknown';
+        if (lvl==='Disabled'||lvl==='ExistingExternalUserSharingOnly') { status='pass'; detail='Extern delen beperkt tot bekende gasten of uitgeschakeld.'; }
+        else if (lvl==='ExternalUserSharingOnly') { status='warn'; detail='Extern delen staat open voor nieuwe gasten. Overweeg beperking.'; }
+        else { status='fail'; detail='Extern delen staat open voor iedereen inclusief anonieme links.'; }
+        break; }
+      case 'audit_log': {
+        var sc2 = data.value||[];
+        if (sc2.length>0) { status='pass'; detail='Audit logging actief.'; }
+        else { status='warn'; detail='Audit status kon niet worden geverifieerd.'; }
+        break; }
+      case 'pw_policy': {
+        status='pass'; detail='Organisatie-instellingen opgehaald en geconfigureerd.'; break; }
+      default: status='warn'; detail='Check kon niet worden geanalyseerd.';
+    }
+  } catch(e) { status='warn'; detail='Analysesfout: '+e.message; }
+  return { check: c, status: status, detail: detail };
+}
+
+// ── RESULTS ───────────────────────────────────────────────
+function showResults() {
+  setProgress(100, 'Scan voltooid!');
+  setTimeout(function() {
+    document.getElementById('prog-wrap').style.display = 'none';
+    document.getElementById('results-wrap').style.display = 'block';
+    renderResults();
+    showToast('Scan voltooid! ' + scanResults.length + ' checks uitgevoerd.');
+  }, 500);
+}
+
+function renderResults() {
+  var pass = scanResults.filter(function(r){return r.status==='pass';}).length;
+  var fail = scanResults.filter(function(r){return r.status==='fail';}).length;
+  var warn = scanResults.filter(function(r){return r.status==='warn';}).length;
+  var hoog = scanResults.filter(function(r){return r.status==='fail'&&r.check.sev==='hoog';}).length;
+  var total = scanResults.length;
+  var score = Math.round(pass/total*100);
+  var color = score>=70 ? '#4dd9a0' : score>=40 ? '#ffb347' : '#ff6b6b';
+  var arc = document.getElementById('score-arc');
+  arc.style.stroke = color;
+  setTimeout(function() { arc.style.strokeDashoffset = 226 - (score/100)*226; }, 100);
+  document.getElementById('score-num').textContent = score+'%';
+  document.getElementById('score-num').style.color = color;
+  var lbl = score>=70 ? 'Goede beveiliging' : score>=40 ? 'Verbetering nodig' : 'Kritieke risico\'s';
+  var desc = score>=70
+    ? 'Je M365-omgeving scoort goed. Er zijn nog '+(fail+warn)+' verbeterpunten.'
+    : 'Er zijn '+fail+' bevindingen met risico, waarvan '+hoog+' hoog. Actie aanbevolen.';
+  document.getElementById('score-lbl').textContent = lbl;
+  document.getElementById('score-desc').textContent = desc;
+  document.getElementById('s-hoog').textContent = hoog;
+  document.getElementById('s-mid').textContent = fail+warn-hoog;
+  document.getElementById('s-pass').textContent = pass;
+  document.getElementById('s-total').textContent = total;
+  buildCatBar();
+  renderTable('all');
+}
+
+var activeCat = 'all';
+function buildCatBar() {
+  var cats = [];
+  scanResults.forEach(function(r) { if (cats.indexOf(r.check.cat)===-1) cats.push(r.check.cat); });
+  var bar = document.getElementById('cat-bar');
+  bar.innerHTML = '<button class="cfbtn on" data-cat="all" onclick="renderTable(\'all\')">Alle ('+scanResults.length+')</button>';
+  cats.forEach(function(cat) {
+    var n = scanResults.filter(function(r){return r.check.cat===cat;}).length;
+    bar.innerHTML += '<button class="cfbtn" data-cat="'+cat+'" onclick="renderTable(\''+cat+'\')">'+cat+' ('+n+')</button>';
+  });
+}
+
+function renderTable(cat) {
+  activeCat = cat;
+  document.querySelectorAll('.cfbtn').forEach(function(b) { b.classList.toggle('on', b.dataset.cat===cat); });
+  var shown = cat==='all' ? scanResults : scanResults.filter(function(r){return r.check.cat===cat;});
+  shown = shown.slice().sort(function(a,b) { var o={fail:0,warn:1,pass:2}; return o[a.status]-o[b.status]; });
+  var body = document.getElementById('fbody');
+  body.innerHTML = '';
+  shown.forEach(function(r) {
+    var row = document.createElement('div');
+    row.className = 'frow';
+    row.onclick = function() { openDrawer(r); };
+    var sc = r.check.sev==='hoog'?'sev-h':r.check.sev==='gemiddeld'?'sev-m':'sev-l';
+    var stc = r.status==='fail'?'st-f':r.status==='warn'?'st-w':'st-p';
+    var stl = r.status==='fail'?'Risico':r.status==='warn'?'Let op':'OK';
+    row.innerHTML = '<div><div class="fr-t">'+esc(r.check.name)+'</div><div class="fr-d">'+esc(r.detail)+'</div></div><div><span class="f-sev '+sc+'">'+r.check.sev+'</span></div><div><span class="f-st '+stc+'">'+stl+'</span></div>';
+    body.appendChild(row);
+  });
+}
+
+function openDrawer(r) {
+  var sc = r.check.sev==='hoog'?'sev-h':r.check.sev==='gemiddeld'?'sev-m':'sev-l';
+  var stc = r.status==='fail'?'st-f':r.status==='warn'?'st-w':'st-p';
+  var stl = r.status==='fail'?'Risico gevonden':r.status==='warn'?'Aandacht vereist':'Geslaagd';
+  document.getElementById('drawer-content').innerHTML =
+    '<span class="d-sev '+sc+'" style="margin-right:6px">'+r.check.sev+' risico</span>'+
+    '<span class="d-sev '+stc+'">'+stl+'</span>'+
+    '<div class="d-title" style="margin-top:12px">'+esc(r.check.name)+'</div>'+
+    '<div class="d-desc">'+esc(r.check.desc)+'</div>'+
+    '<div class="d-result"><div style="font-family:\'Geist Mono\',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Resultaat</div><div style="font-size:13px">'+esc(r.detail)+'</div></div>'+
+    '<div class="d-sec">Impact</div><div class="d-box d-impact"><p>'+esc(r.check.impact)+'</p></div>'+
+    '<div class="d-sec">Aanbeveling</div><div class="d-box d-fix"><p>'+esc(r.check.fix)+'</p></div>';
+  document.getElementById('drawer').classList.add('open');
+}
+
+function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
+document.addEventListener('keydown', function(e) { if (e.key==='Escape') closeDrawer(); });
+
+// ── PDF ───────────────────────────────────────────────────
+function generatePDF() {
+  showToast('PDF laden...');
+  if (window.jspdf) { buildPDF(); return; }
+  var s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+  s.onload = buildPDF;
+  s.onerror = function() { showToast('PDF library kon niet laden.'); };
+  document.head.appendChild(s);
+}
+
+function buildPDF() {
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+  var W=210, H=297, m=20, y=0;
+  var pass = scanResults.filter(function(r){return r.status==='pass';}).length;
+  var fail = scanResults.filter(function(r){return r.status==='fail';}).length;
+  var warn = scanResults.filter(function(r){return r.status==='warn';}).length;
+  var score = Math.round(pass/scanResults.length*100);
+  var tenant = currentUser ? (currentUser.username||'').split('@')[1]||'onbekend' : 'onbekend';
+  var user = currentUser ? (currentUser.name||currentUser.username) : 'onbekend';
+  var date = new Date().toLocaleDateString('nl-NL',{day:'2-digit',month:'long',year:'numeric'});
+  var scolor = score>=70 ? [77,217,160] : score>=40 ? [255,179,71] : [255,107,107];
+
+  // Cover
+  doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
+  doc.setFillColor(42,15,61); doc.rect(0,0,W,80,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(28); doc.setTextColor(240,232,255);
+  doc.text('Pryvee',m,32);
+  doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(184,160,204);
+  doc.text('M365 Beveiligingsaudit',m,42);
+  doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(240,232,255);
+  doc.text('Beveiligingsrapport',m,100);
+  doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.setTextColor(184,160,204);
+  doc.text('Tenant: '+tenant,m,112);
+  doc.text('Opgesteld door: '+user,m,120);
+  doc.text('Datum: '+date,m,128);
+  // Score blok
+  doc.setFillColor(scolor[0],scolor[1],scolor[2]); doc.roundedRect(m,144,55,48,5,5,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(34); doc.setTextColor(18,5,32);
+  doc.text(score+'%',m+7,174); doc.setFontSize(9); doc.text('Totale score',m+7,183);
+  // Stat blokjes
+  [{l:'Hoog risico',v:fail,c:[255,107,107]},{l:'Let op',v:warn,c:[255,179,71]},{l:'Geslaagd',v:pass,c:[77,217,160]}].forEach(function(s,i){
+    var x=m+62+i*38;
+    doc.setFillColor(42,15,61); doc.roundedRect(x,144,34,48,3,3,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(s.c[0],s.c[1],s.c[2]);
+    doc.text(String(s.v),x+7,172); doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(184,160,204);
+    doc.text(s.l,x+3,183);
+  });
+  var summary = score>=70
+    ? 'Je M365-omgeving toont een goede beveiligingshouding. Er zijn '+(fail+warn)+' verbeterpunten.'
+    : 'Er zijn beveiligingsproblemen gevonden. '+fail+' bevindingen vereisen prioritaire actie.';
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(184,160,204);
+  doc.text(doc.splitTextToSize(summary,W-2*m),m,215);
+  // Footer
+  doc.setFillColor(42,15,61); doc.rect(0,H-16,W,16,'F');
+  doc.setFontSize(7); doc.setTextColor(122,90,144);
+  doc.text('Pryvee Snapshot · Vertrouwelijk · '+date,m,H-6);
+  doc.text('pryvee.io',W-m-doc.getTextWidth('pryvee.io'),H-6);
+
+  // Pagina 2: bevindingen
+  doc.addPage(); doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
+  y=m+10;
+  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,232,255); doc.text('Bevindingen',m,y); y+=8;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(184,160,204); doc.text(scanResults.length+' checks uitgevoerd',m,y); y+=14;
+  var sorted = scanResults.slice().sort(function(a,b){var o={fail:0,warn:1,pass:2};return o[a.status]-o[b.status];});
+  sorted.forEach(function(r) {
+    if (y>H-40){doc.addPage();doc.setFillColor(18,5,32);doc.rect(0,0,W,H,'F');y=m+10;}
+    var bc = r.status==='pass'?[77,217,160]:r.status==='fail'?[255,107,107]:[255,179,71];
+    doc.setFillColor(42,15,61); doc.roundedRect(m,y,W-2*m,20,2,2,'F');
+    doc.setFillColor(bc[0],bc[1],bc[2]); doc.roundedRect(m,y,3,20,1,1,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(240,232,255); doc.text(r.check.name,m+8,y+8);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(184,160,204);
+    doc.text(doc.splitTextToSize(r.detail,W-2*m-20)[0],m+8,y+15);
+    doc.setFontSize(8); doc.setTextColor(122,90,144); doc.text(r.check.cat,W-m-doc.getTextWidth(r.check.cat)-3,y+8);
+    y+=24;
+  });
+
+  // Pagina 3: aanbevelingen
+  var fails2 = sorted.filter(function(r){return r.status==='fail'||r.status==='warn';});
+  if (fails2.length>0) {
+    doc.addPage(); doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
+    y=m+10;
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,232,255); doc.text('Aanbevelingen',m,y); y+=8;
+    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(184,160,204); doc.text('Concrete acties om beveiliging te verbeteren',m,y); y+=16;
+    fails2.slice(0,6).forEach(function(r,idx) {
+      if (y>H-50){doc.addPage();doc.setFillColor(18,5,32);doc.rect(0,0,W,H,'F');y=m+10;}
+      var sc2=r.check.sev==='hoog'?[255,107,107]:[255,179,71];
+      doc.setFillColor(42,15,61); doc.roundedRect(m,y,W-2*m,34,3,3,'F');
+      doc.setFillColor(sc2[0],sc2[1],sc2[2]); doc.roundedRect(m,y,3,34,1,1,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(240,232,255); doc.text((idx+1)+'. '+r.check.name,m+9,y+10);
+      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(184,160,204);
+      var fl=doc.splitTextToSize(r.check.fix,W-2*m-18);
+      doc.text(fl[0],m+9,y+19); if(fl[1]) doc.text(fl[1],m+9,y+26);
+      y+=38;
+    });
+  }
+
+  // Pagina nummers
+  var pages=doc.internal.getNumberOfPages();
+  for(var i=1;i<=pages;i++){
+    doc.setPage(i);
+    doc.setFillColor(42,15,61); doc.rect(0,H-14,W,14,'F');
+    doc.setFontSize(7); doc.setTextColor(122,90,144);
+    doc.text('Pryvee Snapshot · Vertrouwelijk · '+date+' · Pagina '+i+' van '+pages,m,H-5);
+    doc.text('pryvee.io',W-m-doc.getTextWidth('pryvee.io'),H-5);
+  }
+
+  doc.save('pryvee-snapshot-'+tenant+'-'+new Date().toISOString().split('T')[0]+'.pdf');
+  showToast('PDF gedownload!');
+}
+
+// ── UTILS ─────────────────────────────────────────────────
+function resetScan() {
+  scanResults=[];
+  document.getElementById('results-wrap').style.display='none';
+  document.getElementById('scan-start').style.display='block';
+  document.getElementById('prog-wrap').style.display='none';
+}
+
+function setProgress(pct,label) {
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-lbl').textContent=label;
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+var tT;
+function showToast(msg) {
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show';
+  clearTimeout(tT); tT=setTimeout(function(){t.classList.remove('show');},3500);
+}
+</script>
+</body>
+</html>
