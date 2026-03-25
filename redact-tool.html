@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pryvee Redact</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-authentication-library/2.38.0/msal-browser.min.js"></script>
+<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#120520;--plum:#1a0827;--gold:#ffeb55;--ok:#4dd9a0;--muted:#b8a0cc;--muted2:#7a5a90;--border:rgba(255,235,85,0.12);--border2:rgba(255,235,85,0.22);--text:#f0e8ff;--r:8px;--nav:64px}
@@ -478,18 +478,29 @@ function handleLoginSuccess(account) {
 }
 
 function doMicrosoftLogin() {
-  if (!msalInstance) {
-    showToast('Laden... probeer opnieuw');
-    return;
-  }
   var btn = document.getElementById('btn-ms-login');
-  if (btn) { btn.textContent = 'Verbinden met Microsoft...'; btn.disabled = true; }
 
-  // Gebruik redirect (werkt beter dan popup voor GitHub Pages)
+  // Als MSAL nog niet klaar is, initialiseer het nu direct
+  if (!msalInstance) {
+    if (btn) btn.textContent = 'Even laden...';
+    try {
+      msalInstance = new window.msal.PublicClientApplication(msalConfig);
+    } catch(e) {
+      showError('MSAL kon niet worden geladen. Herlaad de pagina.');
+      if (btn) btn.textContent = 'Inloggen met Microsoft';
+      return;
+    }
+  }
+
+  if (btn) { btn.textContent = 'Doorsturen naar Microsoft...'; btn.disabled = true; }
+
   msalInstance.loginRedirect(loginRequest).catch(function(err) {
     console.error('Login error:', err);
-    if (btn) { btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg> Inloggen met Microsoft'; btn.disabled = false; }
-    showError('Inloggen mislukt: ' + (err.message || 'onbekende fout'));
+    if (btn) {
+      btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg> Inloggen met Microsoft';
+      btn.disabled = false;
+    }
+    showError('Fout: ' + (err.message || 'onbekend'));
   });
 }
 
