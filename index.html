@@ -649,6 +649,11 @@ function switchTab(tab) {
   document.getElementById('panel-losse').classList.toggle('active', tab === 'losse');
   document.getElementById('panel-suite').classList.toggle('active', tab === 'suite');
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  switchTab('suite');
+});
+ 
 </script>
 </body>
 </html>
