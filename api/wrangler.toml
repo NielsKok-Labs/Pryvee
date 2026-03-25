@@ -1,7 +1,0 @@
-name = "pryvee-api"
-main = "worker.js"
-compatibility_date = "2024-01-01"
-
-[[kv_namespaces]]
-binding = "LICENSES"
-id = "e4c2a4bb5bd24006ab65d92ef176ae8f"
