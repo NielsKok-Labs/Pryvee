@@ -380,42 +380,66 @@ function demoMode() {
 }
 
 function checkStripe() {
-  var p = new URLSearchParams(location.search);
-  var sessionId = p.get('session_id');
-  if (sessionId) {
-    // Controleer licentie bij Worker
-    fetch('https://pryvee-api.workers.dev/check?session_id=' + sessionId)
-      .then(function(r) { return r.json(); })
+  var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
+
+  // Toon laad-indicator in paywall terwijl we checken
+  function showChecking() {
+    var btn = document.getElementById('btn-pay');
+    if (btn) btn.textContent = 'Licentie controleren...';
+  }
+  function hideChecking() {
+    var btn = document.getElementById('btn-pay');
+    if (btn) btn.textContent = 'Doorgaan naar betaling →';
+  }
+
+  // Unlock ALLEEN als Worker bevestigt — nooit op basis van lokale data
+  function verifyWithWorker(sessionId, isNew) {
+    showChecking();
+    fetch(WORKER + '/check?session_id=' + encodeURIComponent(sessionId))
+      .then(function(r) {
+        if (!r.ok) throw new Error('Worker error');
+        return r.json();
+      })
       .then(function(data) {
+        hideChecking();
         if (data.valid) {
+          // Sla alleen de session_id op — NOOIT de geldigheid zelf
+          localStorage.setItem('pryvee_sid', sessionId);
           document.getElementById('paywall').style.display = 'none';
-          showToast('Betaling geslaagd! Toegang actief.');
-          // Sla session_id op zodat pagina-refresh ook werkt
-          sessionStorage.setItem('pryvee_session', sessionId);
-          history.replaceState({}, '', location.pathname);
+          if (isNew) {
+            showToast(data.plan === 'mnd'
+              ? 'Welkom! Onbeperkte toegang actief.'
+              : 'Betaling geslaagd! Toegang voor 24 uur.');
+          }
+          if (isNew) history.replaceState({}, '', location.pathname);
         } else {
-          showToast('Licentie niet geldig — probeer opnieuw');
+          // Verlopen of ongeldig — verwijder en toon paywall
+          localStorage.removeItem('pryvee_sid');
+          hideChecking();
+          if (isNew) showToast('Licentie niet geldig — probeer opnieuw');
         }
       })
       .catch(function() {
-        // Fallback: bij netwerk fout toch doorlaten (Worker is down)
-        document.getElementById('paywall').style.display = 'none';
-        showToast('Betaling geslaagd!');
-        history.replaceState({}, '', location.pathname);
+        // Worker niet bereikbaar — GEEN toegang verlenen
+        hideChecking();
+        localStorage.removeItem('pryvee_sid');
+        showToast('Kon licentie niet verifiëren. Controleer je verbinding.');
       });
   }
-  // Controleer opgeslagen sessie (na refresh)
-  var saved = sessionStorage.getItem('pryvee_session');
+
+  // 1. Verse betaling — session_id komt van Stripe via URL
+  var p = new URLSearchParams(location.search);
+  var sessionId = p.get('session_id');
+  if (sessionId) {
+    verifyWithWorker(sessionId, true);
+    return;
+  }
+
+  // 2. Terugkerende bezoeker — haal session_id op uit localStorage
+  //    maar verifieer ALTIJD bij de Worker, nooit lokaal
+  var saved = localStorage.getItem('pryvee_sid');
   if (saved) {
-    fetch('https://pryvee-api.workers.dev/check?session_id=' + saved)
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data.valid) {
-          document.getElementById('paywall').style.display = 'none';
-        } else {
-          sessionStorage.removeItem('pryvee_session');
-        }
-      });
+    verifyWithWorker(saved, false);
   }
 }
 
