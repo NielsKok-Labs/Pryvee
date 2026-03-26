@@ -423,9 +423,9 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
     <div class="tag">Prijzen</div>
     <h2 class="h2" id="price-h">Duidelijke prijzen.<br>Geen verrassingen.</h2>
     <p class="lead">Kies het product dat bij jou past. Geen verborgen kosten, geen contracten.</p>
- 
-    <div class="new-price-grid" style="grid-template-columns:1fr 1fr;max-width:820px;margin:0 auto">
- 
+
+    <div class="new-price-grid">
+
       <!-- ESSENTIALS — highlighted -->
       <div class="nplan hi">
         <div class="nplan-badge">Meest gekozen</div>
@@ -446,7 +446,29 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
         </ul>
         <a href="snapshot-tool.html" class="btn-plan fill">Start nu &#8594;</a>
       </div>
- 
+
+      <!-- COMPLETE — coming soon -->
+      <div class="nplan" style="opacity:.75;position:relative">
+        <div class="nplan-badge" style="background:var(--warn);color:var(--ink)">Binnenkort</div>
+        <div class="nplan-ico">&#128202;&#128274;&#128737;&#129529;</div>
+        <div class="nplan-name">Pryvee Complete</div>
+        <p class="nplan-desc">De volledige governance suite — Essentials + Guard + Clean in één abonnement</p>
+        <div class="nplan-price">€199<span>/mnd</span></div>
+        <div class="nplan-per">per tenant · maandelijks opzegbaar</div>
+        <div class="nplan-div"></div>
+        <ul class="nplan-feats">
+          <li>Alles in Essentials</li>
+          <li>Guard — gastaccounts monitoring</li>
+          <li>Clean — tenant lifecycle</li>
+          <li>Risicotrend-tracking</li>
+          <li>E-mailmeldingen bij bevindingen</li>
+          <li>Prioriteitsondersteuning</li>
+        </ul>
+        <div style="display:flex;align-items:center;justify-content:center;padding:13px;border-radius:var(--r);border:1px solid var(--border);color:var(--muted2);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14px;opacity:.6">
+          Binnenkort beschikbaar
+        </div>
+      </div>
+
       <!-- MSP -->
       <div class="nplan">
         <div class="nplan-ico">&#127970;</div>
@@ -456,7 +478,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
         <div class="nplan-per">volumeprijzen · eigen contract</div>
         <div class="nplan-div"></div>
         <ul class="nplan-feats">
-          <li>Alles in Essentials</li>
+          <li>Alles in Complete</li>
           <li>Onbeperkt tenants beheren</li>
           <li>White-label PDF-rapporten</li>
           <li>Multi-tenant dashboard</li>
@@ -466,11 +488,11 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
         </ul>
         <a href="mailto:info@pryvee.nl" class="btn-plan out">Neem contact op &#8594;</a>
       </div>
- 
+
     </div>
   </div>
 </section>
-
+  
 <!-- CTA -->
 <div class="cta-strip reveal" aria-labelledby="cta-h">
   <h2 id="cta-h">Klaar om je M365-omgeving<br>echt te begrijpen?</h2>
