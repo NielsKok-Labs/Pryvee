@@ -155,7 +155,10 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
     <button onclick="demoMode()" style="width:100%;background:none;border:none;color:#b8a0cc;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:'Instrument Sans',sans-serif;padding:4px">
       Probeer gratis met voorbeelddocument
     </button>
-    <button onclick="window.location.href='redact.html'" style="width:100%;background:none;border:none;color:#4a3560;font-size:11px;cursor:pointer;font-family:'Instrument Sans',sans-serif;padding:4px;margin-top:6px">← Terug naar overzicht</button>
+    <button onclick="window.location.href='redact.html'" style="width:100%;background:none;border:none;color:#4a3560;font-size:11px;cursor:pointer;font-family:'Instrument Sans',sans-serif;padding:4px;margin-top:6px">
+      &#8592; Terug naar overzicht
+    </button>
+    <div style="display:flex;justify-content:center;gap:18px;margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,235,85,.1)">
       <span style="font-size:11px;color:#7a5a90">&#128274; 0 bytes verzonden</span>
       <span style="font-size:11px;color:#7a5a90">&#127466;&#127482; EU hosting</span>
       <span style="font-size:11px;color:#7a5a90">&#9989; AVG-compliant</span>
@@ -170,15 +173,12 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
     <div id="plan-user" style="font-size:13px;color:#7a5a90;margin-bottom:16px;font-family:'Geist Mono',monospace"></div>
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-1px;color:#f0e8ff;margin-bottom:8px">Kies je plan</h2>
     <p style="color:#b8a0cc;font-size:13px;line-height:1.75;margin-bottom:24px">Je hebt nog geen actieve licentie.</p>
-
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
-      <!-- REDACT MAANDELIJKS -->
       <div id="opt-redact" onclick="selPlan('redact')" style="padding:18px 14px;border-radius:12px;border:1px solid rgba(255,235,85,.2);background:rgba(255,255,255,.02);cursor:pointer;text-align:center;transition:all .2s">
         <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#ffeb55">&#8364;39<span style="font-size:13px;font-weight:400;color:#b8a0cc">/mnd</span></div>
         <div style="font-size:13px;font-weight:600;color:#f0e8ff;margin-top:6px">Redact only</div>
         <div style="font-size:11px;color:#7a5a90;margin-top:3px">Onbeperkt documenten</div>
       </div>
-      <!-- ESSENTIALS -->
       <div id="opt-essentials" onclick="selPlan('essentials')" style="padding:18px 14px;border-radius:12px;border:2px solid #ffeb55;background:rgba(255,235,85,.06);cursor:pointer;text-align:center;transition:all .2s;position:relative">
         <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#ffeb55;color:#120520;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:9px;padding:2px 10px;border-radius:100px;white-space:nowrap">Aanbevolen</div>
         <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#ffeb55">&#8364;99<span style="font-size:13px;font-weight:400;color:#b8a0cc">/mnd</span></div>
@@ -186,14 +186,15 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
         <div style="font-size:11px;color:#7a5a90;margin-top:3px">Snapshot + Redact</div>
       </div>
     </div>
-
     <button id="btn-pay" onclick="doCheckout()" style="width:100%;background:#ffeb55;color:#120520;padding:14px;border-radius:8px;font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:14px;display:block">
       Doorgaan naar betaling &#8594;
     </button>
     <button onclick="doSignOut()" style="width:100%;background:none;border:none;color:#7a5a90;font-size:12px;cursor:pointer;font-family:'Instrument Sans',sans-serif;padding:4px">
       Uitloggen
     </button>
-    <button onclick="window.location.href='redact.html'" style="width:100%;background:none;border:none;color:#4a3560;font-size:11px;cursor:pointer;font-family:'Instrument Sans',sans-serif;padding:4px;margin-top:6px">← Terug naar overzicht</button>
+    <button onclick="window.location.href='redact.html'" style="width:100%;background:none;border:none;color:#4a3560;font-size:11px;cursor:pointer;font-family:'Instrument Sans',sans-serif;padding:4px;margin-top:4px">
+      &#8592; Terug naar overzicht
+    </button>
   </div>
 </div>
 
@@ -312,44 +313,47 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
 var curFile = null;
 var extractedText = '';
 var findings = [];
-var selPlanVal = 'essentials'; // standaard Essentials geselecteerd
+var selPlanVal = 'essentials';
 var activeFilter = 'all';
+var isDemoMode = false;
 
-// ── STRIPE LINKS ───────────────────────────────────────────────
+// ── SESSION TOKEN ─────────────────────────────────────────────
+// Opgeslagen in memory — verdwijnt bij refresh, nooit in localStorage
+// Kan niet worden gestolen via XSS uit localStorage/sessionStorage
+var sessionToken = null;
+
+// ── STRIPE / WORKER ───────────────────────────────────────────
 var STRIPE_REDACT     = 'https://buy.stripe.com/test_8x26oJ87eaG0aQcc8S8g006';
 var STRIPE_ESSENTIALS = 'https://buy.stripe.com/test_7sYbJ3afmeWg8I48WG8g007';
 var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
 
-// ── PAYWALL ────────────────────────────────────────────────────
+// ── PLAN SELECTIE ─────────────────────────────────────────────
 function selPlan(plan) {
   selPlanVal = plan;
   var redact = document.getElementById('opt-redact');
   var ess = document.getElementById('opt-essentials');
   if (plan === 'redact') {
-    redact.style.border = '2px solid #ffeb55';
-    redact.style.background = 'rgba(255,235,85,0.06)';
-    ess.style.border = '1px solid rgba(255,235,85,0.2)';
-    ess.style.background = 'rgba(255,255,255,0.02)';
+    redact.style.border = '2px solid #ffeb55'; redact.style.background = 'rgba(255,235,85,0.06)';
+    ess.style.border = '1px solid rgba(255,235,85,0.2)'; ess.style.background = 'rgba(255,255,255,0.02)';
   } else {
-    ess.style.border = '2px solid #ffeb55';
-    ess.style.background = 'rgba(255,235,85,0.06)';
-    redact.style.border = '1px solid rgba(255,235,85,0.2)';
-    redact.style.background = 'rgba(255,255,255,0.02)';
+    ess.style.border = '2px solid #ffeb55'; ess.style.background = 'rgba(255,235,85,0.06)';
+    redact.style.border = '1px solid rgba(255,235,85,0.2)'; redact.style.background = 'rgba(255,255,255,0.02)';
   }
 }
 
 function doCheckout() {
   var email = currentEmail || localStorage.getItem('pryvee_email') || '';
   var url = selPlanVal === 'essentials' ? STRIPE_ESSENTIALS : STRIPE_REDACT;
-  var successUrl = encodeURIComponent(
-    window.location.origin + window.location.pathname + '?paid=1'
-  );
-  window.location.href = url
-    + '?prefilled_email=' + encodeURIComponent(email)
-    + '&success_url=' + successUrl;
+  var successUrl = encodeURIComponent(window.location.origin + window.location.pathname + '?paid=1');
+  window.location.href = url + '?prefilled_email=' + encodeURIComponent(email) + '&success_url=' + successUrl;
 }
 
+// ── DEMO MODUS ────────────────────────────────────────────────
+// Demo krijgt GEEN sessionToken — kan alleen het demo document scannen
+// Na reset → terug naar loginscherm
 function demoMode() {
+  isDemoMode = true;
+  sessionToken = null;
   document.getElementById('screen-login').style.display = 'none';
   document.getElementById('screen-plan').style.display = 'none';
   loadDemo();
@@ -386,22 +390,15 @@ function initMsal() {
         handleLoginSuccess(response.account);
       } else {
         var accounts = msalInstance.getAllAccounts();
-        if (accounts.length > 0) {
-          handleLoginSuccess(accounts[0]);
-        } else {
-          checkStripeReturn();
-          showLoginScreen();
-        }
+        if (accounts.length > 0) { handleLoginSuccess(accounts[0]); }
+        else { checkStripeReturn(); showLoginScreen(); }
       }
     }).catch(function(err) {
       console.error('MSAL redirect error:', err);
       showLoginScreen();
       showError('Inloggen mislukt. Probeer opnieuw.');
     });
-  } catch(err) {
-    console.error('MSAL init error:', err);
-    showLoginScreen();
-  }
+  } catch(err) { console.error('MSAL init error:', err); showLoginScreen(); }
 }
 
 function handleLoginSuccess(account) {
@@ -410,12 +407,8 @@ function handleLoginSuccess(account) {
   currentEmail = email.toLowerCase();
   localStorage.setItem('pryvee_email', currentEmail);
   var p = new URLSearchParams(location.search);
-  if (p.get('paid') === '1') {
-    history.replaceState({}, '', location.pathname);
-    checkLicense(currentEmail, true);
-  } else {
-    checkLicense(currentEmail, false);
-  }
+  if (p.get('paid') === '1') { history.replaceState({}, '', location.pathname); checkLicense(currentEmail, true); }
+  else { checkLicense(currentEmail, false); }
 }
 
 function doMicrosoftLogin() {
@@ -437,11 +430,8 @@ function doMicrosoftLogin() {
 }
 
 function doSignOut() {
-  if (msalInstance) {
-    localStorage.removeItem('pryvee_email');
-    currentEmail = null;
-    msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.href });
-  }
+  sessionToken = null; currentEmail = null; isDemoMode = false;
+  if (msalInstance) { localStorage.removeItem('pryvee_email'); msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.href }); }
 }
 
 function showLoginScreen() {
@@ -456,7 +446,10 @@ function showPlanScreen(email) {
   if (el) el.textContent = 'Ingelogd als ' + email;
 }
 
-function unlockTool(plan, email) {
+function unlockTool(plan, email, token) {
+  // Token in memory — NIET in localStorage of sessionStorage
+  sessionToken = token || null;
+  isDemoMode = false;
   document.getElementById('screen-login').style.display = 'none';
   document.getElementById('screen-plan').style.display = 'none';
   var name = email ? email.split('@')[0] : '';
@@ -473,25 +466,21 @@ function checkLicense(email, isAfterPayment) {
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.valid) {
-        unlockTool(data.plan, email);
+        // Worker geeft nu ook een HMAC-signed token terug
+        unlockTool(data.plan, email, data.token);
       } else if (isAfterPayment) {
         showToast('Betaling verwerken...');
         setTimeout(function() {
           fetch(WORKER + '/check-email?email=' + encodeURIComponent(email) + '&product=redact')
             .then(function(r) { return r.json(); })
             .then(function(d2) {
-              if (d2.valid) { unlockTool(d2.plan, email); }
+              if (d2.valid) { unlockTool(d2.plan, email, d2.token); }
               else { showPlanScreen(email); showToast('Betaling niet gevonden — neem contact op'); }
             });
         }, 3000);
-      } else {
-        showPlanScreen(email);
-      }
+      } else { showPlanScreen(email); }
     })
-    .catch(function() {
-      showLoginScreen();
-      showToast('Verbindingsfout. Controleer je internet.');
-    });
+    .catch(function() { showLoginScreen(); showToast('Verbindingsfout. Controleer je internet.'); });
 }
 
 function checkStripeReturn() {
@@ -501,6 +490,51 @@ function checkStripeReturn() {
     var savedEmail = localStorage.getItem('pryvee_email');
     if (savedEmail) checkLicense(savedEmail, true);
   }
+}
+
+// ── TOKEN VERIFICATIE ─────────────────────────────────────────
+// Elke scan wordt server-side gevalideerd via de Worker
+// Zonder geldig HMAC-signed token → scan geblokkeerd
+function verifyTokenBeforeScan() {
+  return new Promise(function(resolve, reject) {
+
+    // Demo mag altijd scannen (alleen demo document)
+    if (isDemoMode) { resolve(true); return; }
+
+    // Geen token in memory → sessie ongeldig
+    if (!sessionToken) {
+      showLoginScreen();
+      reject(new Error('Geen geldige sessie. Log opnieuw in.'));
+      return;
+    }
+
+    // Verifieer token server-side — Worker valideert signature én expiry
+    fetch(WORKER + '/verify-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: sessionToken, product: 'redact' })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.valid) {
+        resolve(true);
+      } else {
+        sessionToken = null;
+        if (data.reason === 'token_expired') {
+          // Token verlopen → probeer opnieuw in te loggen met opgeslagen email
+          showToast('Sessie verlopen. Opnieuw inloggen...');
+          if (currentEmail) { checkLicense(currentEmail, false); }
+          else { showLoginScreen(); }
+        } else {
+          showLoginScreen();
+        }
+        reject(new Error('Sessie ongeldig: ' + (data.reason || 'onbekend')));
+      }
+    })
+    .catch(function() {
+      reject(new Error('Verificatie mislukt. Controleer je internet.'));
+    });
+  });
 }
 
 // ── FILE HANDLING ──────────────────────────────────────────────
@@ -553,40 +587,43 @@ function loadDemo() {
 var activeTypes = new Set(['naam','bsn','iban','adres','email','telefoon','datum','kvk']);
 
 function togEnt(inp) {
-  var lbl = inp.closest('.etog');
-  var box = lbl.querySelector('.ebox');
-  var t = inp.dataset.type;
+  var lbl = inp.closest('.etog'); var box = lbl.querySelector('.ebox'); var t = inp.dataset.type;
   if (inp.checked) { activeTypes.add(t); lbl.classList.add('on'); box.innerHTML = '&#10003;'; }
   else { activeTypes.delete(t); lbl.classList.remove('on'); box.innerHTML = ''; }
 }
 
-function togAllEnt(s) {
-  document.querySelectorAll('#ent-grid input').forEach(function(cb) { cb.checked = s; togEnt(cb); });
-}
+function togAllEnt(s) { document.querySelectorAll('#ent-grid input').forEach(function(cb) { cb.checked = s; togEnt(cb); }); }
 
-// ── SCAN ──────────────────────────────────────────────────────
+// ── SCAN — vereist server-side token verificatie ───────────────
 function startScan() {
   if (!curFile) return;
-  document.getElementById('btn-scan').disabled = true;
-  document.getElementById('scan-hint').textContent = '';
-  document.getElementById('prog-wrap').style.display = 'block';
-  document.getElementById('res-wrap').style.display = 'none';
-  resetResults();
-  stepTo(1, 'Document inladen...', 20);
-  setTimeout(function() {
-    stepTo(2, 'Tekst extraheren...', 45);
-    if (curFile.isDemo) {
-      setTimeout(function() { runAnalysis(); }, 400);
-    } else {
-      extractText(curFile).then(function(txt) {
-        extractedText = txt; runAnalysis();
-      }).catch(function(err) {
-        showToast('Fout: ' + err.message);
-        document.getElementById('prog-wrap').style.display = 'none';
-        document.getElementById('btn-scan').disabled = false;
-      });
-    }
-  }, 350);
+
+  verifyTokenBeforeScan().then(function() {
+    // Token geldig (of demo) — start scan
+    document.getElementById('btn-scan').disabled = true;
+    document.getElementById('scan-hint').textContent = '';
+    document.getElementById('prog-wrap').style.display = 'block';
+    document.getElementById('res-wrap').style.display = 'none';
+    resetResults();
+    stepTo(1, 'Document inladen...', 20);
+    setTimeout(function() {
+      stepTo(2, 'Tekst extraheren...', 45);
+      if (curFile.isDemo) {
+        setTimeout(function() { runAnalysis(); }, 400);
+      } else {
+        extractText(curFile).then(function(txt) {
+          extractedText = txt; runAnalysis();
+        }).catch(function(err) {
+          showToast('Fout: ' + err.message);
+          document.getElementById('prog-wrap').style.display = 'none';
+          document.getElementById('btn-scan').disabled = false;
+        });
+      }
+    }, 350);
+  }).catch(function(err) {
+    showToast(err.message || 'Toegang geweigerd. Log opnieuw in.');
+    document.getElementById('btn-scan').disabled = false;
+  });
 }
 
 function runAnalysis() {
@@ -618,8 +655,7 @@ function extractText(file) {
               pdf.getPage(i).then(function(pg) {
                 pg.getTextContent().then(function(c) {
                   texts[i-1] = c.items.map(function(x) { return x.str; }).join(' ');
-                  done++;
-                  if (done === pages.length) resolve(texts.join('\n'));
+                  done++; if (done === pages.length) resolve(texts.join('\n'));
                 });
               });
             });
@@ -630,9 +666,8 @@ function extractText(file) {
     } else if (file.name.match(/\.docx$/i)) {
       reader.onload = function(e) {
         loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js').then(function() {
-          window.mammoth.extractRawText({ arrayBuffer: e.target.result }).then(function(r) {
-            resolve(r.value);
-          }).catch(function() { reject(new Error('DOCX kon niet worden ingelezen.')); });
+          window.mammoth.extractRawText({ arrayBuffer: e.target.result }).then(function(r) { resolve(r.value); })
+            .catch(function() { reject(new Error('DOCX kon niet worden ingelezen.')); });
         }).catch(function(e) { reject(e); });
       };
       reader.readAsArrayBuffer(file);
@@ -646,8 +681,7 @@ function extractText(file) {
 function loadScript(src) {
   return new Promise(function(resolve, reject) {
     if (document.querySelector('script[src="' + src + '"]')) { resolve(); return; }
-    var s = document.createElement('script');
-    s.src = src; s.onload = resolve;
+    var s = document.createElement('script'); s.src = src; s.onload = resolve;
     s.onerror = function() { reject(new Error('Script laden mislukt: ' + src)); };
     document.head.appendChild(s);
   });
@@ -664,31 +698,16 @@ function runNER(text, types) {
     results.push({ id: id++, value: v, type: type, label: label, checked: true, conf: conf });
   }
   var m, re;
-  if (types.has('bsn')) {
-    re = /\b(\d{3}[\s.\-]?\d{3}[\s.\-]?\d{3})\b/g;
-    while ((m = re.exec(text)) !== null) { var raw = m[1].replace(/[\s.\-]/g,''); if (raw.length===9 && elfproef(raw)) add(m[0],'bsn','BSN',99); }
-  }
+  if (types.has('bsn')) { re = /\b(\d{3}[\s.\-]?\d{3}[\s.\-]?\d{3})\b/g; while ((m = re.exec(text)) !== null) { var raw = m[1].replace(/[\s.\-]/g,''); if (raw.length===9 && elfproef(raw)) add(m[0],'bsn','BSN',99); } }
   if (types.has('iban')) { re = /\b(NL\d{2}\s?[A-Z]{4}\s?\d{4}\s?\d{4}\s?\d{2})\b/gi; while ((m=re.exec(text))!==null) add(m[0],'iban','IBAN',99); }
   if (types.has('email')) { re = /\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/g; while ((m=re.exec(text))!==null) add(m[0],'email','EMAIL',99); }
-  if (types.has('telefoon')) {
-    re = /\b((?:\+31|0031|0)[\s\-]?(?:6[\s\-]?\d{8}|\d{2}[\s\-]?\d{7}|\d{3}[\s\-]?\d{6}))\b/g;
-    while ((m=re.exec(text))!==null) { var d=m[0].replace(/\D/g,''); if (d.length>=9&&d.length<=12) add(m[0],'telefoon','TELEFOON',95); }
-  }
-  if (types.has('datum')) {
-    re = /\b(\d{1,2}[\-\/\.]\d{1,2}[\-\/\.]\d{2,4})\b/g;
-    while ((m=re.exec(text))!==null) { var ctx=text.substring(Math.max(0,m.index-60),m.index+5); if (/geboortedatum|geboren\s+op|date\s+of\s+birth/i.test(ctx)) add(m[0],'datum','DATUM',97); }
-  }
+  if (types.has('telefoon')) { re = /\b((?:\+31|0031|0)[\s\-]?(?:6[\s\-]?\d{8}|\d{2}[\s\-]?\d{7}|\d{3}[\s\-]?\d{6}))\b/g; while ((m=re.exec(text))!==null) { var d=m[0].replace(/\D/g,''); if (d.length>=9&&d.length<=12) add(m[0],'telefoon','TELEFOON',95); } }
+  if (types.has('datum')) { re = /\b(\d{1,2}[\-\/\.]\d{1,2}[\-\/\.]\d{2,4})\b/g; while ((m=re.exec(text))!==null) { var ctx=text.substring(Math.max(0,m.index-60),m.index+5); if (/geboortedatum|geboren\s+op|date\s+of\s+birth/i.test(ctx)) add(m[0],'datum','DATUM',97); } }
   if (types.has('kvk')) { re = /kvk[\s\-\:\.]*(?:nummer)?[\s\-\:\.]*(\d{8})\b/gi; while ((m=re.exec(text))!==null) add(m[0],'kvk','KVK',98); }
-  if (types.has('adres')) {
-    re = /\b([A-Z][a-zA-Z\s]{3,30}\s+\d{1,4}[a-zA-Z]?,?\s*\d{4}\s*[A-Z]{2}\s+[A-Z][a-z]{2,})\b/g;
-    while ((m=re.exec(text))!==null) { if (/\d{4}\s*[A-Z]{2}/.test(m[0])) add(m[0],'adres','ADRES',92); }
-  }
+  if (types.has('adres')) { re = /\b([A-Z][a-zA-Z\s]{3,30}\s+\d{1,4}[a-zA-Z]?,?\s*\d{4}\s*[A-Z]{2}\s+[A-Z][a-z]{2,})\b/g; while ((m=re.exec(text))!==null) { if (/\d{4}\s*[A-Z]{2}/.test(m[0])) add(m[0],'adres','ADRES',92); } }
   if (types.has('kenteken')) { re = /\b([A-Z]{2}-\d{2}-\d{2}|\d{2}-[A-Z]{2}-\d{2}|\d{2}-\d{2}-[A-Z]{2}|[A-Z]{2}-\d{2}-[A-Z]{2})\b/g; while ((m=re.exec(text))!==null) add(m[0],'kenteken','KENTEKEN',88); }
   if (types.has('big')) { re = /big[\s\-\:\.]*(\d{9})\b/gi; while ((m=re.exec(text))!==null) add(m[0],'big','BIG',98); }
-  if (types.has('paspoort')) {
-    re = /\b([A-Z]{2}\d{7}|[A-Z]\d{8})\b/g;
-    while ((m=re.exec(text))!==null) { var ctx2=text.substring(Math.max(0,m.index-40),m.index+5); if (/paspoort|passport|identiteitskaart/i.test(ctx2)) add(m[0],'paspoort','PASPOORT',95); }
-  }
+  if (types.has('paspoort')) { re = /\b([A-Z]{2}\d{7}|[A-Z]\d{8})\b/g; while ((m=re.exec(text))!==null) { var ctx2=text.substring(Math.max(0,m.index-40),m.index+5); if (/paspoort|passport|identiteitskaart/i.test(ctx2)) add(m[0],'paspoort','PASPOORT',95); } }
   if (types.has('naam')) {
     var lines = text.split(/[\n\r]+/);
     for (var li = 0; li < lines.length; li++) {
@@ -735,8 +754,7 @@ function renderTable() {
   body.innerHTML = '';
   if (!shown.length) { body.innerHTML = '<div style="padding:22px;text-align:center;font-size:13px;color:var(--muted2)">Geen entiteiten van dit type</div>'; return; }
   shown.forEach(function(f) {
-    var row = document.createElement('div');
-    row.className = 'ftr' + (f.checked ? '' : ' excl');
+    var row = document.createElement('div'); row.className = 'ftr' + (f.checked ? '' : ' excl');
     var cc = f.conf >= 95 ? 'ch' : f.conf >= 85 ? 'cm' : 'cl';
     row.innerHTML = '<div class="fcb ' + (f.checked ? 'on' : '') + '" data-id="' + f.id + '" tabindex="0" role="checkbox" aria-checked="' + f.checked + '" onclick="togFind(' + f.id + ')" onkeydown="if(event.key===\' \'||event.key===\'Enter\'){event.preventDefault();togFind(' + f.id + ')}">' + (f.checked ? '&#10003;' : '') + '</div><span class="fval">' + esc(f.value) + '</span><span class="ftype t-' + f.type + '">' + f.label + '</span><span class="fconf ' + cc + '">' + f.conf + '%</span><button class="fdel" onclick="delFind(' + f.id + ')" title="Verwijderen">&#10005;</button>';
     body.appendChild(row);
@@ -830,10 +848,26 @@ function resetResults() {
   document.getElementById('dl-count').textContent='0';
 }
 
-function resetAll() { removeFile(); extractedText=''; resetResults(); showToast('Gereset'); }
+// Reset — wist ook token en demo state
+// Demo gebruikers → terug naar loginscherm
+// Ingelogde gebruikers met geldig token → token blijft, gewoon reset
+function resetAll() {
+  removeFile();
+  extractedText = '';
+  resetResults();
+  isDemoMode = false;
+  sessionToken = null;
+  // Geen ingelogde gebruiker → loginscherm tonen
+  if (!currentEmail) {
+    showLoginScreen();
+  } else {
+    // Wel ingelogd → haal nieuw token op (vorige is gewist)
+    checkLicense(currentEmail, false);
+  }
+  showToast('Gereset');
+}
 
 function fmtB(b) { if (b<1024) return b+' B'; if (b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
-
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 var toastT;
