@@ -323,19 +323,13 @@ var STRIPE_ESSENTIALS = 'https://buy.stripe.com/test_7sYbJ3afmeWg8I48WG8g007';
 var msalInstance = null;
 var currentUser = null;
 var currentToken = null;
-var snapPlan = 'essentials'; // standaard Essentials geselecteerd
+var snapPlan = 'essentials';
 var scanResults = [];
 
-var msalConfig = {
-  auth: {
-    clientId: CLIENT_ID,
-    authority: 'https://login.microsoftonline.com/common',
-    redirectUri: window.location.origin + window.location.pathname
-  },
-  cache: { cacheLocation: 'sessionStorage', storeAuthStateInCookie: false }
-};
-
-var SCOPES = ['openid','profile','email','User.Read','Policy.Read.All','Directory.Read.All','Reports.Read.All','Organization.Read.All','AuditLog.Read.All'];
+// Sessiebewaking — alleen in geheugen, nooit localStorage
+var sessionToken = null;
+var sessionEmail = null;
+var sessionProduct = 'snapshot';
 
 // ── CHECKS ────────────────────────────────────────────────
 var CHECKS = [
@@ -401,6 +395,14 @@ window.addEventListener('load', function() {
 
 function initMsal() {
   try {
+    var msalConfig = {
+      auth: {
+        clientId: CLIENT_ID,
+        authority: 'https://login.microsoftonline.com/common',
+        redirectUri: window.location.origin + window.location.pathname
+      },
+      cache: { cacheLocation: 'sessionStorage', storeAuthStateInCookie: false }
+    };
     msalInstance = new window.msal.PublicClientApplication(msalConfig);
     msalInstance.handleRedirectPromise().then(function(resp) {
       if (resp && resp.account) {
@@ -408,6 +410,7 @@ function initMsal() {
       } else {
         var accs = msalInstance.getAllAccounts();
         if (accs.length > 0) {
+          var SCOPES = ['openid','profile','email','User.Read','Policy.Read.All','Directory.Read.All','Reports.Read.All','Organization.Read.All','AuditLog.Read.All'];
           msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accs[0] })
             .then(function(r) { onLogin(accs[0], r.accessToken); })
             .catch(function() { checkStripeReturn(); showLoginOverlay(); });
@@ -439,12 +442,17 @@ function onLogin(account, token) {
   document.getElementById('tbadge').textContent = tenant ? ('&#127970; ' + tenant) : '&#128202; Klaar';
   localStorage.setItem('pryvee_email', email.toLowerCase());
   var p = new URLSearchParams(location.search);
-  if (p.get('paid') === '1') { history.replaceState({}, '', location.pathname); checkLicense(email, true); }
-  else checkLicense(email, false);
+  if (p.get('paid') === '1') {
+    history.replaceState({}, '', location.pathname);
+    checkLicense(email, true);
+  } else {
+    checkLicense(email, false);
+  }
 }
 
 function doLogin() {
   if (!msalInstance) { showErr('Nog aan het laden...'); return; }
+  var SCOPES = ['openid','profile','email','User.Read','Policy.Read.All','Directory.Read.All','Reports.Read.All','Organization.Read.All','AuditLog.Read.All'];
   var btn = document.getElementById('btn-login');
   btn.textContent = 'Doorsturen...'; btn.disabled = true;
   msalInstance.loginRedirect({ scopes: SCOPES, prompt: 'select_account' }).catch(function(e) {
@@ -456,7 +464,10 @@ function doLogin() {
 
 function doSignOut() {
   localStorage.removeItem('pryvee_email');
-  currentUser = null; currentToken = null;
+  currentUser = null;
+  currentToken = null;
+  sessionToken = null;
+  sessionEmail = null;
   if (msalInstance) msalInstance.logoutRedirect({ postLogoutRedirectUri: location.href });
 }
 
@@ -485,25 +496,40 @@ function checkLicense(email, isAfterPayment) {
   fetch(WORKER + '/check-email?email=' + encodeURIComponent(email) + '&product=snapshot')
     .then(function(r) { return r.json(); })
     .then(function(d) {
-      if (d.valid) { unlock(); }
-      else if (isAfterPayment) {
+      if (d.valid && d.token) {
+        sessionToken = d.token;
+        sessionEmail = email.toLowerCase();
+        unlock();
+      } else if (isAfterPayment) {
         showToast('Betaling verwerken...');
         setTimeout(function() {
           fetch(WORKER + '/check-email?email=' + encodeURIComponent(email) + '&product=snapshot')
             .then(function(r) { return r.json(); })
             .then(function(d2) {
-              if (d2.valid) unlock();
-              else { showPlan(email); showToast('Betaling niet gevonden — neem contact op'); }
+              if (d2.valid && d2.token) {
+                sessionToken = d2.token;
+                sessionEmail = email.toLowerCase();
+                unlock();
+              } else {
+                showPlan(email);
+                showToast('Betaling niet gevonden — neem contact op');
+              }
             });
         }, 3000);
-      } else { showPlan(email); }
-    }).catch(function() { showPlan(email || ''); });
+      } else {
+        showPlan(email);
+      }
+    }).catch(function() {
+      showPlan(email || '');
+      showToast('Verbindingsfout. Controleer je internet.');
+    });
 }
 
 function unlock() {
   document.getElementById('ov-login').classList.add('hide');
   document.getElementById('ov-plan').classList.add('hide');
-  showToast('Welkom! Snapshot is actief.');
+  var name = sessionEmail ? sessionEmail.split('@')[0] : '';
+  showToast('Welkom ' + name + '! Snapshot is actief.');
 }
 
 function showPlan(email) {
@@ -533,7 +559,44 @@ function doCheckout() {
 
 // ── SCAN ──────────────────────────────────────────────────
 function startScan() {
-  if (!currentToken) { showToast('Niet ingelogd. Herlaad de pagina.'); return; }
+  if (!currentToken) {
+    showToast('Niet ingelogd. Herlaad de pagina.');
+    return;
+  }
+  if (!sessionToken || !sessionEmail) {
+    showLoginOverlay();
+    showToast('Sessie verlopen. Log opnieuw in.');
+    return;
+  }
+  // Verifieer Pryvee licentie token bij Worker vóór elke scan
+  fetch(WORKER + '/verify-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      token: sessionToken,
+      email: sessionEmail,
+      product: sessionProduct
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (data.valid && data.token) {
+      sessionToken = data.token; // Ververs token
+      _doScan();
+    } else {
+      sessionToken = null;
+      sessionEmail = null;
+      showLoginOverlay();
+      showToast('Sessie verlopen. Log opnieuw in.');
+    }
+  })
+  .catch(function() {
+    showToast('Verbindingsfout. Controleer je internet.');
+  });
+}
+
+// Interne scan — alleen bereikbaar na geldige tokencheck
+function _doScan() {
   document.getElementById('scan-start').style.display = 'none';
   document.getElementById('prog-wrap').style.display = 'block';
   document.getElementById('results-wrap').style.display = 'none';
@@ -850,25 +913,30 @@ function buildPDF() {
 
 // ── UTILS ─────────────────────────────────────────────────
 function resetScan() {
-  scanResults=[];
-  document.getElementById('results-wrap').style.display='none';
-  document.getElementById('scan-start').style.display='block';
-  document.getElementById('prog-wrap').style.display='none';
+  scanResults = [];
+  document.getElementById('results-wrap').style.display = 'none';
+  document.getElementById('prog-wrap').style.display = 'none';
+  // Geen geldige sessie? Terug naar login
+  if (!sessionToken || !sessionEmail) {
+    showLoginOverlay();
+    return;
+  }
+  document.getElementById('scan-start').style.display = 'block';
 }
 
-function setProgress(pct,label) {
-  document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-pct').textContent=pct+'%';
-  document.getElementById('prog-lbl').textContent=label;
+function setProgress(pct, label) {
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-pct').textContent = pct+'%';
+  document.getElementById('prog-lbl').textContent = label;
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 var tT;
 function showToast(msg) {
-  var t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast show';
-  clearTimeout(tT); tT=setTimeout(function(){t.classList.remove('show');},3500);
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show';
+  clearTimeout(tT); tT = setTimeout(function(){ t.classList.remove('show'); }, 3500);
 }
 </script>
 </body>
