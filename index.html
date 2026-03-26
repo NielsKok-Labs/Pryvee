@@ -145,49 +145,27 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);display:fl
 .step-t{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16px;margin-bottom:9px;letter-spacing:-.4px}
 .step-d{font-size:13px;color:var(--muted);line-height:1.7;padding-right:16px}
 
-/* PRICING */
-.price-tabs{display:flex;gap:6px;margin-bottom:40px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-lg);padding:5px;width:fit-content}
-.ptab{padding:9px 22px;border-radius:var(--r);font-size:13px;font-weight:600;font-family:'Bricolage Grotesque',sans-serif;cursor:pointer;border:none;background:none;color:var(--muted);transition:all .2s}
-.ptab.active{background:var(--gold);color:var(--ink)}
-.price-panel{display:none}.price-panel.active{display:block}
-
-/* LOSSE MODULES PRIJZEN */
-.price-modules{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px}
-.pm{background:rgba(42,15,61,.4);border:1px solid var(--border);border-radius:var(--r-xl);padding:28px 32px;display:flex;align-items:center;gap:24px}
-.pm-ico{font-size:22px;width:48px;height:48px;border-radius:var(--r-lg);background:rgba(255,235,85,.07);border:1px solid rgba(255,235,85,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pm-info{flex:1}
-.pm-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.4px;margin-bottom:3px}
-.pm-desc{font-size:13px;color:var(--muted);margin-bottom:10px}
-.pm-prices{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
-.pm-price{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.5px;color:var(--gold)}
-.pm-price span{font-size:12px;font-weight:400;color:var(--muted)}
-.pm-or{font-size:11px;color:var(--muted2);font-family:'Geist Mono',monospace}
-.pm-cta{font-size:12px;font-weight:600;font-family:'Bricolage Grotesque',sans-serif;color:var(--gold);text-decoration:none;border:1px solid rgba(255,235,85,.2);padding:6px 14px;border-radius:var(--r);transition:all .18s;white-space:nowrap}
-.pm-cta:hover{background:rgba(255,235,85,.08)}
-.pm-soon{font-size:11px;font-family:'Geist Mono',monospace;color:var(--warn);background:rgba(255,179,71,.08);padding:4px 10px;border-radius:4px}
-
-/* SUITE PRIJZEN */
-.suite-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.plan{background:rgba(42,15,61,.4);border:1px solid var(--border);border-radius:var(--r-xl);padding:36px;position:relative;transition:transform .3s;display:flex;flex-direction:column}
-.plan:hover{transform:translateY(-4px)}
-.plan.hi{border-color:rgba(255,235,85,.25);background:linear-gradient(160deg,rgba(255,235,85,.06) 0%,rgba(42,15,61,.4) 55%)}
-.plan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-family:'Geist Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:4px 16px;border-radius:100px;white-space:nowrap}
-.plan-n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;margin-bottom:5px;letter-spacing:-.5px}
-.plan-d{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55}
-.plan-p{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;letter-spacing:-2.5px;line-height:1;margin-bottom:3px}
-.plan-p sub{font-size:20px;font-weight:400;color:var(--muted)}
-.plan-per{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:22px;text-transform:uppercase;letter-spacing:.06em}
-.plan-div{height:1px;background:var(--border);margin-bottom:20px}
-.plan-inc{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
-.plan-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px;flex:1}
-.plan-feats li{font-size:13px;color:var(--muted);display:flex;gap:9px;align-items:flex-start}
-.plan-feats li::before{content:'';width:16px;height:16px;flex-shrink:0;margin-top:1px;background-image:url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='8' cy='8' r='7.5' stroke='rgba(255,235,85,0.25)'/%3E%3Cpath d='M5 8L7 10L11 6' stroke='%23ffeb55' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
-.btn-plan{display:flex;align-items:center;justify-content:center;padding:13px;min-height:48px;border-radius:var(--r);font-size:14px;font-weight:600;font-family:'Bricolage Grotesque',sans-serif;text-decoration:none;transition:all .2s;margin-top:auto}
-.btn-plan.out{border:1px solid var(--border2);color:var(--text)}.btn-plan.out:hover{border-color:rgba(255,235,85,.35);color:var(--gold)}
-.btn-plan.fill{background:var(--gold);color:var(--ink);box-shadow:0 0 30px rgba(255,235,85,.2)}.btn-plan.fill:hover{background:var(--gold-d)}
-
-/* SAVE BADGE */
-.save-badge{background:rgba(77,217,160,.1);color:var(--ok);font-family:'Geist Mono',monospace;font-size:10px;padding:3px 10px;border-radius:4px;margin-left:8px;vertical-align:middle}
+/* NIEUWE PRICING */
+.new-price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+.nplan{background:rgba(42,15,61,.4);border:1px solid var(--border2);border-radius:var(--r-xl);padding:36px 32px;position:relative;transition:transform .2s,border-color .2s;display:flex;flex-direction:column}
+.nplan:hover{transform:translateY(-4px);border-color:rgba(255,235,85,.3)}
+.nplan.hi{background:rgba(60,20,85,.6);border-color:rgba(255,235,85,.35);box-shadow:0 0 60px rgba(255,235,85,.06)}
+.nplan-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:11px;padding:4px 16px;border-radius:100px;white-space:nowrap;letter-spacing:.02em}
+.nplan-ico{font-size:28px;margin-bottom:16px}
+.nplan-name{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.8px;margin-bottom:8px}
+.nplan-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px;min-height:52px}
+.nplan-price{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:42px;letter-spacing:-2px;color:var(--gold);line-height:1}
+.nplan-price span{font-size:18px;font-weight:500;color:var(--muted);letter-spacing:0}
+.nplan-price-wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:4px}
+.nplan-or{font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:3px 10px;border-radius:100px}
+.nplan-per{font-size:12px;color:var(--muted2);margin-top:4px;font-family:'Geist Mono',monospace}
+.nplan-div{height:1px;background:var(--border);margin:24px 0}
+.nplan-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px;flex:1}
+.nplan-feats li{font-size:13px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5}
+.nplan-feats li::before{content:'';position:absolute;left:0;top:4px;width:13px;height:13px;background-image:url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 13 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='6.5' cy='6.5' r='6' stroke='rgba(255,235,85,0.3)'/%3E%3Cpath d='M4 6.5L5.8 8.3L9 5' stroke='%23ffeb55' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.btn-plan{display:flex;align-items:center;justify-content:center;width:100%;padding:13px 20px;border-radius:var(--r);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14px;text-decoration:none;transition:all .2s;min-height:48px;cursor:pointer;margin-top:auto;border:none}
+.btn-plan.fill{background:var(--gold);color:var(--ink);box-shadow:0 0 30px rgba(255,235,85,.15)}.btn-plan.fill:hover{background:var(--gold-d);transform:translateY(-1px)}
+.btn-plan.out{border:1px solid var(--border2);color:var(--text);background:none}.btn-plan.out:hover{border-color:rgba(255,235,85,.4);color:var(--gold)}
 
 /* CTA */
 .cta-strip{position:relative;z-index:1;margin:0 52px 100px;padding:80px 64px;text-align:center;border-radius:var(--r-xl);border:1px solid rgba(255,235,85,.18);overflow:hidden}
@@ -220,9 +198,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
   .mod-wide .mod-feats{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr;gap:24px}
   .steps::before{display:none}
-  .price-modules{grid-template-columns:1fr}
-  .suite-grid{grid-template-columns:1fr}
-  .pm{flex-direction:column;align-items:flex-start;gap:14px}
+  .new-price-grid{grid-template-columns:1fr}
   .cta-strip{margin:0 20px 60px;padding:48px 24px}
   .cta-btns{flex-direction:column}
   .cta-btns a{width:100%;justify-content:center}
@@ -400,7 +376,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
       </div>
 
       <!-- AI -->
-      <div class="mod mod-wide" style="position:relative;grid-column:span 2">
+      <div class="mod" style="position:relative;grid-column:span 2">
         <div class="mod-glow" aria-hidden="true"></div>
         <div class="pill pill-future"><span class="pdot" aria-hidden="true"></span>2026</div>
         <div class="mod-ico" aria-hidden="true">&#10024;</div>
@@ -446,144 +422,76 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
   <div class="wrap" style="padding-bottom:120px">
     <div class="tag">Prijzen</div>
     <h2 class="h2" id="price-h">Duidelijke prijzen.<br>Geen verrassingen.</h2>
-    <p class="lead">Betaal per module, of kies een suite voor meer waarde. Altijd eerlijk geprijsd.</p>
+    <p class="lead">Kies het product dat bij jou past. Geen verborgen kosten, geen contracten.</p>
 
-    <!-- TABS -->
-    <div class="price-tabs" role="tablist" aria-label="Prijsoverzicht">
-      <button class="ptab active" role="tab" aria-selected="true" onclick="switchTab('losse')">Losse modules</button>
-      <button class="ptab" role="tab" aria-selected="false" onclick="switchTab('suite')">Suite &amp; MSP</button>
-    </div>
+    <div class="new-price-grid">
 
-    <!-- LOSSE MODULES -->
-    <div class="price-panel active" id="panel-losse">
-      <div class="price-modules">
-
-        <div class="pm">
-          <div class="pm-ico" aria-hidden="true">&#128202;</div>
-          <div class="pm-info">
-            <div class="pm-name">Snapshot</div>
-            <div class="pm-desc">CIS M365 L1 audit + PDF rapport</div>
-            <div class="pm-prices">
-              <div class="pm-price">€249 <span>eenmalig</span></div>
-              <div class="pm-or">of</div>
-              <div class="pm-price">€99 <span>/mnd</span></div>
-            </div>
-          </div>
-          <a href="snapshot.html" class="pm-cta">Probeer nu &#8594;</a>
-        </div>
-
-        <div class="pm">
-          <div class="pm-ico" aria-hidden="true">&#128274;</div>
-          <div class="pm-info">
-            <div class="pm-name">Redact</div>
-            <div class="pm-desc">PII redactie uit PDF &amp; DOCX</div>
-            <div class="pm-prices">
-              <div class="pm-price">€79 <span>/mnd</span></div>
-            </div>
-          </div>
-          <a href="redact.html" class="pm-cta">Probeer nu &#8594;</a>
-        </div>
-
-        <div class="pm">
-          <div class="pm-ico" aria-hidden="true">&#128737;</div>
-          <div class="pm-info">
-            <div class="pm-name">Guard</div>
-            <div class="pm-desc">Gastaccounts &amp; extern delen monitoring</div>
-            <div class="pm-prices">
-              <div class="pm-price">€49 <span>/mnd</span></div>
-            </div>
-          </div>
-          <span class="pm-soon">Binnenkort</span>
-        </div>
-
-        <div class="pm">
-          <div class="pm-ico" aria-hidden="true">&#129529;</div>
-          <div class="pm-info">
-            <div class="pm-name">Clean</div>
-            <div class="pm-desc">Tenant lifecycle automatisering</div>
-            <div class="pm-prices">
-              <div class="pm-price">€49 <span>/mnd</span></div>
-            </div>
-          </div>
-          <span class="pm-soon">Binnenkort</span>
-        </div>
-
+      <!-- REDACT -->
+      <div class="nplan">
+        <div class="nplan-ico">&#128274;</div>
+        <div class="nplan-name">Redact</div>
+        <p class="nplan-desc">PII verwijderen uit PDF &amp; DOCX — volledig in je browser, niets opgeslagen</p>
+        <div class="nplan-price">€79<span>/mnd</span></div>
+        <div class="nplan-per">per organisatie · 30 dagen toegang</div>
+        <div class="nplan-div"></div>
+        <ul class="nplan-feats">
+          <li>Onbeperkt documenten</li>
+          <li>PDF &amp; DOCX ondersteuning</li>
+          <li>12 entiteitstypen (BSN, IBAN, namen…)</li>
+          <li>100% in-browser — geen upload</li>
+          <li>Audit-log export</li>
+        </ul>
+        <a href="redact.html" class="btn-plan out">Begin met anonimiseren &#8594;</a>
       </div>
 
-      <!-- AI los -->
-      <div class="pm">
-        <div class="pm-ico" aria-hidden="true">&#10024;</div>
-        <div class="pm-info">
-          <div class="pm-name">Pryvee AI</div>
-          <div class="pm-desc">Copilot-blootstellingsscanner — governance-laag voor M365 Copilot uitrollen</div>
-          <div class="pm-prices">
-            <div class="pm-price">€99 <span>/mnd</span></div>
+      <!-- SNAPSHOT — highlighted -->
+      <div class="nplan hi">
+        <div class="nplan-badge">Meest gekozen</div>
+        <div class="nplan-ico">&#128202;</div>
+        <div class="nplan-name">Snapshot</div>
+        <p class="nplan-desc">CIS M365 L1 compliance-audit — verbind je tenant, ontvang rapport in 5 minuten</p>
+        <div class="nplan-price-wrap">
+          <div>
+            <div class="nplan-price">€249<span style="font-size:16px;font-weight:400;color:var(--muted)"> eenmalig</span></div>
+            <div class="nplan-per">30 dagen toegang · 1 tenant</div>
+          </div>
+          <div class="nplan-or">of</div>
+          <div>
+            <div class="nplan-price">€99<span>/mnd</span></div>
+            <div class="nplan-per">maandelijks opzegbaar</div>
           </div>
         </div>
-        <span class="pm-soon">2026</span>
+        <div class="nplan-div"></div>
+        <ul class="nplan-feats">
+          <li>79 geautomatiseerde CIS M365 L1-checks</li>
+          <li>MFA &amp; Conditional Access analyse</li>
+          <li>Microsoft Secure Score inzicht</li>
+          <li>Managementklare PDF-export</li>
+          <li>Gast- en extern deelrisico&#39;s</li>
+        </ul>
+        <a href="snapshot-tool.html" class="btn-plan fill">Start je audit &#8594;</a>
       </div>
-    </div>
 
-    <!-- SUITE & MSP -->
-    <div class="price-panel" id="panel-suite">
-      <div class="suite-grid">
-
-        <div class="plan">
-          <h3 class="plan-n">Starter</h3>
-          <p class="plan-d">Voor IT-teams die willen beginnen met audit en redactie</p>
-          <div class="plan-p">€99<sub>/mnd</sub></div>
-          <div class="plan-per">per tenant &nbsp;·&nbsp; maandelijks</div>
-          <div class="plan-div"></div>
-          <div class="plan-inc">Inclusief</div>
-          <ul class="plan-feats">
-            <li>Snapshot Pro — maandelijkse audits</li>
-            <li>Redact — onbeperkte documenten</li>
-            <li>Managementklare PDF-rapporten</li>
-            <li>Risicotrend-tracking</li>
-            <li>E-mailmeldingen</li>
-          </ul>
-          <a href="snapshot.html" class="btn-plan out">Start gratis proefperiode</a>
-        </div>
-
-        <div class="plan hi">
-          <div class="plan-badge">Meest gekozen</div>
-          <h3 class="plan-n">Complete Suite</h3>
-          <p class="plan-d">Alle modules voor volledige M365 governance controle</p>
-          <div class="plan-p">€199<sub>/mnd</sub></div>
-          <div class="plan-per">per tenant &nbsp;·&nbsp; <span class="save-badge">Bespaar €76/mnd</span></div>
-          <div class="plan-div"></div>
-          <div class="plan-inc">Alles in Starter, plus</div>
-          <ul class="plan-feats">
-            <li>Guard — gastaccounts monitoring</li>
-            <li>Clean — tenant lifecycle</li>
-            <li>Multi-tenant overzicht</li>
-            <li>Prioriteitsondersteuning</li>
-            <li>Vroege toegang nieuwe modules</li>
-          </ul>
-          <a href="#" class="btn-plan fill">Start gratis proefperiode</a>
-        </div>
-
-        <div class="plan">
-          <h3 class="plan-n">MSP Partner</h3>
-          <p class="plan-d">White-label suite voor managed service providers met meerdere klanten</p>
-          <div class="plan-p" style="font-size:32px;letter-spacing:-1px">Op maat</div>
-          <div class="plan-per">volumeprijzen &nbsp;·&nbsp; eigen contract</div>
-          <div class="plan-div"></div>
-          <div class="plan-inc">Inclusief</div>
-          <ul class="plan-feats">
-            <li>Onbeperkt tenants beheren</li>
-            <li>White-label PDF-rapporten</li>
-            <li>Multi-tenant dashboard</li>
-            <li>API-toegang</li>
-            <li>Eigen accountmanager</li>
-            <li>SLA-garanties</li>
-          </ul>
-          <a href="mailto:sales@pryvee.io" class="btn-plan out">Neem contact op</a>
-        </div>
-
+      <!-- MSP -->
+      <div class="nplan">
+        <div class="nplan-ico">&#127970;</div>
+        <div class="nplan-name">MSP Partner</div>
+        <p class="nplan-desc">White-label suite voor managed service providers met meerdere klanttenants</p>
+        <div class="nplan-price" style="font-size:32px;letter-spacing:-1px">Op maat</div>
+        <div class="nplan-per">volumeprijzen · eigen contract</div>
+        <div class="nplan-div"></div>
+        <ul class="nplan-feats">
+          <li>Onbeperkt tenants beheren</li>
+          <li>White-label PDF-rapporten</li>
+          <li>Multi-tenant dashboard</li>
+          <li>API-toegang</li>
+          <li>Eigen accountmanager</li>
+          <li>SLA-garanties</li>
+        </ul>
+        <a href="mailto:info@pryvee.nl" class="btn-plan out">Neem contact op &#8594;</a>
       </div>
-    </div>
 
+    </div>
   </div>
 </section>
 
@@ -593,7 +501,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
   <p>Verbonden in 60 seconden. Geen installatie. Alleen-lezen toegang.</p>
   <div class="cta-btns">
     <a href="snapshot.html" class="btn-primary">Start met Snapshot &#8594;</a>
-    <a href="redact.html" class="btn-secondary">Probeer Redact gratis</a>
+    <a href="redact.html" class="btn-secondary">Bekijk Redact</a>
   </div>
 </div>
 
@@ -609,18 +517,16 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
     <li><a href="#">Privacy</a></li>
     <li><a href="#">Contact</a></li>
   </ul>
-  <div class="f-copy">&copy; 2025 Pryvee &middot; Alle rechten voorbehouden</div>
+  <div class="f-copy">&copy; 2026 Pryvee &middot; Alle rechten voorbehouden</div>
 </footer>
 
 <script>
-// Reveal on scroll
 const obs = new IntersectionObserver(
   es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); }),
   { threshold: .07 }
 );
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-// Mobile menu
 const ham = document.getElementById('ham');
 const drawer = document.getElementById('drawer');
 ham.addEventListener('click', () => {
@@ -636,22 +542,6 @@ function closeD() {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && drawer.classList.contains('open')) closeD();
 });
-
-// Pricing tabs
-function switchTab(tab) {
-  document.querySelectorAll('.ptab').forEach((t, i) => {
-    const isActive = (i === 0 && tab === 'losse') || (i === 1 && tab === 'suite');
-    t.classList.toggle('active', isActive);
-    t.setAttribute('aria-selected', isActive);
-  });
-  document.getElementById('panel-losse').classList.toggle('active', tab === 'losse');
-  document.getElementById('panel-suite').classList.toggle('active', tab === 'suite');
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  switchTab('suite');
-});
- 
 </script>
 </body>
 </html>
