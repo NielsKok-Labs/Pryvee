@@ -392,9 +392,10 @@ function initMsal() {
         if (accs.length > 0) {
           msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accs[0] })
             .then(function(r) { onLogin(accs[0], r.accessToken); })
-            .catch(function() { checkStripeReturn(); });
+            .catch(function() { checkStripeReturn(); showLoginOverlay(); });
         } else {
           checkStripeReturn();
+          showLoginOverlay();
         }
       }
     }).catch(function(e) {
@@ -444,6 +445,12 @@ function doSignOut() {
 function showErr(msg) {
   var e = document.getElementById('login-err');
   e.textContent = msg; e.style.display = 'block';
+}
+
+function showLoginOverlay() {
+  var ov = document.getElementById('ov-login');
+  ov.classList.remove('hide');
+  ov.style.display = 'flex';
 }
 
 function checkStripeReturn() {
