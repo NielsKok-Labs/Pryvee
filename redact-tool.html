@@ -375,10 +375,15 @@ function selPlan(plan) {
 }
 
 function doCheckout() {
-  var urls = {
-    doc: 'https://buy.stripe.com/test_4gM28t3QYaG06zW7SC8g001',
-    mnd: 'https://buy.stripe.com/test_aFa6oJcnubK40by5Ku8g000'
-  };
+  var email = currentEmail || localStorage.getItem('pryvee_email') || '';
+  var url = 'https://buy.stripe.com/test_8x26oJ87eaG0aQcc8S8g006';
+  var successUrl = encodeURIComponent(
+    window.location.origin + window.location.pathname + '?paid=1'
+  );
+  window.location.href = url
+    + '?prefilled_email=' + encodeURIComponent(email)
+    + '&success_url=' + successUrl;
+}
   // Stripe vult {CHECKOUT_SESSION_ID} automatisch in
   var successUrl = encodeURIComponent(
     window.location.origin + window.location.pathname + '?session_id={CHECKOUT_SESSION_ID}'
