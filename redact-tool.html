@@ -7,34 +7,22 @@
 <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#120520;--plum:#1a0827;--gold:#ffeb55;--ok:#4dd9a0;--muted:#b8a0cc;--muted2:#7a5a90;--border:rgba(255,235,85,0.12);--border2:rgba(255,235,85,0.22);--text:#f0e8ff;--r:8px;--nav:64px}
+:root{--ink:#120520;--plum:#1a0827;--gold:#ffeb55;--gold-d:#e8d400;--ok:#4dd9a0;--warn:#ffb347;--danger:#ff6b6b;--muted:#b8a0cc;--muted2:#7a5a90;--border:rgba(255,235,85,0.12);--border2:rgba(255,235,85,0.22);--text:#f0e8ff;--r:8px;--nav:64px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--ink);color:var(--text);font-family:'Instrument Sans',sans-serif;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,235,85,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,235,85,.015) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;height:var(--nav);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(18,5,32,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;color:var(--text);text-decoration:none}
-.logo span{color:var(--gold)}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;color:var(--text);text-decoration:none}.logo span{color:var(--gold)}
 .nav-pill{font-family:'Geist Mono',monospace;font-size:10px;background:rgba(77,217,160,.1);color:var(--ok);border:1px solid rgba(77,217,160,.25);padding:4px 12px;border-radius:100px;letter-spacing:.1em}
-.nav-back{font-size:13px;color:var(--muted);text-decoration:none;padding:8px 14px;border:1px solid var(--border);border-radius:var(--r);transition:all .18s}
-.nav-back:hover{color:var(--text);border-color:var(--border2)}
-
-/* PRIVACY BAR */
+.nav-back{font-size:13px;color:var(--muted);text-decoration:none;padding:8px 14px;border:1px solid var(--border);border-radius:var(--r);transition:all .18s}.nav-back:hover{color:var(--text);border-color:var(--border2)}
 .pbar{margin-top:var(--nav);position:relative;z-index:1;background:rgba(77,217,160,.05);border-bottom:1px solid rgba(77,217,160,.12);padding:9px 28px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ok);font-family:'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.07em}
 .pdot{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:blink 2.4s ease-in-out infinite;flex-shrink:0}
-
-/* MAIN */
 main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28px 100px}
-
-/* CARDS */
 .card{background:rgba(26,8,39,.7);border:1px solid var(--border);border-radius:16px;margin-bottom:18px;overflow:hidden}
 .card-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .card-title{font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.12em}
 .card-body{padding:20px}
-
-/* DROPZONE */
 .dz{border:2px dashed var(--border2);border-radius:12px;padding:44px 28px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
 .dz:hover,.dz.over{border-color:var(--gold);background:rgba(255,235,85,.03)}
 #fi{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
@@ -48,32 +36,22 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
 .fl-meta{font-size:12px;color:var(--muted);margin-top:2px}
 .btn-sm{font-size:12px;padding:6px 14px;border-radius:var(--r);border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:all .18s;margin-left:auto}
 .btn-sm:hover{color:#ff6b6b;border-color:#ff6b6b}
-
-/* ENTITIES */
 .ent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:8px}
 .etog{display:flex;align-items:center;gap:9px;padding:10px 12px;border:1px solid var(--border);border-radius:12px;cursor:pointer;user-select:none;transition:all .18s}
-.etog:hover{border-color:var(--border2)}
-.etog.on{border-color:rgba(255,235,85,.3);background:rgba(255,235,85,.04)}
+.etog:hover{border-color:var(--border2)}.etog.on{border-color:rgba(255,235,85,.3);background:rgba(255,235,85,.04)}
 .etog input{display:none}
 .ebox{width:17px;height:17px;border-radius:4px;border:1px solid var(--border2);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--ink)}
 .etog.on .ebox{background:var(--gold);border-color:var(--gold)}
 .elbl{font-size:12px;font-weight:500}
-
-/* ACTIONS */
 .act-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
 .btn-primary{background:var(--gold);color:var(--ink);padding:12px 26px;border-radius:var(--r);font-weight:700;font-size:14px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;min-height:46px}
-.btn-primary:hover:not(:disabled){background:#e8d400;transform:translateY(-1px)}
-.btn-primary:disabled{opacity:.35;cursor:not-allowed}
-.btn-ghost{background:none;color:var(--muted);padding:12px 18px;border-radius:var(--r);font-size:13px;font-family:'Instrument Sans',sans-serif;border:1px solid var(--border2);cursor:pointer;transition:all .18s;min-height:46px}
-.btn-ghost:hover{color:var(--text)}
+.btn-primary:hover:not(:disabled){background:var(--gold-d);transform:translateY(-1px)}.btn-primary:disabled{opacity:.35;cursor:not-allowed}
+.btn-ghost{background:none;color:var(--muted);padding:12px 18px;border-radius:var(--r);font-size:13px;font-family:'Instrument Sans',sans-serif;border:1px solid var(--border2);cursor:pointer;transition:all .18s;min-height:46px}.btn-ghost:hover{color:var(--text)}
 #scan-hint{font-size:12px;color:var(--muted2)}
-
-/* PROGRESS */
 #prog-wrap{display:none;margin-bottom:18px}
 .prog-card{background:rgba(60,25,80,.2);border:1px solid var(--border);border-radius:16px;padding:22px}
 .prog-top{display:flex;justify-content:space-between;margin-bottom:8px}
-.prog-lbl{font-size:13px;color:var(--muted)}
-.prog-pct{font-family:'Geist Mono',monospace;font-size:12px;color:var(--gold)}
+.prog-lbl{font-size:13px;color:var(--muted)}.prog-pct{font-family:'Geist Mono',monospace;font-size:12px;color:var(--gold)}
 .prog-bg{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:20px}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),rgba(255,235,85,.5));border-radius:2px;transition:width .35s ease;width:0%}
 .prog-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -82,10 +60,7 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
 .ps.active .psc{border-color:var(--gold);background:rgba(255,235,85,.1);color:var(--gold)}
 .ps.done .psc{border-color:var(--ok);background:rgba(77,217,160,.1);color:var(--ok)}
 .ps-lbl{font-size:11px;color:var(--muted2);line-height:1.3}
-.ps.active .ps-lbl{color:var(--text)}
-.ps.done .ps-lbl{color:var(--ok)}
-
-/* RESULTS */
+.ps.active .ps-lbl{color:var(--text)}.ps.done .ps-lbl{color:var(--ok)}
 #res-wrap{display:none}
 .res-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
 .res-h{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.7px}
@@ -93,17 +68,13 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
 .chip{font-family:'Geist Mono',monospace;font-size:10px;padding:4px 10px;border-radius:100px;border:1px solid}
 .cr{background:rgba(255,107,107,.08);color:#ff6b6b;border-color:rgba(255,107,107,.2)}
 .cg{background:rgba(77,217,160,.08);color:var(--ok);border-color:rgba(77,217,160,.2)}
-.cy{background:rgba(255,235,85,.06);color:var(--gold);border-color:rgba(255,235,85,.18)}
 .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .fbtn{font-family:'Geist Mono',monospace;font-size:10px;padding:4px 12px;border-radius:100px;border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;transition:all .18s;text-transform:uppercase;letter-spacing:.06em}
-.fbtn:hover{color:var(--text)}
-.fbtn.on{background:rgba(255,235,85,.08);border-color:rgba(255,235,85,.3);color:var(--gold)}
+.fbtn:hover{color:var(--text)}.fbtn.on{background:rgba(255,235,85,.08);border-color:rgba(255,235,85,.3);color:var(--gold)}
 .ftable{border:1px solid var(--border2);border-radius:16px;overflow:hidden}
 .fth{display:grid;grid-template-columns:34px 1fr 110px 68px 34px;gap:10px;padding:10px 16px;background:rgba(18,5,32,.6);border-bottom:1px solid var(--border);font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;align-items:center}
 .ftr{display:grid;grid-template-columns:34px 1fr 110px 68px 34px;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s}
-.ftr:last-child{border-bottom:none}
-.ftr:hover{background:rgba(255,255,255,.015)}
-.ftr.excl{opacity:.35}
+.ftr:last-child{border-bottom:none}.ftr:hover{background:rgba(255,255,255,.015)}.ftr.excl{opacity:.35}
 .fcb{width:19px;height:19px;border-radius:4px;border:1px solid var(--border2);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;flex-shrink:0;transition:all .18s}
 .fcb.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
 .fval{font-family:'Geist Mono',monospace;font-size:12px;word-break:break-all;min-width:0}
@@ -140,20 +111,17 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
 .dl-info strong{color:var(--text);font-size:15px}
 .dl-btns{display:flex;gap:8px;flex-wrap:wrap}
 .btn-dl{background:var(--gold);color:var(--ink);padding:10px 20px;border-radius:var(--r);font-weight:700;font-size:13px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
-.btn-dl:hover{background:#e8d400;transform:translateY(-1px)}
-.btn-dl-out{background:none;color:var(--muted);padding:10px 16px;border-radius:var(--r);font-size:12px;font-family:'Instrument Sans',sans-serif;border:1px solid var(--border2);cursor:pointer;transition:all .18s}
-.btn-dl-out:hover{color:var(--text)}
+.btn-dl:hover{background:var(--gold-d);transform:translateY(-1px)}
+.btn-dl-out{background:none;color:var(--muted);padding:10px 16px;border-radius:var(--r);font-size:12px;font-family:'Instrument Sans',sans-serif;border:1px solid var(--border2);cursor:pointer;transition:all .18s}.btn-dl-out:hover{color:var(--text)}
 .priv-note{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;background:rgba(77,217,160,.04);border:1px solid rgba(77,217,160,.1);border-radius:12px;margin-top:16px;font-size:12px;color:var(--muted);line-height:1.7}
 .priv-note strong{color:var(--ok)}
 .toast{position:fixed;bottom:22px;right:22px;background:rgba(26,8,39,.97);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--text);z-index:99998;transform:translateY(80px);opacity:0;transition:all .3s;max-width:280px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
 .toast.show{transform:translateY(0);opacity:1}
-
 @media(max-width:680px){
   nav{padding:0 16px}
   main{padding:20px 16px 80px}
   .ent-grid{grid-template-columns:repeat(2,1fr)}
-  .fth,.ftr{grid-template-columns:30px 1fr 80px 30px}
-  .fconf{display:none}
+  .fth,.ftr{grid-template-columns:30px 1fr 80px 30px}.fconf{display:none}
   .prog-steps{grid-template-columns:repeat(2,1fr)}
   .dl-bar{flex-direction:column}
 }
@@ -165,8 +133,8 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
 
 <nav>
   <a href="index.html" class="logo">Pry<span>vee</span></a>
-  <span class="nav-pill">🔒 Redact</span>
-  <a href="redact.html" class="nav-back">← Overzicht</a>
+  <span class="nav-pill">&#128274; Redact</span>
+  <a href="redact.html" class="nav-back">&#8592; Overzicht</a>
 </nav>
 
 <div class="pbar">
@@ -174,14 +142,14 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
   Verwerking volledig in jouw browser &middot; 0 bytes verzonden &middot; Niets opgeslagen
 </div>
 
-<!-- ═══ SCHERM 1: LOGIN ═══ -->
+<!-- LOGIN SCHERM -->
 <div id="screen-login" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(18,5,32,.98);display:flex;align-items:center;justify-content:center;padding:24px">
   <div style="background:#2a0f3d;border:1px solid rgba(255,235,85,.3);border-radius:20px;padding:44px 36px;max-width:420px;width:100%;text-align:center">
     <div style="font-size:42px;margin-bottom:16px">&#128274;</div>
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;letter-spacing:-1px;color:#f0e8ff;margin-bottom:10px">Pryvee Redact</h2>
     <p style="color:#b8a0cc;font-size:14px;line-height:1.75;margin-bottom:28px">Log in met je Microsoft account om door te gaan. Volledig in jouw browser &mdash; wij zien nooit jouw documenten.</p>
     <button id="btn-ms-login" onclick="doMicrosoftLogin()" style="width:100%;background:#f0e8ff;color:#120520;padding:14px;border-radius:8px;font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px">
-      <svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+      <svg width="20" height="20" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
       Inloggen met Microsoft
     </button>
     <button onclick="demoMode()" style="width:100%;background:none;border:none;color:#b8a0cc;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:'Instrument Sans',sans-serif;padding:4px">
@@ -196,24 +164,29 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
   </div>
 </div>
 
-<!-- ═══ SCHERM 2: KIES PLAN ═══ -->
+<!-- PLAN SCHERM -->
 <div id="screen-plan" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(18,5,32,.98);display:none;align-items:center;justify-content:center;padding:24px">
-  <div style="background:#2a0f3d;border:1px solid rgba(255,235,85,.3);border-radius:20px;padding:44px 36px;max-width:440px;width:100%;text-align:center">
+  <div style="background:#2a0f3d;border:1px solid rgba(255,235,85,.3);border-radius:20px;padding:44px 36px;max-width:480px;width:100%;text-align:center">
     <div id="plan-user" style="font-size:13px;color:#7a5a90;margin-bottom:16px;font-family:'Geist Mono',monospace"></div>
     <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-1px;color:#f0e8ff;margin-bottom:8px">Kies je plan</h2>
     <p style="color:#b8a0cc;font-size:13px;line-height:1.75;margin-bottom:24px">Je hebt nog geen actieve licentie.</p>
+
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
-      <div id="opt-doc" style="padding:18px 14px;border-radius:12px;border:2px solid #ffeb55;background:rgba(255,235,85,.06);cursor:pointer;text-align:center" onclick="selPlan('doc')">
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#ffeb55">&#8364;2,50</div>
-        <div style="font-size:13px;font-weight:600;color:#f0e8ff;margin-top:6px">Per document</div>
-        <div style="font-size:11px;color:#7a5a90;margin-top:3px">Eenmalig &middot; 24 uur</div>
+      <!-- REDACT MAANDELIJKS -->
+      <div id="opt-redact" onclick="selPlan('redact')" style="padding:18px 14px;border-radius:12px;border:1px solid rgba(255,235,85,.2);background:rgba(255,255,255,.02);cursor:pointer;text-align:center;transition:all .2s">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#ffeb55">&#8364;39<span style="font-size:13px;font-weight:400;color:#b8a0cc">/mnd</span></div>
+        <div style="font-size:13px;font-weight:600;color:#f0e8ff;margin-top:6px">Redact only</div>
+        <div style="font-size:11px;color:#7a5a90;margin-top:3px">Onbeperkt documenten</div>
       </div>
-      <div id="opt-mnd" style="padding:18px 14px;border-radius:12px;border:1px solid rgba(255,235,85,.2);background:rgba(255,255,255,.02);cursor:pointer;text-align:center" onclick="selPlan('mnd')">
-        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#ffeb55">&#8364;29<span style="font-size:13px;font-weight:400;color:#b8a0cc">/mnd</span></div>
-        <div style="font-size:13px;font-weight:600;color:#f0e8ff;margin-top:6px">Onbeperkt</div>
-        <div style="font-size:11px;color:#7a5a90;margin-top:3px">Batch &middot; alle functies</div>
+      <!-- ESSENTIALS -->
+      <div id="opt-essentials" onclick="selPlan('essentials')" style="padding:18px 14px;border-radius:12px;border:2px solid #ffeb55;background:rgba(255,235,85,.06);cursor:pointer;text-align:center;transition:all .2s;position:relative">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#ffeb55;color:#120520;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:9px;padding:2px 10px;border-radius:100px;white-space:nowrap">Aanbevolen</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#ffeb55">&#8364;99<span style="font-size:13px;font-weight:400;color:#b8a0cc">/mnd</span></div>
+        <div style="font-size:13px;font-weight:600;color:#f0e8ff;margin-top:6px">Essentials</div>
+        <div style="font-size:11px;color:#7a5a90;margin-top:3px">Snapshot + Redact</div>
       </div>
     </div>
+
     <button id="btn-pay" onclick="doCheckout()" style="width:100%;background:#ffeb55;color:#120520;padding:14px;border-radius:8px;font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:14px;display:block">
       Doorgaan naar betaling &#8594;
     </button>
@@ -223,10 +196,8 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
   </div>
 </div>
 
-<!-- ═══ MAIN ═══ -->
+<!-- MAIN -->
 <main id="main">
-
-  <!-- UPLOAD -->
   <div class="card">
     <div class="card-head">
       <span class="card-title">&#128193; Document</span>
@@ -239,16 +210,12 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
         <div class="dz-title">Sleep je document hier naartoe</div>
         <div class="dz-sub">of klik om een bestand te selecteren</div>
         <div class="dz-badges">
-          <span class="badge">PDF</span>
-          <span class="badge">DOCX</span>
-          <span class="badge">Max 50 MB</span>
-          <span class="badge">NL + EN</span>
+          <span class="badge">PDF</span><span class="badge">DOCX</span><span class="badge">Max 50 MB</span><span class="badge">NL + EN</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ENTITIES -->
   <div class="card">
     <div class="card-head">
       <span class="card-title">&#127991; Entiteitstypen</span>
@@ -274,16 +241,12 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
     </div>
   </div>
 
-  <!-- ACTIONS -->
   <div class="act-row">
-    <button class="btn-primary" id="btn-scan" onclick="startScan()" disabled>
-      &#128269; Analyseer document
-    </button>
+    <button class="btn-primary" id="btn-scan" onclick="startScan()" disabled>&#128269; Analyseer document</button>
     <button class="btn-ghost" onclick="resetAll()">Reset</button>
     <span id="scan-hint">Upload eerst een document</span>
   </div>
 
-  <!-- PROGRESS -->
   <div id="prog-wrap">
     <div class="prog-card">
       <div class="prog-top">
@@ -300,7 +263,6 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
     </div>
   </div>
 
-  <!-- RESULTS -->
   <div id="res-wrap">
     <div class="res-top">
       <h2 class="res-h" id="res-h" tabindex="-1">Gevonden persoonsgegevens</h2>
@@ -318,7 +280,6 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
         <span id="sel-count" style="font-size:12px;color:var(--muted2)">0 geselecteerd</span>
       </div>
     </div>
-
     <div class="card" style="margin-top:14px">
       <div class="card-head"><span class="card-title">&#9999;&#65039; Handmatige toevoeging</span></div>
       <div class="card-body" style="padding-bottom:18px">
@@ -329,7 +290,6 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
         </div>
       </div>
     </div>
-
     <div class="dl-bar">
       <div class="dl-info"><strong id="dl-count">0</strong> entiteiten worden geredacteerd</div>
       <div class="dl-btns">
@@ -337,13 +297,11 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
         <button class="btn-dl" onclick="dlRedacted()">&#11015;&#65039; Download geredacteerd</button>
       </div>
     </div>
-
     <div class="priv-note">
       <span style="font-size:18px;flex-shrink:0">&#128737;&#65039;</span>
       <div><strong>Privacy by design.</strong> Verwerkt uitsluitend in het werkgeheugen van jouw browser. Geen netwerkverzoeken met documentinhoud. Zodra je dit tabblad sluit is alles permanent verdwenen.</div>
     </div>
   </div>
-
 </main>
 
 <div id="toast" class="toast"></div>
@@ -353,42 +311,41 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 28p
 var curFile = null;
 var extractedText = '';
 var findings = [];
-var selPlanVal = 'doc';
+var selPlanVal = 'essentials'; // standaard Essentials geselecteerd
 var activeFilter = 'all';
+
+// ── STRIPE LINKS ───────────────────────────────────────────────
+var STRIPE_REDACT     = 'https://buy.stripe.com/test_8x26oJ87eaG0aQcc8S8g006';
+var STRIPE_ESSENTIALS = 'https://buy.stripe.com/test_7sYbJ3afmeWg8I48WG8g007';
+var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
 
 // ── PAYWALL ────────────────────────────────────────────────────
 function selPlan(plan) {
   selPlanVal = plan;
-  var doc = document.getElementById('opt-doc');
-  var mnd = document.getElementById('opt-mnd');
-  if (plan === 'doc') {
-    doc.style.border = '2px solid #ffeb55';
-    doc.style.background = 'rgba(255,235,85,0.06)';
-    mnd.style.border = '1px solid rgba(255,235,85,0.2)';
-    mnd.style.background = 'rgba(255,255,255,0.02)';
+  var redact = document.getElementById('opt-redact');
+  var ess = document.getElementById('opt-essentials');
+  if (plan === 'redact') {
+    redact.style.border = '2px solid #ffeb55';
+    redact.style.background = 'rgba(255,235,85,0.06)';
+    ess.style.border = '1px solid rgba(255,235,85,0.2)';
+    ess.style.background = 'rgba(255,255,255,0.02)';
   } else {
-    mnd.style.border = '2px solid #ffeb55';
-    mnd.style.background = 'rgba(255,235,85,0.06)';
-    doc.style.border = '1px solid rgba(255,235,85,0.2)';
-    doc.style.background = 'rgba(255,255,255,0.02)';
+    ess.style.border = '2px solid #ffeb55';
+    ess.style.background = 'rgba(255,235,85,0.06)';
+    redact.style.border = '1px solid rgba(255,235,85,0.2)';
+    redact.style.background = 'rgba(255,255,255,0.02)';
   }
 }
 
 function doCheckout() {
   var email = currentEmail || localStorage.getItem('pryvee_email') || '';
-  var url = 'https://buy.stripe.com/test_8x26oJ87eaG0aQcc8S8g006';
+  var url = selPlanVal === 'essentials' ? STRIPE_ESSENTIALS : STRIPE_REDACT;
   var successUrl = encodeURIComponent(
     window.location.origin + window.location.pathname + '?paid=1'
   );
   window.location.href = url
     + '?prefilled_email=' + encodeURIComponent(email)
     + '&success_url=' + successUrl;
-}
-  // Stripe vult {CHECKOUT_SESSION_ID} automatisch in
-  var successUrl = encodeURIComponent(
-    window.location.origin + window.location.pathname + '?session_id={CHECKOUT_SESSION_ID}'
-  );
-  window.location.href = urls[selPlanVal] + '?success_url=' + successUrl;
 }
 
 function demoMode() {
@@ -398,8 +355,7 @@ function demoMode() {
   showToast('Demo-modus actief');
 }
 
-// ── AUTH & LICENTIE met MSAL.js ───────────────────────────
-var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
+// ── AUTH & LICENTIE ────────────────────────────────────────────
 var msalInstance = null;
 var currentEmail = null;
 
@@ -409,44 +365,29 @@ var msalConfig = {
     authority: 'https://login.microsoftonline.com/common',
     redirectUri: window.location.origin + window.location.pathname
   },
-  cache: {
-    cacheLocation: 'sessionStorage',
-    storeAuthStateInCookie: false
-  }
+  cache: { cacheLocation: 'sessionStorage', storeAuthStateInCookie: false }
 };
 
-var loginRequest = {
-  scopes: ['openid', 'profile', 'email', 'User.Read']
-};
+var loginRequest = { scopes: ['openid', 'profile', 'email', 'User.Read'] };
 
-// Init MSAL zodra pagina laadt
 window.addEventListener('load', function() {
   var wait = setInterval(function() {
-    if (window.msal) {
-      clearInterval(wait);
-      initMsal();
-    }
+    if (window.msal) { clearInterval(wait); initMsal(); }
   }, 100);
-  // Timeout na 5 seconden
   setTimeout(function() { clearInterval(wait); }, 5000);
 });
 
 function initMsal() {
   try {
     msalInstance = new window.msal.PublicClientApplication(msalConfig);
-
-    // Verwerk redirect na Microsoft login
     msalInstance.handleRedirectPromise().then(function(response) {
       if (response && response.account) {
-        // Succesvol teruggekeerd van Microsoft login
         handleLoginSuccess(response.account);
       } else {
-        // Check of er al een account in cache zit
         var accounts = msalInstance.getAllAccounts();
         if (accounts.length > 0) {
           handleLoginSuccess(accounts[0]);
         } else {
-          // Niet ingelogd
           checkStripeReturn();
           showLoginScreen();
         }
@@ -463,16 +404,10 @@ function initMsal() {
 }
 
 function handleLoginSuccess(account) {
-  var email = account.username || account.idTokenClaims?.email || account.idTokenClaims?.preferred_username;
-  if (!email) {
-    showLoginScreen();
-    showError('Kon e-mailadres niet ophalen. Probeer opnieuw.');
-    return;
-  }
+  var email = account.username || (account.idTokenClaims && (account.idTokenClaims.email || account.idTokenClaims.preferred_username));
+  if (!email) { showLoginScreen(); showError('Kon e-mailadres niet ophalen. Probeer opnieuw.'); return; }
   currentEmail = email.toLowerCase();
   localStorage.setItem('pryvee_email', currentEmail);
-
-  // Check of er een Stripe betaling is
   var p = new URLSearchParams(location.search);
   if (p.get('paid') === '1') {
     history.replaceState({}, '', location.pathname);
@@ -484,25 +419,16 @@ function handleLoginSuccess(account) {
 
 function doMicrosoftLogin() {
   var btn = document.getElementById('btn-ms-login');
-
-  // Als MSAL nog niet klaar is, initialiseer het nu direct
   if (!msalInstance) {
     if (btn) btn.textContent = 'Even laden...';
-    try {
-      msalInstance = new window.msal.PublicClientApplication(msalConfig);
-    } catch(e) {
-      showError('MSAL kon niet worden geladen. Herlaad de pagina.');
-      if (btn) btn.textContent = 'Inloggen met Microsoft';
-      return;
-    }
+    try { msalInstance = new window.msal.PublicClientApplication(msalConfig); }
+    catch(e) { showError('MSAL kon niet worden geladen. Herlaad de pagina.'); if (btn) btn.textContent = 'Inloggen met Microsoft'; return; }
   }
-
   if (btn) { btn.textContent = 'Doorsturen naar Microsoft...'; btn.disabled = true; }
-
   msalInstance.loginRedirect(loginRequest).catch(function(err) {
     console.error('Login error:', err);
     if (btn) {
-      btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg> Inloggen met Microsoft';
+      btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg> Inloggen met Microsoft';
       btn.disabled = false;
     }
     showError('Fout: ' + (err.message || 'onbekend'));
@@ -533,9 +459,7 @@ function unlockTool(plan, email) {
   document.getElementById('screen-login').style.display = 'none';
   document.getElementById('screen-plan').style.display = 'none';
   var name = email ? email.split('@')[0] : '';
-  showToast(plan === 'mnd'
-    ? 'Welkom ' + name + '! Onbeperkte toegang actief.'
-    : 'Toegang actief voor 24 uur. Succes!');
+  showToast('Welkom ' + name + '! Redact is actief.');
 }
 
 function showError(msg) {
@@ -544,26 +468,23 @@ function showError(msg) {
 }
 
 function checkLicense(email, isAfterPayment) {
-  fetch(WORKER + '/check-email?email=' + encodeURIComponent(email))
+  fetch(WORKER + '/check-email?email=' + encodeURIComponent(email) + '&product=redact')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.valid) {
         unlockTool(data.plan, email);
+      } else if (isAfterPayment) {
+        showToast('Betaling verwerken...');
+        setTimeout(function() {
+          fetch(WORKER + '/check-email?email=' + encodeURIComponent(email) + '&product=redact')
+            .then(function(r) { return r.json(); })
+            .then(function(d2) {
+              if (d2.valid) { unlockTool(d2.plan, email); }
+              else { showPlanScreen(email); showToast('Betaling niet gevonden — neem contact op'); }
+            });
+        }, 3000);
       } else {
-        if (isAfterPayment) {
-          // Stripe webhook kan iets vertraagd zijn — wacht 3s en probeer opnieuw
-          showToast('Betaling verwerken...');
-          setTimeout(function() {
-            fetch(WORKER + '/check-email?email=' + encodeURIComponent(email))
-              .then(function(r) { return r.json(); })
-              .then(function(d2) {
-                if (d2.valid) { unlockTool(d2.plan, email); }
-                else { showPlanScreen(email); showToast('Betaling niet gevonden — neem contact op'); }
-              });
-          }, 3000);
-        } else {
-          showPlanScreen(email);
-        }
+        showPlanScreen(email);
       }
     })
     .catch(function() {
@@ -581,43 +502,22 @@ function checkStripeReturn() {
   }
 }
 
-function doCheckout() {
-  var email = currentEmail || localStorage.getItem('pryvee_email') || '';
-  var urls = {
-    doc: 'https://buy.stripe.com/test_4gM28t3QYaG06zW7SC8g001',
-    mnd: 'https://buy.stripe.com/test_aFa6oJcnubK40by5Ku8g000'
-  };
-  var successUrl = encodeURIComponent(
-    window.location.origin + window.location.pathname + '?paid=1'
-  );
-  window.location.href = urls[selPlanVal]
-    + '?prefilled_email=' + encodeURIComponent(email)
-    + '&success_url=' + successUrl;
-}
-
 // ── FILE HANDLING ──────────────────────────────────────────────
 var dz = document.getElementById('dz');
 var fi = document.getElementById('fi');
 
-fi.addEventListener('change', function(e) {
-  if (e.target.files[0]) handleFile(e.target.files[0]);
-});
+fi.addEventListener('change', function(e) { if (e.target.files[0]) handleFile(e.target.files[0]); });
 dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('over'); });
 dz.addEventListener('dragleave', function() { dz.classList.remove('over'); });
-dz.addEventListener('drop', function(e) {
-  e.preventDefault(); dz.classList.remove('over');
-  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
-});
-dz.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fi.click(); }
-});
+dz.addEventListener('drop', function(e) { e.preventDefault(); dz.classList.remove('over'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+dz.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fi.click(); } });
 
 function handleFile(file) {
   if (!file.name.match(/\.(pdf|docx)$/i)) { showToast('Alleen PDF en DOCX toegestaan'); return; }
   if (file.size > 52428800) { showToast('Bestand te groot (max 50 MB)'); return; }
   curFile = file;
   var ext = file.name.split('.').pop().toUpperCase();
-  dz.innerHTML = '<div class="file-loaded"><span style="font-size:26px">' + (ext === 'PDF' ? '📕' : '📘') + '</span><div><div class="fl-name">' + esc(file.name) + '</div><div class="fl-meta">' + fmtB(file.size) + ' &middot; ' + ext + '</div></div><button class="btn-sm" onclick="removeFile(event)">&#10005; Verwijderen</button></div>';
+  dz.innerHTML = '<div class="file-loaded"><span style="font-size:26px">' + (ext === 'PDF' ? '&#128213;' : '&#128218;') + '</span><div><div class="fl-name">' + esc(file.name) + '</div><div class="fl-meta">' + fmtB(file.size) + ' &middot; ' + ext + '</div></div><button class="btn-sm" onclick="removeFile(event)">&#10005; Verwijderen</button></div>';
   document.getElementById('file-status').textContent = file.name;
   document.getElementById('btn-scan').disabled = false;
   document.getElementById('scan-hint').textContent = 'Klaar om te analyseren';
@@ -671,7 +571,6 @@ function startScan() {
   document.getElementById('prog-wrap').style.display = 'block';
   document.getElementById('res-wrap').style.display = 'none';
   resetResults();
-
   stepTo(1, 'Document inladen...', 20);
   setTimeout(function() {
     stepTo(2, 'Tekst extraheren...', 45);
@@ -679,8 +578,7 @@ function startScan() {
       setTimeout(function() { runAnalysis(); }, 400);
     } else {
       extractText(curFile).then(function(txt) {
-        extractedText = txt;
-        runAnalysis();
+        extractedText = txt; runAnalysis();
       }).catch(function(err) {
         showToast('Fout: ' + err.message);
         document.getElementById('prog-wrap').style.display = 'none';
@@ -713,10 +611,8 @@ function extractText(file) {
           var lib = window['pdfjs-dist/build/pdf'];
           lib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
           lib.getDocument({ data: new Uint8Array(e.target.result) }).promise.then(function(pdf) {
-            var pages = [];
-            for (var i = 1; i <= pdf.numPages; i++) pages.push(i);
-            var texts = [];
-            var done = 0;
+            var pages = []; for (var i = 1; i <= pdf.numPages; i++) pages.push(i);
+            var texts = []; var done = 0;
             pages.forEach(function(i) {
               pdf.getPage(i).then(function(pg) {
                 pg.getTextContent().then(function(c) {
@@ -750,8 +646,7 @@ function loadScript(src) {
   return new Promise(function(resolve, reject) {
     if (document.querySelector('script[src="' + src + '"]')) { resolve(); return; }
     var s = document.createElement('script');
-    s.src = src;
-    s.onload = resolve;
+    s.src = src; s.onload = resolve;
     s.onerror = function() { reject(new Error('Script laden mislukt: ' + src)); };
     document.head.appendChild(s);
   });
@@ -761,112 +656,64 @@ function loadScript(src) {
 var NOT_NAME = new Set(['Microsoft','Google','Apple','SharePoint','Teams','Office','Outlook','Azure','GitHub','LinkedIn','WhatsApp','Stripe','Cloudflare','Facebook','Twitter','Contoso','Senior','Junior','Developer','Manager','Directeur','Bestuurder','Medewerker','Werknemer','Werkgever','Adviseur','Consultant','Architect','Engineer','Designer','Analyst','Controller','Director','Officer','President','Secretaris','Penningmeester','Voorzitter','Artikel','Bijlage','Paragraaf','Sectie','Pagina','Datum','Adres','Naam','Nummer','Maand','Jaar','Week','Dag','Uur','Periode','Termijn','Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag','Zondag','Amsterdam','Rotterdam','Utrecht','Eindhoven','Groningen','Tilburg','Almere','Breda','Nijmegen','Leiden','Haarlem','Arnhem','Zoetermeer','Apeldoorn','Enschede','Zwolle','Maastricht','Dordrecht','Nederland','Duitsland','Europa','Ondergetekenden','Dienstverband','Arbeidsovereenkomst','Functie','Salaris','Overeenkomst','Contract','Regeling','Beleid','Procedure','Protocol','Getekend','Opgemaakt','Privacy','Gdpr','Avg','Wet','Besluit','BV','NV','VOF','Stichting','Vereniging','Ltd','Inc','Purview','Intune','Copilot','Benchmark','Compliance','Governance','Snapshot','Redact','Pryvee']);
 
 function runNER(text, types) {
-  var results = [];
-  var id = 0;
-
+  var results = []; var id = 0;
   function add(v, type, label, conf) {
-    v = v.trim();
-    if (!v || v.length < 2) return;
-    for (var i = 0; i < results.length; i++) {
-      if (results[i].value.toLowerCase() === v.toLowerCase() && results[i].type === type) return;
-    }
+    v = v.trim(); if (!v || v.length < 2) return;
+    for (var i = 0; i < results.length; i++) { if (results[i].value.toLowerCase() === v.toLowerCase() && results[i].type === type) return; }
     results.push({ id: id++, value: v, type: type, label: label, checked: true, conf: conf });
   }
-
   var m, re;
-
   if (types.has('bsn')) {
     re = /\b(\d{3}[\s.\-]?\d{3}[\s.\-]?\d{3})\b/g;
-    while ((m = re.exec(text)) !== null) {
-      var raw = m[1].replace(/[\s.\-]/g, '');
-      if (raw.length === 9 && elfproef(raw)) add(m[0], 'bsn', 'BSN', 99);
-    }
+    while ((m = re.exec(text)) !== null) { var raw = m[1].replace(/[\s.\-]/g,''); if (raw.length===9 && elfproef(raw)) add(m[0],'bsn','BSN',99); }
   }
-  if (types.has('iban')) {
-    re = /\b(NL\d{2}\s?[A-Z]{4}\s?\d{4}\s?\d{4}\s?\d{2})\b/gi;
-    while ((m = re.exec(text)) !== null) add(m[0], 'iban', 'IBAN', 99);
-  }
-  if (types.has('email')) {
-    re = /\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/g;
-    while ((m = re.exec(text)) !== null) add(m[0], 'email', 'EMAIL', 99);
-  }
+  if (types.has('iban')) { re = /\b(NL\d{2}\s?[A-Z]{4}\s?\d{4}\s?\d{4}\s?\d{2})\b/gi; while ((m=re.exec(text))!==null) add(m[0],'iban','IBAN',99); }
+  if (types.has('email')) { re = /\b[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}\b/g; while ((m=re.exec(text))!==null) add(m[0],'email','EMAIL',99); }
   if (types.has('telefoon')) {
     re = /\b((?:\+31|0031|0)[\s\-]?(?:6[\s\-]?\d{8}|\d{2}[\s\-]?\d{7}|\d{3}[\s\-]?\d{6}))\b/g;
-    while ((m = re.exec(text)) !== null) {
-      var d = m[0].replace(/\D/g, '');
-      if (d.length >= 9 && d.length <= 12) add(m[0], 'telefoon', 'TELEFOON', 95);
-    }
+    while ((m=re.exec(text))!==null) { var d=m[0].replace(/\D/g,''); if (d.length>=9&&d.length<=12) add(m[0],'telefoon','TELEFOON',95); }
   }
   if (types.has('datum')) {
     re = /\b(\d{1,2}[\-\/\.]\d{1,2}[\-\/\.]\d{2,4})\b/g;
-    while ((m = re.exec(text)) !== null) {
-      var ctx = text.substring(Math.max(0, m.index - 60), m.index + 5);
-      if (/geboortedatum|geboren\s+op|date\s+of\s+birth/i.test(ctx)) add(m[0], 'datum', 'DATUM', 97);
-    }
+    while ((m=re.exec(text))!==null) { var ctx=text.substring(Math.max(0,m.index-60),m.index+5); if (/geboortedatum|geboren\s+op|date\s+of\s+birth/i.test(ctx)) add(m[0],'datum','DATUM',97); }
   }
-  if (types.has('kvk')) {
-    re = /kvk[\s\-\:\.]*(?:nummer)?[\s\-\:\.]*(\d{8})\b/gi;
-    while ((m = re.exec(text)) !== null) add(m[0], 'kvk', 'KVK', 98);
-  }
+  if (types.has('kvk')) { re = /kvk[\s\-\:\.]*(?:nummer)?[\s\-\:\.]*(\d{8})\b/gi; while ((m=re.exec(text))!==null) add(m[0],'kvk','KVK',98); }
   if (types.has('adres')) {
     re = /\b([A-Z][a-zA-Z\s]{3,30}\s+\d{1,4}[a-zA-Z]?,?\s*\d{4}\s*[A-Z]{2}\s+[A-Z][a-z]{2,})\b/g;
-    while ((m = re.exec(text)) !== null) {
-      if (/\d{4}\s*[A-Z]{2}/.test(m[0])) add(m[0], 'adres', 'ADRES', 92);
-    }
+    while ((m=re.exec(text))!==null) { if (/\d{4}\s*[A-Z]{2}/.test(m[0])) add(m[0],'adres','ADRES',92); }
   }
-  if (types.has('kenteken')) {
-    re = /\b([A-Z]{2}-\d{2}-\d{2}|\d{2}-[A-Z]{2}-\d{2}|\d{2}-\d{2}-[A-Z]{2}|[A-Z]{2}-\d{2}-[A-Z]{2})\b/g;
-    while ((m = re.exec(text)) !== null) add(m[0], 'kenteken', 'KENTEKEN', 88);
-  }
-  if (types.has('big')) {
-    re = /big[\s\-\:\.]*(\d{9})\b/gi;
-    while ((m = re.exec(text)) !== null) add(m[0], 'big', 'BIG', 98);
-  }
+  if (types.has('kenteken')) { re = /\b([A-Z]{2}-\d{2}-\d{2}|\d{2}-[A-Z]{2}-\d{2}|\d{2}-\d{2}-[A-Z]{2}|[A-Z]{2}-\d{2}-[A-Z]{2})\b/g; while ((m=re.exec(text))!==null) add(m[0],'kenteken','KENTEKEN',88); }
+  if (types.has('big')) { re = /big[\s\-\:\.]*(\d{9})\b/gi; while ((m=re.exec(text))!==null) add(m[0],'big','BIG',98); }
   if (types.has('paspoort')) {
     re = /\b([A-Z]{2}\d{7}|[A-Z]\d{8})\b/g;
-    while ((m = re.exec(text)) !== null) {
-      var ctx2 = text.substring(Math.max(0, m.index - 40), m.index + 5);
-      if (/paspoort|passport|identiteitskaart/i.test(ctx2)) add(m[0], 'paspoort', 'PASPOORT', 95);
-    }
+    while ((m=re.exec(text))!==null) { var ctx2=text.substring(Math.max(0,m.index-40),m.index+5); if (/paspoort|passport|identiteitskaart/i.test(ctx2)) add(m[0],'paspoort','PASPOORT',95); }
   }
   if (types.has('naam')) {
     var lines = text.split(/[\n\r]+/);
     for (var li = 0; li < lines.length; li++) {
       var line = lines[li];
       var tm = line.match(/^[\s]*(?:werknemer|werkgever|naam|medewerker|ondertekenaar|contactpersoon|behandelaar|betrokkene|ondergetekende|opdrachtgever|opdrachtnemer)[\s:\-]+(.+)$/i);
-      if (tm) {
-        var candidate = tm[1].trim().replace(/^(de heer|mevrouw|dhr\.?|mevr\.?|ir\.?|drs\.?|mr\.?|dr\.?|prof\.?|ing\.?)\s+/i, '').trim();
-        if (isName(candidate)) add(candidate, 'naam', 'NAAM', 90);
-      }
+      if (tm) { var candidate = tm[1].trim().replace(/^(de heer|mevrouw|dhr\.?|mevr\.?|ir\.?|drs\.?|mr\.?|dr\.?|prof\.?|ing\.?)\s+/i,'').trim(); if (isName(candidate)) add(candidate,'naam','NAAM',90); }
       var am = line.match(/\b(?:de heer|mevrouw|dhr\.?|mevr\.?)\s+([A-Z][a-z]+(?:\s+(?:de|van|van\s+de|van\s+den|van\s+der|in|op|te)\s+)?[A-Z][a-z]{2,})/gi);
-      if (am) {
-        for (var ai = 0; ai < am.length; ai++) {
-          var nm = am[ai].replace(/^(?:de heer|mevrouw|dhr\.?|mevr\.?)\s+/i, '').trim();
-          if (isName(nm)) add(nm, 'naam', 'NAAM', 88);
-        }
-      }
+      if (am) { for (var ai=0;ai<am.length;ai++) { var nm=am[ai].replace(/^(?:de heer|mevrouw|dhr\.?|mevr\.?)\s+/i,'').trim(); if (isName(nm)) add(nm,'naam','NAAM',88); } }
     }
   }
-
   return results;
 }
 
 function isName(s) {
-  if (!s || s.length < 4 || s.length > 60) return false;
-  var words = s.trim().split(/\s+/);
-  if (words.length < 2) return false;
-  for (var i = 0; i < words.length; i++) { if (NOT_NAME.has(words[i])) return false; }
+  if (!s||s.length<4||s.length>60) return false;
+  var words=s.trim().split(/\s+/); if (words.length<2) return false;
+  for (var i=0;i<words.length;i++) { if (NOT_NAME.has(words[i])) return false; }
   if (/\b(b\.?v\.?|n\.?v\.?|stichting|group|holding|services)\b/i.test(s)) return false;
-  if (!words.some(function(w) { return /^[A-Z][a-z]/.test(w); })) return false;
+  if (!words.some(function(w){return /^[A-Z][a-z]/.test(w);})) return false;
   return true;
 }
 
 function elfproef(n) {
   if (!/^\d{9}$/.test(n)) return false;
-  var s = 0;
-  for (var i = 0; i < 8; i++) s += parseInt(n[i]) * (9 - i);
-  s -= parseInt(n[8]);
-  return s > 0 && s % 11 === 0;
+  var s=0; for (var i=0;i<8;i++) s+=parseInt(n[i])*(9-i); s-=parseInt(n[8]);
+  return s>0&&s%11===0;
 }
 
 // ── RENDER ────────────────────────────────────────────────────
@@ -874,9 +721,7 @@ function renderResults() {
   document.getElementById('res-wrap').style.display = 'block';
   if (findings.length === 0) {
     document.getElementById('fbody').innerHTML = '<div class="empty"><div style="font-size:36px;margin-bottom:12px">&#9989;</div><div class="empty-title">Geen PII gevonden</div><div class="empty-sub">Geen persoonsgegevens gevonden. Gebruik handmatige toevoeging indien nodig.</div></div>';
-    updateStats(); buildFilters();
-    showToast('Scan klaar — geen PII gevonden');
-    return;
+    updateStats(); buildFilters(); showToast('Scan klaar — geen PII gevonden'); return;
   }
   buildFilters(); renderTable(); updateStats();
   showToast(findings.length + ' entiteiten gevonden');
@@ -898,162 +743,103 @@ function renderTable() {
 }
 
 function buildFilters() {
-  var types = [];
-  findings.forEach(function(f) { if (types.indexOf(f.type) === -1) types.push(f.type); });
+  var types = []; findings.forEach(function(f) { if (types.indexOf(f.type)===-1) types.push(f.type); });
   var bar = document.getElementById('filter-bar');
-  bar.innerHTML = '<button class="fbtn ' + (activeFilter === 'all' ? 'on' : '') + '" onclick="setFilter(\'all\')">Alle (' + findings.length + ')</button>';
+  bar.innerHTML = '<button class="fbtn ' + (activeFilter==='all'?'on':'') + '" onclick="setFilter(\'all\')">Alle (' + findings.length + ')</button>';
   types.forEach(function(t) {
-    var count = findings.filter(function(f) { return f.type === t; }).length;
-    var lbl = findings.find(function(f) { return f.type === t; }).label;
-    bar.innerHTML += '<button class="fbtn ' + (activeFilter === t ? 'on' : '') + '" onclick="setFilter(\'' + t + '\')">' + lbl + ' (' + count + ')</button>';
+    var count = findings.filter(function(f) { return f.type===t; }).length;
+    var lbl = findings.find(function(f) { return f.type===t; }).label;
+    bar.innerHTML += '<button class="fbtn ' + (activeFilter===t?'on':'') + '" onclick="setFilter(\'' + t + '\')">' + lbl + ' (' + count + ')</button>';
   });
 }
 
 function setFilter(t) { activeFilter = t; buildFilters(); renderTable(); }
 
 function togFind(id) {
-  var f = findings.find(function(x) { return x.id === id; });
-  if (!f) return;
+  var f = findings.find(function(x) { return x.id===id; }); if (!f) return;
   f.checked = !f.checked;
   var cb = document.querySelector('[data-id="' + id + '"]');
-  if (cb) {
-    cb.classList.toggle('on', f.checked);
-    cb.setAttribute('aria-checked', f.checked);
-    cb.innerHTML = f.checked ? '&#10003;' : '';
-    var row = cb.closest('.ftr');
-    if (row) row.classList.toggle('excl', !f.checked);
-  }
+  if (cb) { cb.classList.toggle('on',f.checked); cb.setAttribute('aria-checked',f.checked); cb.innerHTML=f.checked?'&#10003;':''; var row=cb.closest('.ftr'); if (row) row.classList.toggle('excl',!f.checked); }
   updateStats();
 }
 
-function delFind(id) {
-  findings = findings.filter(function(x) { return x.id !== id; });
-  renderTable(); buildFilters(); updateStats();
-  showToast('Verwijderd');
-}
+function delFind(id) { findings=findings.filter(function(x){return x.id!==id;}); renderTable(); buildFilters(); updateStats(); showToast('Verwijderd'); }
 
 function selAll(s) {
   findings.forEach(function(f) {
-    f.checked = s;
-    var cb = document.querySelector('[data-id="' + f.id + '"]');
-    if (cb) {
-      cb.classList.toggle('on', s);
-      cb.setAttribute('aria-checked', s);
-      cb.innerHTML = s ? '&#10003;' : '';
-      var row = cb.closest('.ftr');
-      if (row) row.classList.toggle('excl', !s);
-    }
+    f.checked=s; var cb=document.querySelector('[data-id="'+f.id+'"]');
+    if (cb) { cb.classList.toggle('on',s); cb.setAttribute('aria-checked',s); cb.innerHTML=s?'&#10003;':''; var row=cb.closest('.ftr'); if (row) row.classList.toggle('excl',!s); }
   });
   updateStats();
 }
 
 function updateStats() {
-  var sel = findings.filter(function(f) { return f.checked; }).length;
-  document.getElementById('dl-count').textContent = sel;
-  document.getElementById('sel-count').textContent = sel + ' geselecteerd';
-  document.getElementById('chips').innerHTML = '<span class="chip cr">' + findings.length + ' gevonden</span><span class="chip cg">' + sel + ' geselecteerd</span>';
+  var sel=findings.filter(function(f){return f.checked;}).length;
+  document.getElementById('dl-count').textContent=sel;
+  document.getElementById('sel-count').textContent=sel+' geselecteerd';
+  document.getElementById('chips').innerHTML='<span class="chip cr">'+findings.length+' gevonden</span><span class="chip cg">'+sel+' geselecteerd</span>';
 }
 
 function addManual() {
-  var inp = document.getElementById('man-in');
-  var val = inp.value.trim();
+  var inp=document.getElementById('man-in'); var val=inp.value.trim();
   if (!val) { showToast('Voer een waarde in'); return; }
-  var dup = findings.some(function(f) { return f.value.toLowerCase() === val.toLowerCase(); });
-  if (dup) { showToast('Staat al in de lijst'); return; }
+  if (findings.some(function(f){return f.value.toLowerCase()===val.toLowerCase();})) { showToast('Staat al in de lijst'); return; }
   findings.push({ id: Date.now(), value: val, type: 'handmatig', label: 'HANDMATIG', checked: true, conf: 100 });
-  renderTable(); buildFilters(); updateStats();
-  inp.value = '';
-  showToast('Toegevoegd');
+  renderTable(); buildFilters(); updateStats(); inp.value=''; showToast('Toegevoegd');
 }
 
 // ── DOWNLOAD ──────────────────────────────────────────────────
 function dlRedacted() {
-  var sel = findings.filter(function(f) { return f.checked; });
-  if (!sel.length) { showToast('Selecteer entiteiten om te redacteren'); return; }
-  var out = extractedText;
-  sel.sort(function(a, b) { return b.value.length - a.value.length; });
-  sel.forEach(function(f) {
-    try { out = out.replace(new RegExp(f.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '[' + f.label + ']'); } catch(e) {}
-  });
-  var name = (curFile ? curFile.name.replace(/\.[^.]+$/, '') : 'document') + '_geredacteerd.txt';
-  dlBlob(new Blob([out], { type: 'text/plain;charset=utf-8' }), name);
-  showToast(sel.length + ' entiteiten geredacteerd');
+  var sel=findings.filter(function(f){return f.checked;}); if (!sel.length) { showToast('Selecteer entiteiten om te redacteren'); return; }
+  var out=extractedText;
+  sel.sort(function(a,b){return b.value.length-a.value.length;});
+  sel.forEach(function(f) { try { out=out.replace(new RegExp(f.value.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),'['+f.label+']'); } catch(e){} });
+  var name=(curFile?curFile.name.replace(/\.[^.]+$/,''):'document')+'_geredacteerd.txt';
+  dlBlob(new Blob([out],{type:'text/plain;charset=utf-8'}),name);
+  showToast(sel.length+' entiteiten geredacteerd');
 }
 
 function dlAudit() {
-  var sel = findings.filter(function(f) { return f.checked; });
-  var lines = [
-    'PRYVEE REDACT — AUDIT LOG',
-    '='.repeat(50),
-    'Bestand:      ' + (curFile ? curFile.name : 'onbekend'),
-    'Tijdstip:     ' + new Date().toLocaleString('nl-NL'),
-    'Gevonden:     ' + findings.length,
-    'Geredacteerd: ' + sel.length,
-    '',
-    'GEREDACTEERDE ENTITEITEN',
-    '-'.repeat(50)
-  ];
-  sel.forEach(function(f) { lines.push(f.label.padEnd(14) + ' ' + f.value); });
-  lines.push('', '-'.repeat(50), 'Pryvee Redact — volledig in-browser verwerkt.');
-  dlBlob(new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' }), 'pryvee-audit-log.txt');
+  var sel=findings.filter(function(f){return f.checked;});
+  var lines=['PRYVEE REDACT — AUDIT LOG','='.repeat(50),'Bestand:      '+(curFile?curFile.name:'onbekend'),'Tijdstip:     '+new Date().toLocaleString('nl-NL'),'Gevonden:     '+findings.length,'Geredacteerd: '+sel.length,'','GEREDACTEERDE ENTITEITEN','-'.repeat(50)];
+  sel.forEach(function(f){lines.push(f.label.padEnd(14)+' '+f.value);});
+  lines.push('','-'.repeat(50),'Pryvee Redact — volledig in-browser verwerkt.');
+  dlBlob(new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}),'pryvee-audit-log.txt');
   showToast('Audit-log gedownload');
 }
 
-function dlBlob(blob, name) {
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url; a.download = name; a.click();
-  URL.revokeObjectURL(url);
-}
+function dlBlob(blob, name) { var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=name; a.click(); URL.revokeObjectURL(url); }
 
 // ── PROGRESS ──────────────────────────────────────────────────
 function stepTo(n, label, pct) {
-  document.getElementById('prog-lbl').textContent = label;
-  document.getElementById('prog-pct').textContent = pct + '%';
-  document.getElementById('prog-fill').style.width = pct + '%';
-  for (var i = 1; i <= 4; i++) {
-    var el = document.getElementById('ps' + i);
-    var c = el.querySelector('.psc');
-    if (i < n) { el.className = 'ps done'; c.innerHTML = '&#10003;'; }
-    else if (i === n) { el.className = 'ps active'; c.textContent = i; }
-    else { el.className = 'ps'; c.textContent = i; }
-  }
+  document.getElementById('prog-lbl').textContent=label;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  for (var i=1;i<=4;i++) { var el=document.getElementById('ps'+i); var c=el.querySelector('.psc'); if (i<n){el.className='ps done';c.innerHTML='&#10003;';}else if(i===n){el.className='ps active';c.textContent=i;}else{el.className='ps';c.textContent=i;} }
 }
 
 // ── UTILS ─────────────────────────────────────────────────────
 function resetResults() {
-  findings = []; activeFilter = 'all';
-  document.getElementById('fbody').innerHTML = '';
-  document.getElementById('res-wrap').style.display = 'none';
-  document.getElementById('filter-bar').innerHTML = '';
-  document.getElementById('chips').innerHTML = '';
-  document.getElementById('sel-count').textContent = '0 geselecteerd';
-  document.getElementById('dl-count').textContent = '0';
+  findings=[]; activeFilter='all';
+  document.getElementById('fbody').innerHTML='';
+  document.getElementById('res-wrap').style.display='none';
+  document.getElementById('filter-bar').innerHTML='';
+  document.getElementById('chips').innerHTML='';
+  document.getElementById('sel-count').textContent='0 geselecteerd';
+  document.getElementById('dl-count').textContent='0';
 }
 
-function resetAll() { removeFile(); extractedText = ''; resetResults(); showToast('Gereset'); }
+function resetAll() { removeFile(); extractedText=''; resetResults(); showToast('Gereset'); }
 
-function fmtB(b) {
-  if (b < 1024) return b + ' B';
-  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
-  return (b/1048576).toFixed(1) + ' MB';
-}
+function fmtB(b) { if (b<1024) return b+' B'; if (b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
 
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 var toastT;
 function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show';
-  clearTimeout(toastT);
-  toastT = setTimeout(function() { t.classList.remove('show'); }, 3200);
+  var t=document.getElementById('toast'); t.textContent=msg; t.className='toast show';
+  clearTimeout(toastT); toastT=setTimeout(function(){t.classList.remove('show');},3200);
 }
-
-// ── INIT ──────────────────────────────────────────────────────
-// Auth wordt gestart via window.addEventListener('load') hierboven
 </script>
 </body>
 </html>
