@@ -39,7 +39,7 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 /* OVERLAY SCREENS */
 .overlay{position:fixed;inset:0;z-index:99999;background:rgba(18,5,32,.98);display:flex;align-items:center;justify-content:center;padding:24px}
 .overlay.hide{display:none}
-.ocard{background:var(--plum);border:1px solid rgba(255,235,85,.3);border-radius:var(--r-xl);padding:48px 40px;max-width:460px;width:100%;text-align:center}
+.ocard{background:var(--plum);border:1px solid rgba(255,235,85,.3);border-radius:var(--r-xl);padding:48px 40px;max-width:520px;width:100%;text-align:center}
 .ocard h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;letter-spacing:-1px;margin-bottom:10px}
 .ocard p{color:var(--muted);font-size:14px;line-height:1.75;margin-bottom:28px}
 .btn-ms{width:100%;background:#f0e8ff;color:#120520;padding:14px;border-radius:var(--r);font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;margin-bottom:12px}
@@ -49,13 +49,16 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 .trust-row span{font-size:11px;color:var(--muted2)}
 .err-box{display:none;margin-top:12px;padding:10px 14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2);border-radius:var(--r);font-size:12px;color:var(--danger)}
 
-/* PLAN opts */
-.plan-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
-.popt{padding:18px 14px;border-radius:var(--r-lg);border:1px solid var(--border2);background:rgba(255,255,255,.02);cursor:pointer;text-align:center;transition:all .2s}
+/* PLAN opts — 3 opties */
+.plan-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+.popt{padding:16px 12px;border-radius:var(--r-lg);border:1px solid var(--border2);background:rgba(255,255,255,.02);cursor:pointer;text-align:center;transition:all .2s;position:relative}
 .popt:hover,.popt.sel{border-color:var(--gold);background:rgba(255,235,85,.05)}
-.popt-p{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:var(--gold);letter-spacing:-1px}
-.popt-n{font-size:13px;font-weight:600;margin-top:5px}
-.popt-d{font-size:11px;color:var(--muted2);margin-top:3px}
+.popt.featured{border-color:rgba(255,235,85,.35);background:rgba(255,235,85,.04)}
+.popt.featured.sel{border-color:var(--gold);background:rgba(255,235,85,.08)}
+.popt-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:9px;padding:2px 10px;border-radius:100px;white-space:nowrap;letter-spacing:.03em}
+.popt-p{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:var(--gold);letter-spacing:-1px;margin-top:6px}
+.popt-n{font-size:12px;font-weight:600;margin-top:4px}
+.popt-d{font-size:10px;color:var(--muted2);margin-top:3px;line-height:1.4}
 .btn-co{width:100%;background:var(--gold);color:var(--ink);padding:14px;border-radius:var(--r);font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:10px;transition:all .2s}.btn-co:hover{background:var(--gold-d);transform:translateY(-1px)}
 .btn-so2{background:none;border:none;color:var(--muted2);font-size:12px;cursor:pointer;font-family:'Instrument Sans',sans-serif;text-decoration:underline;text-underline-offset:3px}
 
@@ -148,6 +151,7 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 @media(max-width:700px){
   nav{padding:0 16px}
   main{padding:20px 16px 80px}
+  .plan-opts{grid-template-columns:1fr}
   .score-hdr{grid-template-columns:1fr;text-align:center}.score-ring{margin:0 auto}.score-acts{flex-direction:row;flex-wrap:wrap;justify-content:center}
   .stats-row{grid-template-columns:repeat(2,1fr)}
   .fth,.frow{grid-template-columns:1fr 80px}.fr-d{display:none}
@@ -196,19 +200,32 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 <div class="overlay hide" id="ov-plan">
   <div class="ocard">
     <div style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2);margin-bottom:14px" id="plan-user-lbl"></div>
-    <h2>Kies je Snapshot plan</h2>
+    <h2>Kies je plan</h2>
     <p>Je hebt nog geen actieve licentie. Kies een plan om je eerste audit te starten.</p>
     <div class="plan-opts">
-      <div class="popt sel" id="po-een" onclick="selPlan('een')">
+
+      <!-- EENMALIG -->
+      <div class="popt" id="po-een" onclick="selPlan('een')">
         <div class="popt-p">&#8364;249</div>
         <div class="popt-n">Eenmalig</div>
-        <div class="popt-d">30 dagen toegang · 1 tenant</div>
+        <div class="popt-d">30 dagen toegang<br>1 tenant</div>
       </div>
+
+      <!-- ESSENTIALS — aanbevolen -->
+      <div class="popt featured sel" id="po-essentials" onclick="selPlan('essentials')">
+        <div class="popt-badge">Aanbevolen</div>
+        <div class="popt-p">&#8364;99<span style="font-size:11px;font-weight:400;color:var(--muted)">/mnd</span></div>
+        <div class="popt-n">Essentials</div>
+        <div class="popt-d">Snapshot + Redact<br>maandelijks opzegbaar</div>
+      </div>
+
+      <!-- SNAPSHOT MAANDELIJKS -->
       <div class="popt" id="po-mnd" onclick="selPlan('mnd')">
-        <div class="popt-p">&#8364;99<span style="font-size:13px;font-weight:400;color:var(--muted)">/mnd</span></div>
-        <div class="popt-n">Maandelijks</div>
-        <div class="popt-d">Onbeperkt herscans · 1 tenant</div>
+        <div class="popt-p">&#8364;79<span style="font-size:11px;font-weight:400;color:var(--muted)">/mnd</span></div>
+        <div class="popt-n">Snapshot only</div>
+        <div class="popt-d">Alleen Snapshot<br>maandelijks opzegbaar</div>
       </div>
+
     </div>
     <button class="btn-co" onclick="doCheckout()">Doorgaan naar betaling &#8594;</button>
     <button class="btn-so2" onclick="doSignOut()">Uitloggen</button>
@@ -299,13 +316,14 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 <script>
 var WORKER = 'https://pryvee-api.pryveegovernance.workers.dev';
 var CLIENT_ID = '9c986c1f-b9f3-4aae-8696-57c3e2dda725';
-var STRIPE_EEN = 'https://buy.stripe.com/test_fZu7sN9bi15qe2o5Ku8g004';
-var STRIPE_MND = 'https://buy.stripe.com/test_00w3cx4V2dSc6zWeh08g005';
+var STRIPE_EEN        = 'https://buy.stripe.com/test_fZu7sN9bi15qe2o5Ku8g004';
+var STRIPE_MND        = 'https://buy.stripe.com/test_00w3cx4V2dSc6zWeh08g005';
+var STRIPE_ESSENTIALS = 'https://buy.stripe.com/test_7sYbJ3afmeWg8I48WG8g007';
 
 var msalInstance = null;
 var currentUser = null;
 var currentToken = null;
-var snapPlan = 'een';
+var snapPlan = 'essentials'; // standaard Essentials geselecteerd
 var scanResults = [];
 
 var msalConfig = {
@@ -421,7 +439,7 @@ function onLogin(account, token) {
   document.getElementById('tbadge').textContent = tenant ? ('&#127970; ' + tenant) : '&#128202; Klaar';
   localStorage.setItem('pryvee_email', email.toLowerCase());
   var p = new URLSearchParams(location.search);
-  if (p.get('paid') === '1') { history.replaceState({},  '', location.pathname); checkLicense(email, true); }
+  if (p.get('paid') === '1') { history.replaceState({}, '', location.pathname); checkLicense(email, true); }
   else checkLicense(email, false);
 }
 
@@ -500,11 +518,15 @@ function selPlan(p) {
   snapPlan = p;
   document.getElementById('po-een').classList.toggle('sel', p === 'een');
   document.getElementById('po-mnd').classList.toggle('sel', p === 'mnd');
+  document.getElementById('po-essentials').classList.toggle('sel', p === 'essentials');
 }
 
 function doCheckout() {
   var email = currentUser ? currentUser.username : localStorage.getItem('pryvee_email') || '';
-  var url = snapPlan === 'mnd' ? STRIPE_MND : STRIPE_EEN;
+  var url;
+  if (snapPlan === 'essentials') url = STRIPE_ESSENTIALS;
+  else if (snapPlan === 'mnd') url = STRIPE_MND;
+  else url = STRIPE_EEN;
   var su = encodeURIComponent(location.origin + location.pathname + '?paid=1');
   window.location.href = url + '?prefilled_email=' + encodeURIComponent(email) + '&success_url=' + su;
 }
@@ -745,7 +767,6 @@ function buildPDF() {
   var date = new Date().toLocaleDateString('nl-NL',{day:'2-digit',month:'long',year:'numeric'});
   var scolor = score>=70 ? [77,217,160] : score>=40 ? [255,179,71] : [255,107,107];
 
-  // Cover
   doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
   doc.setFillColor(42,15,61); doc.rect(0,0,W,80,'F');
   doc.setFont('helvetica','bold'); doc.setFontSize(28); doc.setTextColor(240,232,255);
@@ -758,11 +779,9 @@ function buildPDF() {
   doc.text('Tenant: '+tenant,m,112);
   doc.text('Opgesteld door: '+user,m,120);
   doc.text('Datum: '+date,m,128);
-  // Score blok
   doc.setFillColor(scolor[0],scolor[1],scolor[2]); doc.roundedRect(m,144,55,48,5,5,'F');
   doc.setFont('helvetica','bold'); doc.setFontSize(34); doc.setTextColor(18,5,32);
   doc.text(score+'%',m+7,174); doc.setFontSize(9); doc.text('Totale score',m+7,183);
-  // Stat blokjes
   [{l:'Hoog risico',v:fail,c:[255,107,107]},{l:'Let op',v:warn,c:[255,179,71]},{l:'Geslaagd',v:pass,c:[77,217,160]}].forEach(function(s,i){
     var x=m+62+i*38;
     doc.setFillColor(42,15,61); doc.roundedRect(x,144,34,48,3,3,'F');
@@ -775,13 +794,11 @@ function buildPDF() {
     : 'Er zijn beveiligingsproblemen gevonden. '+fail+' bevindingen vereisen prioritaire actie.';
   doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(184,160,204);
   doc.text(doc.splitTextToSize(summary,W-2*m),m,215);
-  // Footer
   doc.setFillColor(42,15,61); doc.rect(0,H-16,W,16,'F');
   doc.setFontSize(7); doc.setTextColor(122,90,144);
   doc.text('Pryvee Snapshot · Vertrouwelijk · '+date,m,H-6);
   doc.text('pryvee.io',W-m-doc.getTextWidth('pryvee.io'),H-6);
 
-  // Pagina 2: bevindingen
   doc.addPage(); doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
   y=m+10;
   doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,232,255); doc.text('Bevindingen',m,y); y+=8;
@@ -799,7 +816,6 @@ function buildPDF() {
     y+=24;
   });
 
-  // Pagina 3: aanbevelingen
   var fails2 = sorted.filter(function(r){return r.status==='fail'||r.status==='warn';});
   if (fails2.length>0) {
     doc.addPage(); doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
@@ -819,7 +835,6 @@ function buildPDF() {
     });
   }
 
-  // Pagina nummers
   var pages=doc.internal.getNumberOfPages();
   for(var i=1;i<=pages;i++){
     doc.setPage(i);
