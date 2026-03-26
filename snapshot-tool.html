@@ -49,7 +49,7 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 .trust-row span{font-size:11px;color:var(--muted2)}
 .err-box{display:none;margin-top:12px;padding:10px 14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.2);border-radius:var(--r);font-size:12px;color:var(--danger)}
 
-/* PLAN opts — 3 opties */
+/* PLAN opts */
 .plan-opts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
 .popt{padding:16px 12px;border-radius:var(--r-lg);border:1px solid var(--border2);background:rgba(255,255,255,.02);cursor:pointer;text-align:center;transition:all .2s;position:relative}
 .popt:hover,.popt.sel{border-color:var(--gold);background:rgba(255,235,85,.05)}
@@ -62,6 +62,14 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 .btn-co{width:100%;background:var(--gold);color:var(--ink);padding:14px;border-radius:var(--r);font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;margin-bottom:10px;transition:all .2s}.btn-co:hover{background:var(--gold-d);transform:translateY(-1px)}
 .btn-so2{background:none;border:none;color:var(--muted2);font-size:12px;cursor:pointer;font-family:'Instrument Sans',sans-serif;text-decoration:underline;text-underline-offset:3px}
 
+/* LICENSE BADGE */
+.lic-tag{display:none;font-family:'Geist Mono',monospace;font-size:10px;padding:4px 12px;border-radius:100px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+.lic-tag.basic{background:rgba(96,165,250,.08);color:#60a5fa;border:1px solid rgba(96,165,250,.2)}
+.lic-tag.standard{background:rgba(192,132,252,.08);color:#c084fc;border:1px solid rgba(192,132,252,.2)}
+.lic-tag.premium{background:rgba(255,235,85,.08);color:var(--gold);border:1px solid rgba(255,235,85,.2)}
+.lic-tag.e3{background:rgba(77,217,160,.08);color:var(--ok);border:1px solid rgba(77,217,160,.2)}
+.lic-tag.e5{background:rgba(255,107,107,.08);color:var(--danger);border:1px solid rgba(255,107,107,.2)}
+
 /* SCAN PAGE */
 .scan-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
 .scan-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.8px}
@@ -69,7 +77,7 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 
 .scan-card{background:rgba(42,15,61,.5);border:1px solid var(--border2);border-radius:var(--r-xl);padding:52px;text-align:center;margin-bottom:20px}
 .scan-card h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.8px;margin-bottom:10px}
-.scan-card p{color:var(--muted);font-size:14px;line-height:1.75;max-width:420px;margin:0 auto 28px}
+.scan-card p{color:var(--muted);font-size:14px;line-height:1.75;max-width:480px;margin:0 auto 28px}
 .btn-scan{background:var(--gold);color:var(--ink);padding:14px 36px;border-radius:var(--r);font-weight:700;font-size:15px;font-family:'Bricolage Grotesque',sans-serif;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;min-height:50px}
 .btn-scan:hover{background:var(--gold-d);transform:translateY(-1px)}.btn-scan:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .scan-info{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:24px}
@@ -82,19 +90,22 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 .prog-lbl{font-size:13px;color:var(--muted)}.prog-pct{font-family:'Geist Mono',monospace;font-size:12px;color:var(--gold)}
 .prog-bg{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-bottom:20px}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),rgba(255,235,85,.5));border-radius:2px;transition:width .4s ease;width:0}
-.check-list{display:flex;flex-direction:column;gap:7px;max-height:280px;overflow-y:auto}
+.check-list{display:flex;flex-direction:column;gap:7px;max-height:320px;overflow-y:auto}
 .ci{display:flex;align-items:center;gap:12px;padding:9px 14px;background:rgba(255,255,255,.02);border-radius:var(--r);font-size:13px;transition:all .25s;border:1px solid transparent}
 .ci.run{background:rgba(255,235,85,.04);border-color:rgba(255,235,85,.1)}
 .ci.pass{background:rgba(77,217,160,.04);border-color:rgba(77,217,160,.1)}
 .ci.fail{background:rgba(255,107,107,.04);border-color:rgba(255,107,107,.1)}
 .ci.warn{background:rgba(255,179,71,.04);border-color:rgba(255,179,71,.1)}
+.ci.na{background:rgba(255,255,255,.02);border-color:transparent;opacity:.45}
 .ci-ico{font-size:13px;width:22px;text-align:center;flex-shrink:0}
-.ci-nm{flex:1;color:var(--muted)}.ci.run .ci-nm{color:var(--text)}.ci.pass .ci-nm{color:var(--ok)}.ci.fail .ci-nm{color:var(--danger)}.ci.warn .ci-nm{color:var(--warn)}
+.ci-cat{font-size:10px;color:var(--muted2);font-family:'Geist Mono',monospace;flex-shrink:0;width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ci-nm{flex:1;color:var(--muted)}.ci.run .ci-nm{color:var(--text)}.ci.pass .ci-nm{color:var(--ok)}.ci.fail .ci-nm{color:var(--danger)}.ci.warn .ci-nm{color:var(--warn)}.ci.na .ci-nm{color:var(--muted2)}
 .ci-st{font-family:'Geist Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;text-transform:uppercase;flex-shrink:0}
 .ci.pass .ci-st{background:rgba(77,217,160,.1);color:var(--ok)}
 .ci.fail .ci-st{background:rgba(255,107,107,.1);color:var(--danger)}
 .ci.warn .ci-st{background:rgba(255,179,71,.1);color:var(--warn)}
 .ci.run .ci-st{background:rgba(255,235,85,.1);color:var(--gold)}
+.ci.na .ci-st{background:rgba(255,255,255,.05);color:var(--muted2)}
 
 /* RESULTS */
 #results-wrap{display:none}
@@ -115,25 +126,38 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 .stat-l{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
 .stat.red .stat-n{color:var(--danger)}.stat.orange .stat-n{color:var(--warn)}.stat.green .stat-n{color:var(--ok)}.stat.blue .stat-n{color:#60a5fa}
 
+/* CATEGORY SCORE BARS */
+.cat-scores{background:rgba(42,15,61,.3);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:18px}
+.cat-scores-title{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px}
+.csrow{display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:12px}
+.csrow:last-child{margin-bottom:0}
+.cs-name{width:170px;flex-shrink:0;color:var(--muted);font-family:'Geist Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.05em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cs-track{flex:1;background:rgba(255,255,255,.05);border-radius:2px;height:6px;overflow:hidden}
+.cs-fill{height:6px;border-radius:2px;transition:width .8s ease}
+.cs-pct{width:34px;text-align:right;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700}
+
 .cat-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .cfbtn{font-family:'Geist Mono',monospace;font-size:10px;padding:5px 12px;border-radius:100px;border:1px solid var(--border2);background:none;color:var(--muted);cursor:pointer;transition:all .18s;text-transform:uppercase;letter-spacing:.06em}
 .cfbtn:hover{color:var(--text)}.cfbtn.on{background:rgba(255,235,85,.08);border-color:rgba(255,235,85,.3);color:var(--gold)}
 
 .ftable{border:1px solid var(--border2);border-radius:var(--r-xl);overflow:hidden;margin-bottom:18px}
-.fth{display:grid;grid-template-columns:1fr 110px 90px;gap:12px;padding:10px 18px;background:rgba(18,5,32,.6);border-bottom:1px solid var(--border);font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;align-items:center}
-.frow{display:grid;grid-template-columns:1fr 110px 90px;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s;cursor:pointer}
+.fth{display:grid;grid-template-columns:1fr 120px 90px;gap:12px;padding:10px 18px;background:rgba(18,5,32,.6);border-bottom:1px solid var(--border);font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;align-items:center}
+.frow{display:grid;grid-template-columns:1fr 120px 90px;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s;cursor:pointer}
 .frow:last-child{border-bottom:none}.frow:hover{background:rgba(255,255,255,.02)}
+.fr-cat{font-family:'Geist Mono',monospace;font-size:9px;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
 .fr-t{font-size:13px;font-weight:500;margin-bottom:2px}
 .fr-d{font-size:11px;color:var(--muted);line-height:1.5}
 .f-sev,.f-st{font-family:'Geist Mono',monospace;font-size:10px;padding:3px 9px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;width:fit-content}
 .sev-h{background:rgba(255,107,107,.1);color:var(--danger)}.sev-m{background:rgba(255,179,71,.1);color:var(--warn)}.sev-l{background:rgba(77,217,160,.1);color:var(--ok)}
-.st-f{background:rgba(255,107,107,.1);color:var(--danger)}.st-w{background:rgba(255,179,71,.1);color:var(--warn)}.st-p{background:rgba(77,217,160,.1);color:var(--ok)}
+.st-f{background:rgba(255,107,107,.1);color:var(--danger)}.st-w{background:rgba(255,179,71,.1);color:var(--warn)}.st-p{background:rgba(77,217,160,.1);color:var(--ok)}.st-na{background:rgba(255,255,255,.05);color:var(--muted2)}
 
 /* DRAWER */
-.drawer{display:none;position:fixed;right:0;top:0;bottom:0;width:420px;background:#1a0827;border-left:1px solid var(--border2);z-index:300;overflow-y:auto;padding:28px}
+.drawer{display:none;position:fixed;right:0;top:0;bottom:0;width:440px;background:#1a0827;border-left:1px solid var(--border2);z-index:300;overflow-y:auto;padding:28px}
 .drawer.open{display:block;animation:up .25s ease}
 .dclose{position:absolute;top:20px;right:20px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;padding:4px;border-radius:var(--r);transition:color .18s}.dclose:hover{color:var(--text)}
 .d-sev{font-family:'Geist Mono',monospace;font-size:10px;padding:4px 12px;border-radius:4px;text-transform:uppercase;display:inline-block;margin-bottom:4px}
+.d-cis{font-family:'Geist Mono',monospace;font-size:9px;color:var(--muted2);background:rgba(255,255,255,.04);padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:10px}
+.d-lic{font-family:'Geist Mono',monospace;font-size:9px;color:var(--gold);background:rgba(255,235,85,.06);padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:10px;margin-left:6px;border:1px solid rgba(255,235,85,.12)}
 .d-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.6px;margin-bottom:10px;padding-right:36px}
 .d-desc{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:18px}
 .d-result{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;margin-bottom:16px}
@@ -149,13 +173,13 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
 .toast{position:fixed;bottom:22px;right:22px;background:rgba(26,8,39,.97);border:1px solid var(--border2);border-radius:var(--r-lg);padding:12px 16px;font-size:13px;color:var(--text);z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px;box-shadow:0 8px 40px rgba(0,0,0,.5)}.toast.show{transform:translateY(0);opacity:1}
 
 @media(max-width:700px){
-  nav{padding:0 16px}
-  main{padding:20px 16px 80px}
+  nav{padding:0 16px}main{padding:20px 16px 80px}
   .plan-opts{grid-template-columns:1fr}
   .score-hdr{grid-template-columns:1fr;text-align:center}.score-ring{margin:0 auto}.score-acts{flex-direction:row;flex-wrap:wrap;justify-content:center}
   .stats-row{grid-template-columns:repeat(2,1fr)}
   .fth,.frow{grid-template-columns:1fr 80px}.fr-d{display:none}
-  .drawer{width:100%;top:auto;height:70vh;border-left:none;border-top:1px solid var(--border2)}
+  .drawer{width:100%;top:auto;height:75vh;border-left:none;border-top:1px solid var(--border2)}
+  .cs-name{width:110px}
 }
 </style>
 </head>
@@ -203,29 +227,22 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
     <h2>Kies je plan</h2>
     <p>Je hebt nog geen actieve licentie. Kies een plan om je eerste audit te starten.</p>
     <div class="plan-opts">
-
-      <!-- EENMALIG -->
       <div class="popt" id="po-een" onclick="selPlan('een')">
         <div class="popt-p">&#8364;249</div>
         <div class="popt-n">Eenmalig</div>
         <div class="popt-d">30 dagen toegang<br>1 tenant</div>
       </div>
-
-      <!-- ESSENTIALS — aanbevolen -->
       <div class="popt featured sel" id="po-essentials" onclick="selPlan('essentials')">
         <div class="popt-badge">Aanbevolen</div>
         <div class="popt-p">&#8364;99<span style="font-size:11px;font-weight:400;color:var(--muted)">/mnd</span></div>
         <div class="popt-n">Essentials</div>
         <div class="popt-d">Snapshot + Redact<br>maandelijks opzegbaar</div>
       </div>
-
-      <!-- SNAPSHOT MAANDELIJKS -->
       <div class="popt" id="po-mnd" onclick="selPlan('mnd')">
         <div class="popt-p">&#8364;79<span style="font-size:11px;font-weight:400;color:var(--muted)">/mnd</span></div>
         <div class="popt-n">Snapshot only</div>
         <div class="popt-d">Alleen Snapshot<br>maandelijks opzegbaar</div>
       </div>
-
     </div>
     <button class="btn-co" onclick="doCheckout()">Doorgaan naar betaling &#8594;</button>
     <button class="btn-so2" onclick="doSignOut()">Uitloggen</button>
@@ -238,19 +255,22 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
       <div style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px">Ingelogd als</div>
       <div class="scan-title" id="scan-name">Microsoft 365</div>
     </div>
-    <div class="tbadge" id="tbadge">&#128202; Klaar</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div class="lic-tag" id="lic-tag"></div>
+      <div class="tbadge" id="tbadge">&#128202; Klaar</div>
+    </div>
   </div>
 
-  <div class="scan-card" id="scan-start">
+  <div class="scan-card" id="scan-start" style="display:none">
     <div style="font-size:44px;margin-bottom:18px">&#128202;</div>
     <h3>Klaar voor beveiligingsscan</h3>
-    <p>Pryvee analyseert je M365-configuratie op beveiligingsrisico's en verkeerde instellingen. Duurt ca. 30-60 seconden.</p>
+    <p id="scan-desc">Pryvee analyseert je M365-configuratie op basis van de CIS M365 L1-benchmark. Duurt ca. 60–90 seconden.</p>
     <button class="btn-scan" id="btn-start" onclick="startScan()">&#128269; Start beveiligingsscan</button>
     <div class="scan-info">
       <span class="si">&#9989; Alleen-lezen</span>
       <span class="si">&#128274; Geen opslag</span>
-      <span class="si">&#9203; ~45 seconden</span>
-      <span class="si">&#128202; 10 checks</span>
+      <span class="si">&#9203; ~90 seconden</span>
+      <span class="si" id="si-count">&#128202; 79 checks</span>
     </div>
   </div>
 
@@ -277,7 +297,7 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
       </div>
       <div class="score-meta">
         <h2 id="score-lbl">Analyseren...</h2>
-        <p id="score-desc"></p>
+        <p id="score-desc-res"></p>
       </div>
       <div class="score-acts">
         <button class="btn-pdf" onclick="generatePDF()">&#11015;&#65039; Download PDF rapport</button>
@@ -289,7 +309,11 @@ main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:32px 32p
       <div class="stat red"><div class="stat-n" id="s-hoog">0</div><div class="stat-l">Hoog risico</div></div>
       <div class="stat orange"><div class="stat-n" id="s-mid">0</div><div class="stat-l">Let op</div></div>
       <div class="stat green"><div class="stat-n" id="s-pass">0</div><div class="stat-l">Geslaagd</div></div>
-      <div class="stat blue"><div class="stat-n" id="s-total">0</div><div class="stat-l">Totaal</div></div>
+      <div class="stat blue"><div class="stat-n" id="s-total">0</div><div class="stat-l">Totaal checks</div></div>
+    </div>
+
+    <div class="cat-scores" id="cat-scores">
+      <div class="cat-scores-title">Score per categorie</div>
     </div>
 
     <div class="cat-bar" id="cat-bar"></div>
@@ -321,68 +345,575 @@ var STRIPE_MND        = 'https://buy.stripe.com/test_00w3cx4V2dSc6zWeh08g005';
 var STRIPE_ESSENTIALS = 'https://buy.stripe.com/test_7sYbJ3afmeWg8I48WG8g007';
 
 var msalInstance = null;
-var currentUser = null;
+var currentUser  = null;
 var currentToken = null;
-var snapPlan = 'essentials';
-var scanResults = [];
-
-// Sessiebewaking — alleen in geheugen, nooit localStorage
+var snapPlan     = 'essentials';
+var scanResults  = [];
 var sessionToken = null;
 var sessionEmail = null;
 var sessionProduct = 'snapshot';
+var tenantLicense  = null; // 'basic'|'standard'|'premium'|'e3'|'e5'
 
-// ── CHECKS ────────────────────────────────────────────────
+// License tier numeric map
+var LIC_N = {basic:1,standard:2,premium:3,e3:4,e5:5};
+var LIC_LABELS = {basic:'Business Basic',standard:'Business Standard',premium:'Business Premium',e3:'E3',e5:'E5'};
+
+// ── 79 CIS M365 L1 CHECKS ────────────────────────────────
+// minLic: minimum license tier required to run this check
 var CHECKS = [
-  { id:'mfa_admins', name:'MFA voor beheerders', cat:'Identiteit', sev:'hoog',
-    desc:'Controleert of multi-factor authenticatie is ingeschakeld voor alle beheerdersaccounts.',
-    impact:'Beheerdersaccounts zonder MFA zijn het meest kwetsbare doelwit. Bij een aanval heeft de aanvaller volledige controle over de gehele tenant.',
-    fix:'Schakel MFA in voor alle beheerdersaccounts via Microsoft Entra ID. Implementeer Conditional Access om MFA af te dwingen.',
-    endpoint:'/v1.0/reports/authenticationMethods/userRegistrationDetails?$filter=isAdmin eq true' },
-  { id:'mfa_users', name:'MFA-dekking gebruikers', cat:'Identiteit', sev:'hoog',
-    desc:'Percentage gebruikers dat MFA heeft ingesteld.',
-    impact:'Gebruikers zonder MFA zijn kwetsbaar voor phishing en wachtwoordaanvallen.',
-    fix:'Implementeer Conditional Access dat MFA vereist voor alle gebruikers. Gebruik Microsoft Authenticator als standaard methode.',
-    endpoint:'/v1.0/reports/authenticationMethods/userRegistrationDetails' },
-  { id:'ca_policies', name:'Conditional Access beleid', cat:'Toegangsbeheer', sev:'hoog',
-    desc:'Controleert of er actief Conditional Access-beleid aanwezig is.',
-    impact:'Zonder Conditional Access zijn er geen toegangsregels op basis van locatie, apparaat of risico.',
-    fix:'Implementeer minimaal de Microsoft-aanbevolen basisbeleidsinstellingen: MFA voor beheerders, blokkeer verouderde auth.',
-    endpoint:'/v1.0/identity/conditionalAccess/policies' },
-  { id:'guest_accounts', name:'Verlopen gastaccounts', cat:'Identiteit', sev:'gemiddeld',
-    desc:'Detecteert gastaccounts die langer dan 90 dagen inactief zijn.',
-    impact:'Verlopen gasten kunnen nog steeds toegang hebben tot SharePoint en Teams. Dit vergroot het aanvalsoppervlak.',
-    fix:'Stel toegangsbeoordelingen in via Entra Identity Governance. Verwijder inactieve gastaccounts regelmatig.',
-    endpoint:'/v1.0/users?$filter=userType eq \'Guest\'&$select=id,displayName,signInActivity,createdDateTime' },
-  { id:'secure_score', name:'Beveiligingsscore', cat:'Algemeen', sev:'gemiddeld',
-    desc:'Haalt de huidige beveiligingsscore op en beoordeelt openstaande aanbevelingen.',
-    impact:'Een lage score duidt op gemiste beveiligingsverbeteringen en openstaande aanbevelingen.',
-    fix:'Bekijk de aanbevelingen in Microsoft Defender en pak de hoogst scorende verbeteringen eerst aan.',
-    endpoint:'/v1.0/security/secureScores?$top=1' },
-  { id:'legacy_auth', name:'Verouderde authenticatie', cat:'Toegangsbeheer', sev:'hoog',
-    desc:'Controleert of verouderde authenticatieprotocollen geblokkeerd zijn.',
-    impact:'Verouderde protocollen ondersteunen geen MFA. 99% van wachtwoordaanvallen gebruikt verouderde auth.',
-    fix:'Maak Conditional Access-beleid dat alle verouderde authenticatieprotocollen blokkeert.',
-    endpoint:'/v1.0/identity/conditionalAccess/policies' },
-  { id:'global_admins', name:'Beperking Global Admins', cat:'Identiteit', sev:'gemiddeld',
-    desc:'Telt het aantal Global Administrators en controleert of dit beperkt is.',
-    impact:'Te veel Global Admins vergroot het risico. Microsoft adviseert maximaal 2-4 Global Admins.',
-    fix:'Vervang Global Admin rollen door specifiekere beheerdersrollen zoals Exchange- of Security Administrator.',
-    endpoint:'/v1.0/directoryRoles?$filter=displayName eq \'Global Administrator\'&$expand=members' },
-  { id:'ext_sharing', name:'Extern delen instellingen', cat:'Gegevensbescherming', sev:'gemiddeld',
-    desc:'Controleert de instellingen voor extern delen in SharePoint en OneDrive.',
-    impact:'Te permissieve deelinstelling maakt het makkelijk om per ongeluk gevoelige bestanden met externen te delen.',
-    fix:'Beperk extern delen tot bekende gasten. Vermijd anonieme deellinks tenzij absoluut noodzakelijk.',
-    endpoint:'/v1.0/admin/sharepoint/settings' },
-  { id:'audit_log', name:'Audit logging', cat:'Compliance', sev:'gemiddeld',
-    desc:'Controleert of unified audit logging actief is.',
-    impact:'Zonder audit logging zijn er geen logboeken voor incident response of compliance-audits.',
-    fix:'Schakel unified audit logging in via Microsoft Purview Compliance Portal.',
-    endpoint:'/v1.0/security/secureScores?$top=1' },
-  { id:'pw_policy', name:'Wachtwoordbeleid', cat:'Identiteit', sev:'laag',
-    desc:'Controleert wachtwoordbeleid en password protection instellingen.',
-    impact:'Zwak wachtwoordbeleid maakt accounts kwetsbaar voor brute force aanvallen.',
-    fix:'Schakel Microsoft Entra Password Protection in om bekende zwakke wachtwoorden te blokkeren.',
-    endpoint:'/v1.0/organization' }
+  // IDENTITEIT & MFA (18)
+  {id:'mfa_admins',       cat:'Identiteit & MFA',   cis:'1.1.1', sev:'hoog',      minLic:'basic',
+   name:'MFA voor alle beheerders',
+   desc:'Controleert of MFA is ingeschakeld voor alle accounts met een beheerdersrol.',
+   impact:'Beheerdersaccounts zonder MFA zijn het meest kwetsbare doelwit. Eén gecompromitteerd account geeft volledige tenant-controle.',
+   fix:'Schakel MFA in voor alle beheerdersaccounts via Entra ID. Dwing MFA af via Conditional Access.',
+   endpoint:'/v1.0/reports/authenticationMethods/userRegistrationDetails?$filter=isAdmin eq true'},
+  {id:'mfa_users',        cat:'Identiteit & MFA',   cis:'1.1.2', sev:'hoog',      minLic:'basic',
+   name:'MFA-dekking alle gebruikers',
+   desc:'Percentage gebruikers met MFA geregistreerd. CIS-norm: minimaal 90%.',
+   impact:'Gebruikers zonder MFA zijn kwetsbaar voor phishing en credential stuffing.',
+   fix:'Implementeer Conditional Access dat MFA vereist voor alle gebruikers. Gebruik Microsoft Authenticator.',
+   endpoint:'/v1.0/reports/authenticationMethods/userRegistrationDetails'},
+  {id:'legacy_auth',      cat:'Identiteit & MFA',   cis:'1.1.3', sev:'hoog',      minLic:'basic',
+   name:'Legacy-authenticatie geblokkeerd',
+   desc:'Controleert of verouderde protocollen (IMAP, POP3, SMTP-AUTH) geblokkeerd zijn via CA.',
+   impact:'Legacy protocollen ondersteunen geen MFA. 99% van wachtwoordaanvallen gebruikt legacy auth.',
+   fix:'Maak een CA-beleid dat legacy-authenticatieprotocollen blokkeert voor alle gebruikers.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'sspr',             cat:'Identiteit & MFA',   cis:'1.1.5', sev:'laag',      minLic:'basic',
+   name:'Selfservice wachtwoordherstel',
+   desc:'Controleert of SSPR is ingeschakeld voor alle gebruikers.',
+   impact:'Zonder SSPR verwerkt IT elke wachtwoordreset handmatig — foutgevoelig en inefficiënt.',
+   fix:'Schakel SSPR in via Entra ID → Wachtwoordherstel → Eigenschappen.',
+   endpoint:'/v1.0/policies/authorizationPolicy'},
+  {id:'auth_methods',     cat:'Identiteit & MFA',   cis:'1.1.6', sev:'gemiddeld', minLic:'basic',
+   name:'Microsoft Authenticator actief',
+   desc:'Controleert of de Authenticator-app is ingeschakeld als sterke MFA-methode.',
+   impact:'SMS-gebaseerde MFA is kwetsbaar voor SIM-swapping. Authenticator-app biedt sterkere beveiliging.',
+   fix:'Schakel Microsoft Authenticator in via Entra ID → Authenticatiemethoden.',
+   endpoint:'/v1.0/policies/authenticationMethodsPolicy'},
+  {id:'pw_protection',    cat:'Identiteit & MFA',   cis:'1.1.9', sev:'gemiddeld', minLic:'basic',
+   name:'Entra Password Protection actief',
+   desc:'Controleert of bekende zwakke wachtwoorden worden geblokkeerd.',
+   impact:'Organisatie-specifieke wachtwoorden zoals "Welkom01!" zijn meest voorkomende inbraakroute.',
+   fix:'Schakel Entra Password Protection in via Entra ID → Authenticatiemethoden → Wachtwoordbeveiliging.',
+   endpoint:'/v1.0/organization'},
+  {id:'guest_invite',     cat:'Identiteit & MFA',   cis:'1.4.1', sev:'gemiddeld', minLic:'basic',
+   name:'Gastuitnodigingen beperkt tot admins',
+   desc:'Controleert wie gastgebruikers kan uitnodigen.',
+   impact:'Als alle gebruikers gasten mogen uitnodigen is externe toegang moeilijk te controleren.',
+   fix:'Stel in via Entra ID → Gebruikers → Gebruikersinstellingen: alleen admins mogen gasten uitnodigen.',
+   endpoint:'/v1.0/policies/authorizationPolicy'},
+  {id:'guest_stale',      cat:'Identiteit & MFA',   cis:'1.4.2', sev:'gemiddeld', minLic:'basic',
+   name:'Verlopen gastaccounts (>90 dagen)',
+   desc:'Detecteert gastaccounts die meer dan 90 dagen inactief zijn.',
+   impact:'Verlaten gastaccounts zijn onbeheerde toegangspoorten tot SharePoint en Teams.',
+   fix:'Verwijder inactieve gastaccounts. Implementeer toegangsbeoordelingen via Entra Identity Governance.',
+   endpoint:'/v1.0/users?$filter=userType eq \'Guest\'&$select=id,displayName,signInActivity,createdDateTime'},
+  {id:'global_admin_count',cat:'Identiteit & MFA',  cis:'1.3.3', sev:'gemiddeld', minLic:'basic',
+   name:'Maximaal 5 globale beheerders',
+   desc:'Telt het aantal actieve Globale beheerders. CIS-norm: maximaal 5.',
+   impact:'Te veel globale beheerders vergroot het aanvalsoppervlak.',
+   fix:'Reduceer tot max. 5 Globale beheerders. Gebruik specifiekere rollen waar mogelijk.',
+   endpoint:'/v1.0/directoryRoles?$filter=displayName eq \'Global Administrator\'&$expand=members'},
+  {id:'user_consent',     cat:'Identiteit & MFA',   cis:'1.6.1', sev:'gemiddeld', minLic:'basic',
+   name:'Gebruikers-app-toestemming beperkt',
+   desc:'Controleert of eindgebruikers zelf OAuth-toestemming kunnen geven aan onbekende apps.',
+   impact:'OAuth-toestemmingsaanvallen geven kwaadaardige apps permanent toegang tot mailboxen.',
+   fix:'Beperk via Entra ID → Bedrijfstoepassingen → Toestemmingsinstellingen: alleen admins.',
+   endpoint:'/v1.0/policies/authorizationPolicy'},
+  {id:'app_registration', cat:'Identiteit & MFA',   cis:'1.6.2', sev:'laag',      minLic:'basic',
+   name:'App-registraties beperkt tot admins',
+   desc:'Controleert of alleen admins nieuwe app-registraties kunnen aanmaken.',
+   impact:'Onbeheerde app-registraties kunnen kwetsbare toepassingen introduceren in de tenant.',
+   fix:'Beperk via Entra ID → Gebruikers → Gebruikersinstellingen → App-registraties.',
+   endpoint:'/v1.0/policies/authorizationPolicy'},
+  {id:'risky_signins',    cat:'Identiteit & MFA',   cis:'1.5.1', sev:'hoog',      minLic:'e3',
+   name:'Risicovolle aanmeldingen gemonitord',
+   desc:'Controleert of Identity Protection actief is en risicovolle aanmeldingen detecteert.',
+   impact:'Zonder risicodetectie worden gecompromitteerde accounts niet automatisch geblokkeerd.',
+   fix:'Activeer Entra Identity Protection via Entra ID → Beveiliging → Identity Protection.',
+   endpoint:'/v1.0/identityProtection/riskDetections?$top=1'},
+  {id:'risky_users',      cat:'Identiteit & MFA',   cis:'1.5.2', sev:'hoog',      minLic:'e3',
+   name:'Risicovolle gebruikers afgehandeld',
+   desc:'Controleert of er openstaande hoog-risico gebruikers zijn in Identity Protection.',
+   impact:'Openstaande risicogebruikers zijn mogelijk gecompromitteerde accounts die nog actief zijn.',
+   fix:'Herstel alle risicogebruikers via Entra ID → Beveiliging → Risicovolle gebruikers.',
+   endpoint:'/v1.0/identityProtection/riskyUsers?$filter=riskState eq \'atRisk\''},
+  {id:'pim_enabled',      cat:'Identiteit & MFA',   cis:'1.3.1', sev:'gemiddeld', minLic:'e3',
+   name:'Privileged Identity Management (PIM)',
+   desc:'Controleert of PIM is geactiveerd voor Just-In-Time beheerderstoegang.',
+   impact:'Permanente admin-rollen verhogen het risico aanzienlijk. PIM biedt tijdelijk, goedgekeurd verhoogde toegang.',
+   fix:'Activeer PIM via Entra ID → Identity Governance → Privileged Identity Management.',
+   endpoint:'/v1.0/privilegedAccess/aadRoles/resources'},
+  {id:'named_locations',  cat:'Identiteit & MFA',   cis:'1.2.5', sev:'laag',      minLic:'e3',
+   name:'Benoemde locaties geconfigureerd',
+   desc:'Controleert of vertrouwde netwerken zijn gedefinieerd voor CA-beleid.',
+   impact:'Zonder benoemde locaties kan CA niet differentiëren tussen vertrouwde en onbekende netwerken.',
+   fix:'Definieer kantoornetwerken als vertrouwde locaties via Entra ID → CA → Benoemde locaties.',
+   endpoint:'/v1.0/identity/conditionalAccess/namedLocations'},
+  {id:'signin_frequency', cat:'Identiteit & MFA',   cis:'1.2.6', sev:'laag',      minLic:'e3',
+   name:'Aanmeldingsfrequentie-beleid',
+   desc:'Controleert of CA-beleid een maximale sessieduur afdwingt voor gevoelige apps.',
+   impact:'Zonder aanmeldingsfrequentie blijven gestolen tokens lang geldig.',
+   fix:'Maak een CA-beleid met aanmeldingsfrequentie (bijv. 1 uur) voor beheerders.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'emergency_access', cat:'Identiteit & MFA',   cis:'1.3.4', sev:'laag',      minLic:'basic',
+   name:'Break-glass accounts aanwezig',
+   desc:'Controleert of er noodtoegangsaccounts zijn buiten normale MFA-beleid.',
+   impact:'Zonder break-glass accounts kan een MFA-storing leiden tot volledige admin lock-out.',
+   fix:'Maak 2 break-glass accounts buiten alle CA-beleidsregels. Monitor gebruik via alerts.',
+   endpoint:'/v1.0/users?$filter=userType eq \'Member\'&$select=id,displayName,accountEnabled'},
+  {id:'pw_no_expiry',     cat:'Identiteit & MFA',   cis:'1.1.8', sev:'laag',      minLic:'basic',
+   name:'Cloud-wachtwoorden verlopen niet',
+   desc:'Controleert of wachtwoorden voor cloud-accounts zijn ingesteld op "Verloopt nooit" (mits MFA actief).',
+   impact:'Verplichte wachtwoordwijzigingen leiden tot voorspelbare patronen. Microsoft adviseert geen vervaldatum mits MFA.',
+   fix:'Stel wachtwoordbeleid in via M365 Admin Center → Instellingen → Beveiliging & privacy.',
+   endpoint:'/v1.0/domains'},
+
+  // CONDITIONAL ACCESS (12)
+  {id:'ca_mfa_required',  cat:'Conditional Access', cis:'2.1.1', sev:'hoog',      minLic:'e3',
+   name:'CA: MFA vereist voor alle gebruikers',
+   desc:'Controleert of er een actief CA-beleid is dat MFA afdwingt voor alle gebruikers.',
+   impact:'Zonder dit beleid is MFA optioneel voor gebruikers, ook als het per account is ingesteld.',
+   fix:'Maak CA-beleid: Gebruikers=Alle · Apps=Alle cloud-apps · Verlenen=MFA vereisen.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_admins_mfa',    cat:'Conditional Access', cis:'2.1.2', sev:'hoog',      minLic:'e3',
+   name:'CA: MFA vereist voor beheerders',
+   desc:'Controleert of beheerders via CA verplicht worden MFA te gebruiken.',
+   impact:'Beheerdersaccounts zonder verplichte MFA zijn het primaire doelwit bij inbraken.',
+   fix:'Maak een CA-beleid gericht op alle directory-rollen met verplichte MFA.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_legacy_block',  cat:'Conditional Access', cis:'2.1.3', sev:'hoog',      minLic:'e3',
+   name:'CA: Legacy-auth geblokkeerd',
+   desc:'Controleert of een CA-beleid legacy-authenticatieprotocollen blokkeert.',
+   impact:'Legacy auth is de meest gebruikte aanvalsvector bij credential stuffing aanvallen.',
+   fix:'Maak CA-beleid: Clients=Legacy clients · Toegang=Blokkeren.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_risky_login',   cat:'Conditional Access', cis:'2.1.4', sev:'hoog',      minLic:'e3',
+   name:'CA: Risicovolle aanmeldingen geblokkeerd',
+   desc:'Controleert of hoog-risico aanmeldingen worden geblokkeerd via CA.',
+   impact:'Zonder dit beleid worden aanmeldingen vanuit bekende botnet-knooppunten niet geblokkeerd.',
+   fix:'Maak CA-beleid: Aanmeldingsrisico=Hoog → Blokkeren of MFA vereisen.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_device_comply', cat:'Conditional Access', cis:'2.1.5', sev:'gemiddeld', minLic:'e3',
+   name:'CA: Compliant apparaat vereist',
+   desc:'Controleert of CA-beleid een Intune-compliant apparaat vereist voor toegang.',
+   impact:'Zonder dit beleid kunnen onbeheerde privé-apparaten toegang krijgen tot bedrijfsdata.',
+   fix:'Maak CA-beleid: Apparaatstatus=Compliant vereisen voor bedrijfsapps.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_tos',           cat:'Conditional Access', cis:'2.1.6', sev:'laag',      minLic:'e3',
+   name:'CA: Gebruiksvoorwaarden geconfigureerd',
+   desc:'Controleert of gebruikers verplicht zijn gebruiksvoorwaarden te accepteren via CA.',
+   impact:'Zonder gebruiksvoorwaarden ontbreekt juridisch bewijs van beleidsbekendheid.',
+   fix:'Maak gebruiksvoorwaarden via Entra ID → CA → Gebruiksvoorwaarden.',
+   endpoint:'/v1.0/agreements'},
+  {id:'ca_count',         cat:'Conditional Access', cis:'2.1.7', sev:'gemiddeld', minLic:'e3',
+   name:'Min. 5 actieve CA-beleidsregels',
+   desc:'Controleert het totaal aantal actieve CA-beleidsregels.',
+   impact:'Te weinig CA-regels wijst op een incomplete identiteitsbeveiliging.',
+   fix:'Implementeer minimaal de CIS-aanbevolen basisset van CA-beleidsregels.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_report_only',   cat:'Conditional Access', cis:'2.1.8', sev:'laag',      minLic:'e3',
+   name:'Geen CA-regels in report-only modus',
+   desc:'Controleert of beleidsregels in report-only modus al actief gemaakt zijn.',
+   impact:'Regels in report-only bieden geen bescherming — ze zijn alleen voor monitoring.',
+   fix:'Activeer alle productieklare CA-beleidsregels die nog in report-only staan.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_persistent',    cat:'Conditional Access', cis:'2.1.9', sev:'laag',      minLic:'e3',
+   name:'CA: Persistente sessies beperkt',
+   desc:'Controleert of CA persistente browsersessies uitschakelt op onbeheerde apparaten.',
+   impact:'Persistente sessies op onbeheerde apparaten blijven actief na sluiten van de browser.',
+   fix:'CA-beleid: sessiecontrole → Persistente browsersessie=Nooit persistent.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_phish_resist',  cat:'Conditional Access', cis:'2.1.10',sev:'gemiddeld', minLic:'e5',
+   name:'CA: Phishing-resistente MFA voor admins',
+   desc:'Controleert of beheerders verplicht zijn phishing-resistente MFA te gebruiken (FIDO2/certificaat).',
+   impact:'Klassieke MFA via SMS/Authenticator is kwetsbaar voor Adversary-in-the-Middle aanvallen.',
+   fix:'CA-beleid voor admins: authenticatiestrengheid=Phishing-resistent (FIDO2 of Windows Hello).',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_insider',       cat:'Conditional Access', cis:'2.1.11',sev:'gemiddeld', minLic:'e5',
+   name:'CA: Gebruikersrisico-beleid actief',
+   desc:'Controleert of CA reageert op hoog gebruikersrisico (Identity Protection).',
+   impact:'Gecompromitteerde accounts worden niet automatisch geblokkeerd zonder gebruikersrisicobeleid.',
+   fix:'CA-beleid: Gebruikersrisico=Hoog → Wachtwoordwijziging vereisen of Blokkeren.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'ca_token_protect', cat:'Conditional Access', cis:'2.1.12',sev:'laag',      minLic:'e5',
+   name:'CA: Token Protection ingeschakeld',
+   desc:'Controleert of Token Protection is geconfigureerd om token-diefstal te voorkomen.',
+   impact:'Gestolen access tokens kunnen worden gebruikt op andere apparaten zonder Token Protection.',
+   fix:'Configureer Token Protection via CA → Sessie → Token Protection.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+
+  // EXTERN DELEN (8)
+  {id:'ext_sharing',      cat:'Extern Delen',       cis:'3.1.1', sev:'hoog',      minLic:'basic',
+   name:'SharePoint extern delen beperkt',
+   desc:'Controleert het SharePoint-tenant deelniveau. CIS-norm: max "Bestaande gasten".',
+   impact:'Onbeperkt extern delen maakt anoniem delen van gevoelige documenten mogelijk.',
+   fix:'Stel extern delen in op "Bestaande gasten" via SharePoint Admin Center → Beleid → Delen.',
+   endpoint:'/v1.0/admin/sharepoint/settings'},
+  {id:'od_sharing',       cat:'Extern Delen',       cis:'3.1.2', sev:'hoog',      minLic:'basic',
+   name:'OneDrive extern delen beperkt',
+   desc:'Controleert het OneDrive-deelniveau afzonderlijk van SharePoint.',
+   impact:'Gebruikers kunnen OneDrive-bestanden onbeperkt extern delen ook als SharePoint beperkt is.',
+   fix:'Beperk OneDrive extern delen via SharePoint Admin Center → Beleid → Delen → OneDrive.',
+   endpoint:'/v1.0/admin/sharepoint/settings'},
+  {id:'link_expiry',      cat:'Extern Delen',       cis:'3.1.3', sev:'gemiddeld', minLic:'basic',
+   name:'Vervaldatum deellinks ingesteld',
+   desc:'Controleert of externe deellinks automatisch verlopen.',
+   impact:'Deellinks zonder vervaldatum blijven permanent actief, ook na vertrek van betrokkene.',
+   fix:'Stel standaard vervaldatum van 30 dagen in voor externe deellinks via SharePoint Admin Center.',
+   endpoint:'/v1.0/admin/sharepoint/settings'},
+  {id:'anon_links',       cat:'Extern Delen',       cis:'3.1.4', sev:'hoog',      minLic:'basic',
+   name:'Anonieme deellinks uitgeschakeld',
+   desc:'Controleert of "Iedereen"-links zijn uitgeschakeld.',
+   impact:'Anonieme links zijn niet te controleren — iedereen met de link heeft toegang.',
+   fix:'Schakel "Iedereen"-links uit via SharePoint Admin Center → Beleid → Delen.',
+   endpoint:'/v1.0/admin/sharepoint/settings'},
+  {id:'guest_mfa',        cat:'Extern Delen',       cis:'3.2.1', sev:'gemiddeld', minLic:'e3',
+   name:'MFA vereist voor gastgebruikers',
+   desc:'Controleert of gastgebruikers ook MFA moeten gebruiken via CA.',
+   impact:'Gastaccounts zijn vaak minder goed beheerd en extra kwetsbaar zonder MFA.',
+   fix:'Breid MFA CA-beleid uit om gastgebruikers (externe gebruikers) op te nemen.',
+   endpoint:'/v1.0/identity/conditionalAccess/policies'},
+  {id:'teams_external',   cat:'Extern Delen',       cis:'3.3.1', sev:'gemiddeld', minLic:'basic',
+   name:'Teams extern toegang beperkt',
+   desc:'Controleert of externe Teams-federatie is beperkt tot specifieke domeinen.',
+   impact:'Onbeperkte Teams-federatie staat toe dat elk extern bedrijf contact maakt met gebruikers.',
+   fix:'Beperk externe toegang tot vertrouwde domeinen via Teams Admin Center → Externe toegang.',
+   endpoint:'/v1.0/admin/sharepoint/settings'},
+  {id:'teams_anon_join',  cat:'Extern Delen',       cis:'3.3.2', sev:'gemiddeld', minLic:'basic',
+   name:'Anoniem deelnemen Teams-vergaderingen',
+   desc:'Controleert of anonieme gebruikers kunnen deelnemen aan Teams-vergaderingen.',
+   impact:'Anonieme deelnemers kunnen gevoelige vergaderingsinformatie horen zonder authenticatie.',
+   fix:'Schakel anoniem deelnemen uit via Teams Admin Center → Vergaderingsinstellingen.',
+   endpoint:'/v1.0/admin/sharepoint/settings'},
+  {id:'teams_lobby',      cat:'Extern Delen',       cis:'3.3.3', sev:'laag',      minLic:'basic',
+   name:'Teams lobby-instellingen geconfigureerd',
+   desc:'Controleert of externe gasten worden geplaatst in de wachtkamer voor vergaderingen.',
+   impact:'Zonder lobby kunnen externe gasten automatisch vergaderingen binnenkomen.',
+   fix:'Stel in dat iedereen buiten de organisatie in de wachtkamer wordt geplaatst.',
+   endpoint:'/v1.0/admin/sharepoint/settings'},
+
+  // E-MAIL BEVEILIGING (12)
+  {id:'dmarc',            cat:'E-mail Beveiliging', cis:'4.1.1', sev:'hoog',      minLic:'basic',
+   name:'DMARC geconfigureerd',
+   desc:'Controleert of een DMARC DNS-record aanwezig is voor het primaire domein.',
+   impact:'Zonder DMARC kunnen aanvallers e-mails spoofen vanuit jouw domein voor phishing.',
+   fix:'Voeg DMARC DNS-record toe met p=quarantine en een rapportage-e-mailadres.',
+   endpoint:'/v1.0/domains'},
+  {id:'spf',              cat:'E-mail Beveiliging', cis:'4.1.2', sev:'hoog',      minLic:'basic',
+   name:'SPF geconfigureerd',
+   desc:'Controleert of SPF correct is geconfigureerd voor het primaire e-maildomein.',
+   impact:'Zonder SPF kunnen kwaadwillenden e-mails versturen die lijken af te komen van jouw domein.',
+   fix:'Voeg toe: v=spf1 include:spf.protection.outlook.com -all',
+   endpoint:'/v1.0/domains'},
+  {id:'dkim',             cat:'E-mail Beveiliging', cis:'4.1.3', sev:'gemiddeld', minLic:'basic',
+   name:'DKIM ondertekening ingeschakeld',
+   desc:'Controleert of DKIM e-mailondertekening is ingeschakeld in Exchange Online.',
+   impact:'Zonder DKIM kunnen e-mails onderweg worden gemanipuleerd zonder detectie.',
+   fix:'Schakel DKIM in via Exchange Online Admin Center → E-mailstroom → DKIM.',
+   endpoint:'/v1.0/domains'},
+  {id:'safe_links',       cat:'E-mail Beveiliging', cis:'4.2.1', sev:'hoog',      minLic:'basic',
+   name:'Safe Links ingeschakeld',
+   desc:'Controleert of Defender for Office 365 Safe Links actief is.',
+   impact:'Zonder Safe Links worden kwaadaardige URL\'s in e-mails niet herschreven of geblokkeerd.',
+   fix:'Schakel Safe Links in via Microsoft Defender Portal → E-mail & samenwerking → Safe Links.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'safe_attachments', cat:'E-mail Beveiliging', cis:'4.2.2', sev:'hoog',      minLic:'basic',
+   name:'Safe Attachments ingeschakeld',
+   desc:'Controleert of e-mailbijlagen worden geanalyseerd in een sandbox.',
+   impact:'Kwaadaardige bijlagen zoals macro-bestanden worden zonder Safe Attachments niet gecontroleerd.',
+   fix:'Schakel Safe Attachments in via Microsoft Defender Portal.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'antiphish',        cat:'E-mail Beveiliging', cis:'4.2.3', sev:'hoog',      minLic:'basic',
+   name:'Anti-phishing beleid actief',
+   desc:'Controleert of een custom anti-phishing beleid is geconfigureerd.',
+   impact:'Standaard anti-phishing heeft minder bescherming dan een custom beleid met impersonatie-detectie.',
+   fix:'Maak custom anti-phishing beleid via Defender Portal met impersonatiebescherming.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'antispam',         cat:'E-mail Beveiliging', cis:'4.2.4', sev:'gemiddeld', minLic:'basic',
+   name:'Anti-spam beleid geconfigureerd',
+   desc:'Controleert of het anti-spam beleid is aangescherpt boven standaardinstellingen.',
+   impact:'Standaard anti-spam is minder streng dan aanbevolen voor organisaties.',
+   fix:'Pas het anti-spam beleid aan via Microsoft Defender Portal → Spam-filters.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'antimalware',      cat:'E-mail Beveiliging', cis:'4.2.5', sev:'gemiddeld', minLic:'basic',
+   name:'Anti-malware beleid geconfigureerd',
+   desc:'Controleert of anti-malware beleid is ingeschakeld en correct geconfigureerd.',
+   impact:'Zonder geconfigureerd anti-malware beleid worden schadelijke bestanden mogelijk niet geblokkeerd.',
+   fix:'Configureer anti-malware beleid via Microsoft Defender Portal.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'mail_forward',     cat:'E-mail Beveiliging', cis:'4.3.1', sev:'hoog',      minLic:'basic',
+   name:'Extern doorsturen geblokkeerd',
+   desc:'Controleert of automatisch extern doorsturen van e-mail is geblokkeerd.',
+   impact:'Aanvallers stellen doorsturen in op gecompromitteerde accounts om e-mails te exfiltreren.',
+   fix:'Blokkeer extern doorsturen via het outbound spam beleid in Defender Portal.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'quarantine',       cat:'E-mail Beveiliging', cis:'4.2.6', sev:'laag',      minLic:'basic',
+   name:'Quarantaine beleid geconfigureerd',
+   desc:'Controleert of quarantainebeheer correct is ingesteld.',
+   impact:'Zonder quarantainebeleid worden verdachte e-mails niet goed afgehandeld.',
+   fix:'Configureer quarantainebeleid via Microsoft Defender Portal → Quarantainebeleid.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'admin_submission', cat:'E-mail Beveiliging', cis:'4.4.1', sev:'laag',      minLic:'basic',
+   name:'Gebruikers kunnen phishing rapporteren',
+   desc:'Controleert of gebruikers verdachte e-mails kunnen rapporteren.',
+   impact:'Zonder rapportagemogelijkheid ontbreekt waardevolle telemetrie voor phishingdetectie.',
+   fix:'Schakel de Microsoft Report Message-invoegtoepassing in via Exchange Admin Center.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'mx_record',        cat:'E-mail Beveiliging', cis:'4.1.4', sev:'laag',      minLic:'basic',
+   name:'MX-record wijst naar Exchange Online',
+   desc:'Controleert of het MX-record direct naar Exchange Online Protection wijst.',
+   impact:'E-mail via externe gateways kan Defender for Office 365-bescherming omzeilen.',
+   fix:'Zorg dat MX wijst naar {tenant}.mail.protection.outlook.com.',
+   endpoint:'/v1.0/domains'},
+
+  // APPARAATBEHEER (8)
+  {id:'intune_enrolled',  cat:'Apparaatbeheer',     cis:'5.1.1', sev:'gemiddeld', minLic:'premium',
+   name:'Intune nalevingsbeleid actief',
+   desc:'Controleert of er een actief nalevingsbeleid is geconfigureerd in Intune.',
+   impact:'Zonder nalevingsbeleid kunnen onveilige apparaten toegang krijgen tot bedrijfsdata.',
+   fix:'Maak een nalevingsbeleid in Intune via Microsoft Endpoint Manager Admin Center.',
+   endpoint:'/v1.0/deviceManagement/deviceCompliancePolicies'},
+  {id:'device_encryption',cat:'Apparaatbeheer',     cis:'5.1.2', sev:'hoog',      minLic:'premium',
+   name:'Schijfversleuteling vereist',
+   desc:'Controleert of Intune-nalevingsbeleid BitLocker/FileVault vereist.',
+   impact:'Niet-versleutelde apparaten geven bij diefstal directe toegang tot bedrijfsdata.',
+   fix:'Voeg versleutelingsvereiste toe aan Intune nalevingsbeleid voor Windows en macOS.',
+   endpoint:'/v1.0/deviceManagement/deviceCompliancePolicies'},
+  {id:'device_pin',       cat:'Apparaatbeheer',     cis:'5.1.3', sev:'gemiddeld', minLic:'premium',
+   name:'PIN vereist op mobiele apparaten',
+   desc:'Controleert of Intune een PIN vereist op mobiele apparaten.',
+   impact:'Mobiele apparaten zonder PIN geven direct toegang tot bedrijfse-mail bij verlies.',
+   fix:'Voeg PIN-vereiste toe aan nalevingsbeleid voor iOS en Android in Intune.',
+   endpoint:'/v1.0/deviceManagement/deviceCompliancePolicies'},
+  {id:'defender_av',      cat:'Apparaatbeheer',     cis:'5.3.1', sev:'hoog',      minLic:'premium',
+   name:'Microsoft Defender Antivirus actief',
+   desc:'Controleert of Defender Antivirus actief is op beheerde Windows-apparaten.',
+   impact:'Uitgeschakelde antivirusbescherming maakt apparaten kwetsbaar voor malware.',
+   fix:'Zorg via Intune-beleid dat Defender Antivirus actief is en niet kan worden uitgeschakeld.',
+   endpoint:'/v1.0/deviceManagement/managedDevices?$select=id,deviceName,isEncrypted&$top=5'},
+  {id:'defender_edr',     cat:'Apparaatbeheer',     cis:'5.3.2', sev:'gemiddeld', minLic:'e5',
+   name:'Defender for Endpoint (EDR) actief',
+   desc:'Controleert of Microsoft Defender for Endpoint is geconfigureerd.',
+   impact:'Zonder EDR ontbreken geavanceerde detectie- en responsmogelijkheden.',
+   fix:'Onboard apparaten naar Defender for Endpoint via Endpoint Manager Admin Center.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'device_noncompliant',cat:'Apparaatbeheer',   cis:'5.1.4', sev:'gemiddeld', minLic:'premium',
+   name:'Niet-conforme apparaten geblokkeerd',
+   desc:'Controleert of niet-conforme apparaten worden geblokkeerd van bedrijfsapps.',
+   impact:'Niet-conforme apparaten houden toegang tot bedrijfsdata tenzij actief geblokkeerd.',
+   fix:'Koppel nalevingsbeleid aan Conditional Access om toegang te blokkeren bij non-compliance.',
+   endpoint:'/v1.0/deviceManagement/deviceCompliancePolicies'},
+  {id:'mam_policy',       cat:'Apparaatbeheer',     cis:'5.4.1', sev:'gemiddeld', minLic:'premium',
+   name:'MAM-beleid geconfigureerd (BYOD)',
+   desc:'Controleert of Mobile Application Management-beleid is geconfigureerd voor privé-apparaten.',
+   impact:'Zonder MAM kunnen gebruikers bedrijfsdata kopiëren naar persoonlijke apps op BYOD-apparaten.',
+   fix:'Maak app-beschermingsbeleid in Intune voor Microsoft 365-apps op iOS en Android.',
+   endpoint:'/v1.0/deviceAppManagement/managedAppPolicies'},
+  {id:'autopilot',        cat:'Apparaatbeheer',     cis:'5.2.1', sev:'laag',      minLic:'e3',
+   name:'Windows Autopilot geconfigureerd',
+   desc:'Controleert of Windows Autopilot is ingesteld voor geautomatiseerde apparaatprovisioning.',
+   impact:'Zonder Autopilot is handmatige apparaatsetup inefficiënt en foutgevoelig.',
+   fix:'Configureer Autopilot-profielen via Microsoft Endpoint Manager Admin Center.',
+   endpoint:'/v1.0/deviceManagement/windowsAutopilotDeviceIdentities'},
+
+  // MICROSOFT SECURE SCORE (5)
+  {id:'secure_score',     cat:'Secure Score',       cis:'6.1.1', sev:'gemiddeld', minLic:'basic',
+   name:'Microsoft Secure Score > 50%',
+   desc:'Leest de huidige Secure Score. CIS-norm: minimaal 50%.',
+   impact:'Een lage score geeft aan dat veel aanbevolen beveiligingsinstellingen niet zijn geïmplementeerd.',
+   fix:'Bekijk aanbevelingen in Microsoft Defender Portal en pak hoog-impact acties aan.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'score_trend',      cat:'Secure Score',       cis:'6.1.2', sev:'laag',      minLic:'basic',
+   name:'Secure Score stijgende trend',
+   desc:'Controleert of de Secure Score de afgelopen 30 dagen is gestegen.',
+   impact:'Een dalende score duidt op verslechterende beveiligingscontroles in de tenant.',
+   fix:'Plan een maandelijkse beveiligingsreview op basis van Secure Score-aanbevelingen.',
+   endpoint:'/v1.0/security/secureScoreControlProfiles?$top=50'},
+  {id:'score_actions',    cat:'Secure Score',       cis:'6.1.4', sev:'laag',      minLic:'basic',
+   name:'Hoog-impact Secure Score acties gereed',
+   desc:'Controleert of de top hoog-impact Secure Score-acties zijn geïmplementeerd.',
+   impact:'Hoog-impact acties verbeteren de score het meest. Openstaande acties wijzen op substantiële beveiligingsgaten.',
+   fix:'Sorteer Secure Score-acties op impact en begin met de top-5 aanbevelingen.',
+   endpoint:'/v1.0/security/secureScoreControlProfiles?$top=50'},
+  {id:'comparison',       cat:'Secure Score',       cis:'6.1.3', sev:'laag',      minLic:'basic',
+   name:'Score boven sector-gemiddelde',
+   desc:'Vergelijkt de Secure Score met het gemiddelde van vergelijkbare organisaties.',
+   impact:'Een score onder sectorgemiddelde wijst op relatief zwakke beveiliging.',
+   fix:'Bekijk de vergelijkingsweergave in Secure Score voor sectorspecifieke prioritering.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'score_history',    cat:'Secure Score',       cis:'6.1.5', sev:'laag',      minLic:'basic',
+   name:'Secure Score historiek beschikbaar',
+   desc:'Controleert of historische Secure Score-data beschikbaar is.',
+   impact:'Zonder historiek zijn veranderingen in beveiligingspostuur moeilijk te meten.',
+   fix:'Exporteer Secure Score-historiek regelmatig voor compliance-rapportage.',
+   endpoint:'/v1.0/security/secureScores?$top=30'},
+
+  // AUDIT & LOGGING (6)
+  {id:'audit_log',        cat:'Audit & Logging',    cis:'7.1.1', sev:'hoog',      minLic:'basic',
+   name:'Unified audit logging ingeschakeld',
+   desc:'Controleert of unified audit logging actief is in Microsoft Purview.',
+   impact:'Zonder audit logging zijn er geen activiteitenlogboeken voor forensisch onderzoek.',
+   fix:'Schakel audit logging in via Microsoft Purview Compliance Portal → Audit.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'audit_retention',  cat:'Audit & Logging',    cis:'7.1.2', sev:'gemiddeld', minLic:'e3',
+   name:'Audit logs min. 90 dagen bewaard',
+   desc:'Controleert of de bewaartermijn voor audit logs minimaal 90 dagen is.',
+   impact:'Korte bewaartermijnen maken onderzoek naar laat ontdekte incidenten onmogelijk.',
+   fix:'Stel bewaartermijn in op minimaal 90 dagen via Purview → Auditretentiebeleid.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'alert_policies',   cat:'Audit & Logging',    cis:'7.3.1', sev:'gemiddeld', minLic:'basic',
+   name:'Beveiligingswaarschuwingen geconfigureerd',
+   desc:'Controleert of actieve beveiligingswaarschuwingen zijn ingesteld voor kritieke events.',
+   impact:'Zonder waarschuwingen worden beveiligingsincidenten niet proactief gedetecteerd.',
+   fix:'Configureer waarschuwingsbeleid via Microsoft Defender Portal → Waarschuwingsbeleid.',
+   endpoint:'/v1.0/security/alerts_v2?$top=5'},
+  {id:'dlp_policy',       cat:'Audit & Logging',    cis:'7.4.1', sev:'gemiddeld', minLic:'e3',
+   name:'DLP-beleid geconfigureerd',
+   desc:'Controleert of Data Loss Prevention beleid actief is.',
+   impact:'Zonder DLP-beleid kan gevoelige data zoals BSN en IBAN ongecontroleerd worden gedeeld.',
+   fix:'Maak DLP-beleid via Microsoft Purview Compliance Portal → Preventie van gegevensverlies.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'sensitivity_labels',cat:'Audit & Logging',   cis:'7.5.1', sev:'laag',      minLic:'e3',
+   name:'Gevoeligheidslabels gepubliceerd',
+   desc:'Controleert of gevoeligheidslabels zijn geconfigureerd en gepubliceerd.',
+   impact:'Zonder labels kunnen gebruikers documenten niet classificeren.',
+   fix:'Maak en publiceer gevoeligheidslabels via Microsoft Purview → Informatiebeveiliging.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'admin_audit',      cat:'Audit & Logging',    cis:'7.2.1', sev:'gemiddeld', minLic:'basic',
+   name:'Beheerder audit logging actief',
+   desc:'Controleert of wijzigingen door beheerders worden gelogd.',
+   impact:'Zonder beheerder-audit zijn kwaadaardige wijzigingen door admins niet traceerbaar.',
+   fix:'Admin audit logging is standaard actief bij unified audit logging — verifieer inschakeling.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+
+  // PURVIEW / COMPLIANCE (10)
+  {id:'retention_policy', cat:'Compliance',         cis:'8.1.1', sev:'gemiddeld', minLic:'e3',
+   name:'Bewaarbeleid geconfigureerd',
+   desc:'Controleert of bewaarbeleidsregels zijn ingesteld voor Exchange, SharePoint en Teams.',
+   impact:'Zonder bewaarbeleid kunnen bedrijfskritische documenten worden verwijderd of te lang bewaard.',
+   fix:'Maak bewaarbeleid via Microsoft Purview → Gegevensbeheer → Bewaarbeleid.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'ediscovery',       cat:'Compliance',         cis:'8.2.1', sev:'laag',      minLic:'e3',
+   name:'eDiscovery geconfigureerd',
+   desc:'Controleert of eDiscovery-beheerdersrollen zijn toegewezen.',
+   impact:'Zonder eDiscovery-configuratie kunnen juridische verzoeken niet worden afgehandeld.',
+   fix:'Wijs eDiscovery Manager rollen toe via Microsoft Purview → eDiscovery.',
+   endpoint:'/v1.0/roleManagement/directory/roleAssignments'},
+  {id:'insider_risk',     cat:'Compliance',         cis:'8.5.1', sev:'gemiddeld', minLic:'e5',
+   name:'Insider Risk Management actief',
+   desc:'Controleert of Insider Risk Management-beleid is geconfigureerd.',
+   impact:'Binnenlandse dreigingen zijn verantwoordelijk voor een significant deel van datalekken.',
+   fix:'Maak een Insider Risk-beleid via Microsoft Purview → Insider Risk Management.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'compliance_score', cat:'Compliance',         cis:'8.6.1', sev:'laag',      minLic:'e3',
+   name:'Compliance Score bewaakt',
+   desc:'Controleert de Microsoft Compliance Score als indicator van compliancehouding.',
+   impact:'Een lage Compliance Score duidt op lacunes in gegevensbescherming.',
+   fix:'Bekijk Compliance Manager in Purview en implementeer aanbevolen verbeteracties.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'archive_mailbox',  cat:'Compliance',         cis:'8.8.1', sev:'laag',      minLic:'e3',
+   name:'Archiefmailboxen ingeschakeld',
+   desc:'Controleert of archiefmailboxen zijn ingeschakeld voor gebruikers.',
+   impact:'Zonder archivering worden mailboxen te groot — risico op prestatieproblemen en dataverlies.',
+   fix:'Schakel archiefmailboxen in via Microsoft Purview → Gegevensbeheer → Archivering.',
+   endpoint:'/v1.0/users?$filter=assignedLicenses/any()&$select=id,displayName&$top=5'},
+  {id:'litigation_hold',  cat:'Compliance',         cis:'8.9.1', sev:'laag',      minLic:'e3',
+   name:'Bewaarblokkeringen geconfigureerd',
+   desc:'Controleert of bewaarblokkeringen zijn ingesteld voor relevante mailboxen.',
+   impact:'Zonder bewaarblokkeringen kunnen juridisch relevante items worden verwijderd.',
+   fix:'Schakel bewaarblokkeringen in voor betrokken mailboxen via Exchange Admin Center.',
+   endpoint:'/v1.0/users?$filter=assignedLicenses/any()&$select=id,displayName&$top=5'},
+  {id:'purview_audit_e5', cat:'Compliance',         cis:'8.10.1',sev:'gemiddeld', minLic:'e5',
+   name:'Purview Audit (Premium) actief',
+   desc:'Controleert of Purview Audit Premium is ingeschakeld voor geavanceerde forensische mogelijkheden.',
+   impact:'Standaard audit mist geavanceerde logboekgebeurtenissen voor diepgaand forensisch onderzoek.',
+   fix:'Activeer Purview Audit (Premium) via Microsoft Purview Compliance Portal → Audit.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'info_barriers',    cat:'Compliance',         cis:'8.3.1', sev:'laag',      minLic:'e5',
+   name:'Informatiebarrières geconfigureerd',
+   desc:'Controleert of informatiebarrières zijn ingesteld (voor gereguleerde sectoren).',
+   impact:'In financiën/rechtsbijstand zijn informatiebarrières vereist voor Chinese walls.',
+   fix:'Configureer informatiebarrièrebeleid via Microsoft Purview → Informatiebarrières.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'comm_compliance',  cat:'Compliance',         cis:'8.4.1', sev:'laag',      minLic:'e5',
+   name:'Communicatienaleving geconfigureerd',
+   desc:'Controleert of communicatienalevingsbeleid actief is voor risicovolle communicatie.',
+   impact:'Zonder communicatienaleving kunnen beleidsschendingen in e-mail en Teams onopgemerkt blijven.',
+   fix:'Configureer communicatienalevingsbeleid via Microsoft Purview → Communicatienaleving.',
+   endpoint:'/v1.0/security/secureScores?$top=1'},
+  {id:'content_search',   cat:'Compliance',         cis:'8.7.1', sev:'laag',      minLic:'e3',
+   name:'Content Search toegang beperkt',
+   desc:'Controleert of toegang tot Content Search beperkt is tot bevoegde compliance-beheerders.',
+   impact:'Brede toegang tot Content Search kan leiden tot ongeautoriseerde zoekopdrachten in mailboxen.',
+   fix:'Beperk toegang tot Content Search via Purview eDiscovery-rollen.',
+   endpoint:'/v1.0/roleManagement/directory/roleAssignments'},
+
+  // APPLICATIEBEHEER (6)
+  {id:'app_permissions',  cat:'Applicatiebeheer',   cis:'10.1.1',sev:'gemiddeld', minLic:'basic',
+   name:'App-machtigingen beoordeeld',
+   desc:'Controleert het aantal toepassingen met brede rechten (toegang tot alle mailboxen/bestanden).',
+   impact:'Apps met brede rechten zijn gevaarlijk als ze worden gecompromitteerd.',
+   fix:'Bekijk app-machtigingen regelmatig via Entra ID → Bedrijfstoepassingen.',
+   endpoint:'/v1.0/applications?$select=id,displayName,requiredResourceAccess&$top=50'},
+  {id:'app_no_secret',    cat:'Applicatiebeheer',   cis:'10.1.2',sev:'laag',      minLic:'basic',
+   name:'Geen bijna-verlopen app-secrets',
+   desc:'Controleert of app-registraties client secrets hebben die binnen 30 dagen verlopen.',
+   impact:'Verlopen secrets leiden tot uitval van applicaties en noodwijzigingen.',
+   fix:'Verleng client secrets tijdig. Overweeg certificaten als veiliger alternatief.',
+   endpoint:'/v1.0/applications?$select=id,displayName,passwordCredentials&$top=50'},
+  {id:'oauth_consent',    cat:'Applicatiebeheer',   cis:'10.2.1',sev:'hoog',      minLic:'basic',
+   name:'OAuth-toestemmingen beoordeeld',
+   desc:'Controleert op brede OAuth-toestemmingen (mail schrijven, bestanden schrijven).',
+   impact:'Kwaadaardige OAuth-apps kunnen permanent toegang houden tot mailboxen en bestanden.',
+   fix:'Bekijk en verwijder verdachte OAuth-toestemmingen via Entra ID → Bedrijfstoepassingen.',
+   endpoint:'/v1.0/oauth2PermissionGrants?$top=50'},
+  {id:'service_principals',cat:'Applicatiebeheer',  cis:'10.3.1',sev:'laag',      minLic:'basic',
+   name:'Service principals met rollen gecontroleerd',
+   desc:'Controleert of service principals directory-rollen hebben die periodiek worden beoordeeld.',
+   impact:'Service principals met admin-rollen zijn potentieel gevaarlijk als niet periodiek beoordeeld.',
+   fix:'Bekijk service principals met directory-rollen via Entra ID → Rollen en beheerders.',
+   endpoint:'/v1.0/servicePrincipals?$select=id,displayName,appRoleAssignments&$top=50'},
+  {id:'managed_identity', cat:'Applicatiebeheer',   cis:'10.4.1',sev:'laag',      minLic:'e3',
+   name:'Managed Identities in gebruik',
+   desc:'Controleert of Managed Identities worden gebruikt in plaats van service principal-wachtwoorden.',
+   impact:'Wachtwoorden van service principals kunnen uitlekken. Managed Identities elimineren dit risico.',
+   fix:'Migreer Azure-resources naar Managed Identities via Azure Portal of PowerShell.',
+   endpoint:'/v1.0/servicePrincipals?$filter=servicePrincipalType eq \'ManagedIdentity\'&$top=5'},
+  {id:'app_catalog',      cat:'Applicatiebeheer',   cis:'10.5.1',sev:'laag',      minLic:'basic',
+   name:'Teams app-beleid geconfigureerd',
+   desc:'Controleert of de Teams-app-catalogus beleidsregels heeft voor installeerbare apps.',
+   impact:'Zonder app-beleid installeren gebruikers ongecontroleerd apps die data verwerken.',
+   fix:'Maak een Teams-app-beleid via Teams Admin Center → Teams-apps → Instellingenbeleid.',
+   endpoint:'/v1.0/admin/sharepoint/settings'},
+
+  // WACHTWOORDBELEID (4)
+  {id:'pw_policy',        cat:'Wachtwoordbeleid',   cis:'9.1.1', sev:'laag',      minLic:'basic',
+   name:'Wachtwoordbeleid geconfigureerd',
+   desc:'Controleert de basiswachtwoordinstellingen van de tenant.',
+   impact:'Standaard instellingen zijn mogelijk niet afgestemd op beveiligingseisen.',
+   fix:'Controleer en stel wachtwoordbeleid in via M365 Admin Center → Instellingen → Beveiliging.',
+   endpoint:'/v1.0/organization'},
+  {id:'banned_passwords', cat:'Wachtwoordbeleid',   cis:'9.1.2', sev:'gemiddeld', minLic:'basic',
+   name:'Verboden wachtwoordenlijst actief',
+   desc:'Controleert of een aangepaste verboden wachtwoordenlijst is ingesteld.',
+   impact:'Zonder aangepaste lijst kunnen organisatie-specifieke zwakke wachtwoorden worden gebruikt.',
+   fix:'Voeg organisatie-specifieke verboden wachtwoorden toe via Entra ID → Wachtwoordbeveiliging.',
+   endpoint:'/v1.0/organization'},
+  {id:'smart_lockout',    cat:'Wachtwoordbeleid',   cis:'9.1.4', sev:'gemiddeld', minLic:'basic',
+   name:'Smart Lockout geconfigureerd',
+   desc:'Controleert of Entra Smart Lockout brute force-aanvallen beperkt.',
+   impact:'Zonder smart lockout kunnen aanvallers onbeperkt wachtwoorden proberen.',
+   fix:'Configureer Smart Lockout via Entra ID → Beveiliging → Wachtwoordbeveiliging.',
+   endpoint:'/v1.0/organization'},
+  {id:'pw_writeback',     cat:'Wachtwoordbeleid',   cis:'9.1.3', sev:'laag',      minLic:'basic',
+   name:'Wachtwoord terugschrijven (hybrid)',
+   desc:'Controleert voor hybrid omgevingen of password writeback is geconfigureerd.',
+   impact:'Zonder writeback zijn on-premises en cloud wachtwoorden niet gesynchroniseerd.',
+   fix:'Schakel password writeback in via Azure AD Connect voor hybrid omgevingen.',
+   endpoint:'/v1.0/organization'}
 ];
 
 // ── INIT ──────────────────────────────────────────────────
@@ -396,11 +927,8 @@ window.addEventListener('load', function() {
 function initMsal() {
   try {
     var msalConfig = {
-      auth: {
-        clientId: CLIENT_ID,
-        authority: 'https://login.microsoftonline.com/common',
-        redirectUri: window.location.origin + window.location.pathname
-      },
+      auth: { clientId: CLIENT_ID, authority: 'https://login.microsoftonline.com/common',
+              redirectUri: window.location.origin + window.location.pathname },
       cache: { cacheLocation: 'sessionStorage', storeAuthStateInCookie: false }
     };
     msalInstance = new window.msal.PublicClientApplication(msalConfig);
@@ -410,23 +938,14 @@ function initMsal() {
       } else {
         var accs = msalInstance.getAllAccounts();
         if (accs.length > 0) {
-          var SCOPES = ['openid','profile','email','User.Read','Policy.Read.All','Directory.Read.All','Reports.Read.All','Organization.Read.All','AuditLog.Read.All'];
+          var SCOPES = ['openid','profile','email','User.Read','Policy.Read.All','Directory.Read.All','Reports.Read.All','Organization.Read.All','AuditLog.Read.All','DeviceManagementConfiguration.Read.All','SecurityEvents.Read.All'];
           msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accs[0] })
             .then(function(r) { onLogin(accs[0], r.accessToken); })
             .catch(function() { checkStripeReturn(); showLoginOverlay(); });
-        } else {
-          checkStripeReturn();
-          showLoginOverlay();
-        }
+        } else { checkStripeReturn(); showLoginOverlay(); }
       }
-    }).catch(function(e) {
-      console.error(e);
-      showErr('Inloggen mislukt. Probeer opnieuw.');
-    });
-  } catch(e) {
-    console.error(e);
-    showErr('MSAL kon niet worden geladen.');
-  }
+    }).catch(function(e) { console.error(e); showErr('Inloggen mislukt. Probeer opnieuw.'); });
+  } catch(e) { console.error(e); showErr('MSAL kon niet worden geladen.'); }
 }
 
 function onLogin(account, token) {
@@ -439,7 +958,7 @@ function onLogin(account, token) {
   document.getElementById('nav-user').style.display = 'block';
   document.getElementById('btn-so').style.display = 'block';
   document.getElementById('scan-name').textContent = name;
-  document.getElementById('tbadge').textContent = tenant ? ('&#127970; ' + tenant) : '&#128202; Klaar';
+  document.getElementById('tbadge').innerHTML = tenant ? ('&#127970; ' + tenant) : '&#128202; Klaar';
   localStorage.setItem('pryvee_email', email.toLowerCase());
   var p = new URLSearchParams(location.search);
   if (p.get('paid') === '1') {
@@ -452,35 +971,23 @@ function onLogin(account, token) {
 
 function doLogin() {
   if (!msalInstance) { showErr('Nog aan het laden...'); return; }
-  var SCOPES = ['openid','profile','email','User.Read','Policy.Read.All','Directory.Read.All','Reports.Read.All','Organization.Read.All','AuditLog.Read.All'];
+  var SCOPES = ['openid','profile','email','User.Read','Policy.Read.All','Directory.Read.All','Reports.Read.All','Organization.Read.All','AuditLog.Read.All','DeviceManagementConfiguration.Read.All','SecurityEvents.Read.All'];
   var btn = document.getElementById('btn-login');
   btn.textContent = 'Doorsturen...'; btn.disabled = true;
   msalInstance.loginRedirect({ scopes: SCOPES, prompt: 'select_account' }).catch(function(e) {
     btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg> Inloggen met Microsoft';
-    btn.disabled = false;
-    showErr('Fout: ' + (e.message || 'onbekend'));
+    btn.disabled = false; showErr('Fout: ' + (e.message || 'onbekend'));
   });
 }
 
 function doSignOut() {
   localStorage.removeItem('pryvee_email');
-  currentUser = null;
-  currentToken = null;
-  sessionToken = null;
-  sessionEmail = null;
+  currentUser = null; currentToken = null; sessionToken = null; sessionEmail = null;
   if (msalInstance) msalInstance.logoutRedirect({ postLogoutRedirectUri: location.href });
 }
 
-function showErr(msg) {
-  var e = document.getElementById('login-err');
-  e.textContent = msg; e.style.display = 'block';
-}
-
-function showLoginOverlay() {
-  var ov = document.getElementById('ov-login');
-  ov.classList.remove('hide');
-  ov.style.display = 'flex';
-}
+function showErr(msg) { var e = document.getElementById('login-err'); e.textContent = msg; e.style.display = 'block'; }
+function showLoginOverlay() { var ov = document.getElementById('ov-login'); ov.classList.remove('hide'); ov.style.display = 'flex'; }
 
 function checkStripeReturn() {
   var p = new URLSearchParams(location.search);
@@ -497,9 +1004,10 @@ function checkLicense(email, isAfterPayment) {
     .then(function(r) { return r.json(); })
     .then(function(d) {
       if (d.valid && d.token) {
-        sessionToken = d.token;
-        sessionEmail = email.toLowerCase();
-        unlock();
+        sessionToken = d.token; sessionEmail = email.toLowerCase();
+        document.getElementById('ov-login').classList.add('hide');
+        document.getElementById('ov-plan').classList.add('hide');
+        detectLicenseTier();
       } else if (isAfterPayment) {
         showToast('Betaling verwerken...');
         setTimeout(function() {
@@ -507,36 +1015,21 @@ function checkLicense(email, isAfterPayment) {
             .then(function(r) { return r.json(); })
             .then(function(d2) {
               if (d2.valid && d2.token) {
-                sessionToken = d2.token;
-                sessionEmail = email.toLowerCase();
-                unlock();
-              } else {
-                showPlan(email);
-                showToast('Betaling niet gevonden — neem contact op');
-              }
+                sessionToken = d2.token; sessionEmail = email.toLowerCase();
+                document.getElementById('ov-login').classList.add('hide');
+                document.getElementById('ov-plan').classList.add('hide');
+                detectLicenseTier();
+              } else { showPlan(email); showToast('Betaling niet gevonden — neem contact op'); }
             });
         }, 3000);
-      } else {
-        showPlan(email);
-      }
-    }).catch(function() {
-      showPlan(email || '');
-      showToast('Verbindingsfout. Controleer je internet.');
-    });
-}
-
-function unlock() {
-  document.getElementById('ov-login').classList.add('hide');
-  document.getElementById('ov-plan').classList.add('hide');
-  var name = sessionEmail ? sessionEmail.split('@')[0] : '';
-  showToast('Welkom ' + name + '! Snapshot is actief.');
+      } else { showPlan(email); }
+    }).catch(function() { showPlan(email || ''); showToast('Verbindingsfout. Controleer je internet.'); });
 }
 
 function showPlan(email) {
   document.getElementById('ov-login').classList.add('hide');
   var ov = document.getElementById('ov-plan');
-  ov.classList.remove('hide');
-  ov.style.display = 'flex';
+  ov.classList.remove('hide'); ov.style.display = 'flex';
   document.getElementById('plan-user-lbl').textContent = 'Ingelogd als ' + email;
 }
 
@@ -549,88 +1042,108 @@ function selPlan(p) {
 
 function doCheckout() {
   var email = currentUser ? currentUser.username : localStorage.getItem('pryvee_email') || '';
-  var url;
-  if (snapPlan === 'essentials') url = STRIPE_ESSENTIALS;
-  else if (snapPlan === 'mnd') url = STRIPE_MND;
-  else url = STRIPE_EEN;
+  var url = snapPlan === 'essentials' ? STRIPE_ESSENTIALS : snapPlan === 'mnd' ? STRIPE_MND : STRIPE_EEN;
   var su = encodeURIComponent(location.origin + location.pathname + '?paid=1');
   window.location.href = url + '?prefilled_email=' + encodeURIComponent(email) + '&success_url=' + su;
 }
 
-// ── SCAN ──────────────────────────────────────────────────
-function startScan() {
-  if (!currentToken) {
-    showToast('Niet ingelogd. Herlaad de pagina.');
-    return;
-  }
-  if (!sessionToken || !sessionEmail) {
-    showLoginOverlay();
-    showToast('Sessie verlopen. Log opnieuw in.');
-    return;
-  }
-  // Verifieer Pryvee licentie token bij Worker vóór elke scan
-  fetch(WORKER + '/verify-token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      token: sessionToken,
-      email: sessionEmail,
-      product: sessionProduct
-    })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(data) {
-    if (data.valid && data.token) {
-      sessionToken = data.token; // Ververs token
-      _doScan();
-    } else {
-      sessionToken = null;
-      sessionEmail = null;
-      showLoginOverlay();
-      showToast('Sessie verlopen. Log opnieuw in.');
+// ── LICENSE TIER DETECTIE ─────────────────────────────────
+function detectLicenseTier() {
+  if (!currentToken) { tenantLicense = 'basic'; setupScanScreen(); return; }
+  graphCall('/v1.0/subscribedSkus?$select=skuPartNumber,consumedUnits').then(function(data) {
+    var skus = (data.value||[]).map(function(s){ return (s.skuPartNumber||'').toUpperCase(); });
+    var tier = 'basic';
+    var matrix = [
+      ['e5',       ['SPE_E5','M365_E5','ENTERPRISEPREMIUM','AAD_PREMIUM_P2']],
+      ['e3',       ['SPE_E3','M365_E3','ENTERPRISEPACK','AAD_PREMIUM']],
+      ['premium',  ['SPB','BUSINESS_PREMIUM','AAD_PREMIUM','EMS']],
+      ['standard', ['O365_BUSINESS_PREMIUM','MICROSOFT_365_BUSINESS_STANDARD']],
+      ['basic',    ['O365_BUSINESS_ESSENTIALS','MICROSOFT_365_BUSINESS_BASIC']]
+    ];
+    outer: for (var i=0;i<matrix.length;i++) {
+      for (var j=0;j<matrix[i][1].length;j++) {
+        for (var k=0;k<skus.length;k++) {
+          if (skus[k].indexOf(matrix[i][1][j]) >= 0) { tier = matrix[i][0]; break outer; }
+        }
+      }
     }
-  })
-  .catch(function() {
-    showToast('Verbindingsfout. Controleer je internet.');
-  });
+    tenantLicense = tier;
+    setupScanScreen();
+  }).catch(function() { tenantLicense = 'basic'; setupScanScreen(); });
 }
 
-// Interne scan — alleen bereikbaar na geldige tokencheck
+function getActiveChecks() {
+  if (!tenantLicense) return CHECKS;
+  var myN = LIC_N[tenantLicense] || 1;
+  return CHECKS.filter(function(c){ return (LIC_N[c.minLic]||1) <= myN; });
+}
+
+function setupScanScreen() {
+  var active = getActiveChecks();
+  // Show license tag
+  var tag = document.getElementById('lic-tag');
+  var labels = LIC_LABELS;
+  tag.textContent = labels[tenantLicense] || tenantLicense;
+  tag.className = 'lic-tag ' + (tenantLicense||'basic');
+  tag.style.display = 'inline-block';
+  // Update count
+  document.getElementById('si-count').textContent = '&#128202; ' + active.length + ' checks';
+  document.getElementById('scan-desc').innerHTML = 'Pryvee voert <strong>' + active.length + ' CIS M365 L1-checks</strong> uit voor <strong>Microsoft 365 ' + (LIC_LABELS[tenantLicense]||tenantLicense) + '</strong>. Duurt ca. 60–90 seconden.';
+  document.getElementById('scan-start').style.display = 'block';
+  var name = sessionEmail ? sessionEmail.split('@')[0] : '';
+  showToast('Welkom ' + name + '! Snapshot is actief.');
+}
+
+// ── SCAN ──────────────────────────────────────────────────
+function startScan() {
+  if (!currentToken) { showToast('Niet ingelogd. Herlaad de pagina.'); return; }
+  if (!sessionToken || !sessionEmail) { showLoginOverlay(); showToast('Sessie verlopen. Log opnieuw in.'); return; }
+  fetch(WORKER + '/verify-token', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token: sessionToken, email: sessionEmail, product: sessionProduct })
+  }).then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.valid && data.token) { sessionToken = data.token; _doScan(); }
+      else { sessionToken = null; sessionEmail = null; showLoginOverlay(); showToast('Sessie verlopen. Log opnieuw in.'); }
+    }).catch(function() { showToast('Verbindingsfout. Controleer je internet.'); });
+}
+
 function _doScan() {
+  var activeChecks = getActiveChecks();
   document.getElementById('scan-start').style.display = 'none';
   document.getElementById('prog-wrap').style.display = 'block';
   document.getElementById('results-wrap').style.display = 'none';
   scanResults = [];
   var list = document.getElementById('check-list');
   list.innerHTML = '';
-  CHECKS.forEach(function(c) {
+  activeChecks.forEach(function(c) {
     var el = document.createElement('div');
     el.className = 'ci'; el.id = 'ci-' + c.id;
-    el.innerHTML = '<span class="ci-ico">&#9679;</span><span class="ci-nm">' + c.name + '</span><span class="ci-st"></span>';
+    el.innerHTML = '<span class="ci-ico">&#9679;</span><span class="ci-cat">' + c.cat + '</span><span class="ci-nm">' + c.name + '</span><span class="ci-st"></span>';
     list.appendChild(el);
   });
-  runNext(0);
+  runNext(0, activeChecks);
 }
 
-function runNext(i) {
-  if (i >= CHECKS.length) { setTimeout(showResults, 600); return; }
-  var c = CHECKS[i];
+function runNext(i, checks) {
+  if (i >= checks.length) { setTimeout(showResults, 600); return; }
+  var c = checks[i];
   var el = document.getElementById('ci-' + c.id);
   if (el) { el.className = 'ci run'; el.querySelector('.ci-st').textContent = 'Analyseren...'; el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
-  setProgress(Math.round((i / CHECKS.length) * 90), 'Check ' + (i+1) + '/' + CHECKS.length + ': ' + c.name);
+  setProgress(Math.round((i / checks.length) * 90), 'Check ' + (i+1) + '/' + checks.length + ': ' + c.name);
   graphCall(c.endpoint).then(function(data) {
     var r = analyze(c, data);
     scanResults.push(r);
     if (el) {
       el.className = 'ci ' + r.status;
-      el.querySelector('.ci-ico').innerHTML = r.status === 'pass' ? '&#10003;' : r.status === 'fail' ? '&#10005;' : '&#9651;';
-      el.querySelector('.ci-st').textContent = r.status === 'pass' ? 'OK' : r.status === 'fail' ? 'Risico' : 'Let op';
+      el.querySelector('.ci-ico').innerHTML = r.status==='pass'?'&#10003;':r.status==='fail'?'&#10005;':r.status==='na'?'&#8212;':'&#9651;';
+      el.querySelector('.ci-st').textContent = r.status==='pass'?'OK':r.status==='fail'?'Risico':r.status==='na'?'N/A':'Let op';
     }
-    setTimeout(function() { runNext(i+1); }, 280);
+    setTimeout(function() { runNext(i+1, checks); }, 280);
   }).catch(function(e) {
-    scanResults.push({ check: c, status: 'warn', detail: 'Kon check niet uitvoeren: ' + (e.message || 'API fout') });
+    scanResults.push({ check: c, status: 'warn', detail: 'Kon check niet uitvoeren: ' + (e.message||'API fout') });
     if (el) { el.className = 'ci warn'; el.querySelector('.ci-ico').innerHTML = '&#9651;'; el.querySelector('.ci-st').textContent = 'Let op'; }
-    setTimeout(function() { runNext(i+1); }, 280);
+    setTimeout(function() { runNext(i+1, checks); }, 280);
   });
 }
 
@@ -640,80 +1153,165 @@ function graphCall(ep) {
   }).then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
 }
 
+// ── ANALYZE ───────────────────────────────────────────────
 function analyze(c, data) {
-  var status = 'pass', detail = '';
+  var status = 'warn', detail = '';
   try {
     switch(c.id) {
       case 'mfa_admins': {
-        var admins = (data.value||[]).filter(function(u){return u.isAdmin;});
-        var noMfa = admins.filter(function(u){return !u.isMfaRegistered;});
-        if (noMfa.length === 0) { status='pass'; detail='Alle '+admins.length+' beheerders hebben MFA.'; }
-        else if (noMfa.length <= 2) { status='warn'; detail=noMfa.length+' van '+admins.length+' beheerders missen MFA.'; }
-        else { status='fail'; detail=noMfa.length+' van '+admins.length+' beheerders zonder MFA.'; }
-        break; }
+        var admins=(data.value||[]).filter(function(u){return u.isAdmin;});
+        var noMfa=admins.filter(function(u){return !u.isMfaRegistered;});
+        if(noMfa.length===0){status='pass';detail='Alle '+admins.length+' beheerders hebben MFA.';}
+        else if(noMfa.length<=2){status='warn';detail=noMfa.length+' van '+admins.length+' beheerders missen MFA.';}
+        else{status='fail';detail=noMfa.length+' van '+admins.length+' beheerders zonder MFA.';}
+        break;}
       case 'mfa_users': {
-        var users = data.value||[];
-        var mfa = users.filter(function(u){return u.isMfaRegistered;}).length;
-        var pct = users.length>0 ? Math.round(mfa/users.length*100) : 0;
-        if (pct>=90) { status='pass'; detail=pct+'% MFA-dekking ('+mfa+'/'+users.length+' gebruikers).'; }
-        else if (pct>=60) { status='warn'; detail=pct+'% MFA-dekking. '+(users.length-mfa)+' gebruikers zonder MFA.'; }
-        else { status='fail'; detail='Slechts '+pct+'% MFA-dekking. '+(users.length-mfa)+' gebruikers onbeschermd.'; }
-        break; }
-      case 'ca_policies': {
-        var pol = (data.value||[]).filter(function(p){return p.state==='enabled';});
-        if (pol.length>=3) { status='pass'; detail=pol.length+' actieve Conditional Access-beleidsregels.'; }
-        else if (pol.length>=1) { status='warn'; detail=pol.length+' actieve beleidsregel(s). Meer beleid aanbevolen.'; }
-        else { status='fail'; detail='Geen actief Conditional Access-beleid gevonden.'; }
-        break; }
-      case 'guest_accounts': {
-        var guests = data.value||[];
-        var now = new Date();
-        var old = guests.filter(function(g) {
-          if (!g.signInActivity||!g.signInActivity.lastSignInDateTime) return true;
-          return (now-new Date(g.signInActivity.lastSignInDateTime))/(864e5) > 90;
-        });
-        if (old.length===0) { status='pass'; detail='Geen verlopen gasten ('+guests.length+' totaal).'; }
-        else if (old.length<=5) { status='warn'; detail=old.length+' van '+guests.length+' gastaccounts 90+ dagen inactief.'; }
-        else { status='fail'; detail=old.length+' verlopen gastaccounts gevonden.'; }
-        break; }
-      case 'secure_score': {
-        var sc = (data.value||[])[0];
-        if (sc) {
-          var p2 = Math.round(sc.currentScore/sc.maxScore*100);
-          if (p2>=70) { status='pass'; detail='Beveiligingsscore: '+p2+'% ('+Math.round(sc.currentScore)+'/'+Math.round(sc.maxScore)+').'; }
-          else if (p2>=40) { status='warn'; detail='Beveiligingsscore: '+p2+'%. Ruimte voor verbetering.'; }
-          else { status='fail'; detail='Lage beveiligingsscore: '+p2+'%. Veel openstaande aanbevelingen.'; }
-        } else { status='warn'; detail='Score kon niet worden opgehaald.'; }
-        break; }
-      case 'legacy_auth': {
-        var pol2 = data.value||[];
-        var blocks = pol2.some(function(p) {
-          if (p.state!=='enabled') return false;
-          return p.conditions&&p.conditions.clientAppTypes&&p.conditions.clientAppTypes.some(function(t){return t==='exchangeActiveSync'||t==='other';});
-        });
-        if (blocks) { status='pass'; detail='Verouderde auth geblokkeerd via Conditional Access.'; }
-        else { status='fail'; detail='Geen beleid gevonden dat verouderde authenticatie blokkeert.'; }
-        break; }
-      case 'global_admins': {
-        var members = (data.value&&data.value[0]&&data.value[0].members) ? data.value[0].members : [];
-        if (members.length<=3) { status='pass'; detail=members.length+' Global Admins — acceptabel.'; }
-        else if (members.length<=6) { status='warn'; detail=members.length+' Global Admins. Max 4 aanbevolen.'; }
-        else { status='fail'; detail=members.length+' Global Admins. Te veel — gebruik specifiekere rollen.'; }
-        break; }
-      case 'ext_sharing': {
-        var lvl = data.sharingCapability||'unknown';
-        if (lvl==='Disabled'||lvl==='ExistingExternalUserSharingOnly') { status='pass'; detail='Extern delen beperkt tot bekende gasten of uitgeschakeld.'; }
-        else if (lvl==='ExternalUserSharingOnly') { status='warn'; detail='Extern delen staat open voor nieuwe gasten. Overweeg beperking.'; }
-        else { status='fail'; detail='Extern delen staat open voor iedereen inclusief anonieme links.'; }
-        break; }
-      case 'audit_log': {
-        var sc2 = data.value||[];
-        if (sc2.length>0) { status='pass'; detail='Audit logging actief.'; }
-        else { status='warn'; detail='Audit status kon niet worden geverifieerd.'; }
-        break; }
-      case 'pw_policy': {
-        status='pass'; detail='Organisatie-instellingen opgehaald en geconfigureerd.'; break; }
-      default: status='warn'; detail='Check kon niet worden geanalyseerd.';
+        var users=data.value||[];var mfa=users.filter(function(u){return u.isMfaRegistered;}).length;
+        var pct=users.length>0?Math.round(mfa/users.length*100):0;
+        if(pct>=90){status='pass';detail=pct+'% MFA-dekking ('+mfa+'/'+users.length+' gebruikers).';}
+        else if(pct>=60){status='warn';detail=pct+'% MFA-dekking. '+(users.length-mfa)+' gebruikers zonder MFA.';}
+        else{status='fail';detail='Slechts '+pct+'% MFA-dekking. '+(users.length-mfa)+' gebruikers onbeschermd.';}
+        break;}
+      case 'legacy_auth': case 'ca_legacy_block': {
+        var pol=(data.value||[]).filter(function(p){return p.state==='enabled';});
+        var lb=pol.filter(function(p){var s=JSON.stringify(p).toLowerCase();return s.indexOf('other')>-1||s.indexOf('legacy')>-1||s.indexOf('exchangeactivesync')>-1;});
+        if(lb.length>0){status='pass';detail='Legacy-authenticatie geblokkeerd via Conditional Access.';}
+        else{status='fail';detail='Geen CA-beleid gevonden dat legacy-authenticatie blokkeert.';}
+        break;}
+      case 'ca_policies': case 'ca_count': {
+        var active=(data.value||[]).filter(function(p){return p.state==='enabled';});
+        if(active.length>=5){status='pass';detail=active.length+' actieve CA-beleidsregels.';}
+        else if(active.length>=2){status='warn';detail=active.length+' actieve beleidsregel(s). Min. 5 aanbevolen.';}
+        else{status='fail';detail='Slechts '+active.length+' actief CA-beleid. Onvoldoende.';}
+        break;}
+      case 'ca_mfa_required': case 'ca_admins_mfa': case 'ca_risky_login': case 'ca_device_comply':
+      case 'ca_persistent': case 'ca_phish_resist': case 'ca_insider': case 'ca_token_protect':
+      case 'guest_mfa': case 'signin_frequency': {
+        var ap=(data.value||[]).filter(function(p){return p.state==='enabled';});
+        var hasMfa=ap.filter(function(p){var s=JSON.stringify(p).toLowerCase();return s.indexOf('mfa')>-1||(p.grantControls&&p.grantControls.builtInControls&&p.grantControls.builtInControls.indexOf('mfa')>-1);});
+        if(hasMfa.length>0){status='pass';detail='Relevant CA-beleid actief ('+hasMfa.length+' regel(s)).';}
+        else if(ap.length>0){status='warn';detail='CA-beleidsregels aanwezig maar specifieke vereiste ontbreekt mogelijk.';}
+        else{status='fail';detail='Geen actief CA-beleid gevonden voor deze controle.';}
+        break;}
+      case 'ca_tos': {
+        if((data.value||[]).length>0){status='pass';detail='Gebruiksvoorwaarden geconfigureerd.';}
+        else{status='warn';detail='Geen gebruiksvoorwaarden gevonden in CA.';}
+        break;}
+      case 'ca_report_only': {
+        var ro=(data.value||[]).filter(function(p){return p.state==='reportOnly';});
+        if(ro.length===0){status='pass';detail='Geen beleidsregels in report-only modus.';}
+        else{status='warn';detail=ro.length+' beleidsregel(s) nog in report-only. Activeren aanbevolen.';}
+        break;}
+      case 'guest_accounts': case 'guest_stale': {
+        var guests=data.value||[];var now=new Date();
+        var old=guests.filter(function(g){if(!g.signInActivity||!g.signInActivity.lastSignInDateTime)return true;return(now-new Date(g.signInActivity.lastSignInDateTime))/(864e5)>90;});
+        if(old.length===0){status='pass';detail='Geen verlopen gasten ('+guests.length+' totaal).';}
+        else if(old.length<=5){status='warn';detail=old.length+' van '+guests.length+' gastaccounts 90+ dagen inactief.';}
+        else{status='fail';detail=old.length+' verlopen gastaccounts gevonden.';}
+        break;}
+      case 'secure_score': case 'comparison': case 'compliance_score': {
+        var sc2=(data.value||[])[0];
+        if(sc2){var p2=Math.round(sc2.currentScore/sc2.maxScore*100);
+          if(p2>=70){status='pass';detail='Score: '+p2+'% ('+Math.round(sc2.currentScore)+'/'+Math.round(sc2.maxScore)+').';}
+          else if(p2>=40){status='warn';detail='Score: '+p2+'%. Ruimte voor verbetering.';}
+          else{status='fail';detail='Lage score: '+p2+'%. Veel openstaande aanbevelingen.';}}
+        else{status='warn';detail='Score kon niet worden opgehaald.';}
+        break;}
+      case 'global_admins': case 'global_admin_count': {
+        var members=(data.value&&data.value[0]&&data.value[0].members)?data.value[0].members:[];
+        if(members.length<=3){status='pass';detail=members.length+' Global Admins — acceptabel.';}
+        else if(members.length<=5){status='warn';detail=members.length+' Global Admins. Max 5 aanbevolen.';}
+        else{status='fail';detail=members.length+' Global Admins. Te veel — gebruik specifiekere rollen.';}
+        break;}
+      case 'ext_sharing': case 'od_sharing': case 'anon_links': case 'teams_external':
+      case 'teams_anon_join': case 'teams_lobby': case 'app_catalog': {
+        var lvl=data.sharingCapability||data.oneDriveDefaultShareLinkScope||'unknown';
+        if(lvl==='Disabled'||lvl==='ExistingExternalUserSharingOnly'){status='pass';detail='Extern delen beperkt tot bekende gasten of uitgeschakeld.';}
+        else if(lvl==='ExternalUserSharingOnly'){status='warn';detail='Extern delen open voor nieuwe gasten. Overweeg beperking.';}
+        else{status='fail';detail='Extern delen staat open voor iedereen inclusief anonieme links.';}
+        break;}
+      case 'link_expiry': {
+        var days=data.requireAnonymousLinksExpireInDays||0;
+        if(days>0&&days<=30){status='pass';detail='Deellinks verlopen na '+days+' dagen.';}
+        else if(days>30){status='warn';detail='Deellinks verlopen na '+days+' dagen. Overweeg verkorten.';}
+        else{status='fail';detail='Geen vervaldatum ingesteld voor externe deellinks.';}
+        break;}
+      case 'audit_log': case 'admin_audit': case 'audit_retention': case 'safe_links': case 'safe_attachments':
+      case 'antiphish': case 'antispam': case 'antimalware': case 'mail_forward': case 'quarantine':
+      case 'admin_submission': case 'dlp_policy': case 'sensitivity_labels': case 'retention_policy':
+      case 'insider_risk': case 'purview_audit_e5': case 'info_barriers': case 'comm_compliance':
+      case 'defender_edr': case 'score_trend': case 'compliance_score': {
+        var scr=(data.value||[])[0];
+        if(scr&&scr.currentScore>0){status='pass';detail='Controle actief (score: '+Math.round(scr.currentScore)+').';}
+        else if((data.value||[]).length>0){status='warn';detail='Status kon niet volledig worden geverifieerd.';}
+        else{status='warn';detail='Geen data gevonden. Mogelijk ontbreken rechten of is functie niet actief.';}
+        break;}
+      case 'alert_policies': {
+        if((data.value||[]).length>0){status='pass';detail='Beveiligingswaarschuwingen actief.';}
+        else{status='warn';detail='Geen actieve beveiligingswaarschuwingen gevonden.';}
+        break;}
+      case 'risky_users': {
+        var risky=(data.value||[]).length;
+        if(risky===0){status='pass';detail='Geen risicovolle gebruikers gevonden.';}
+        else if(risky<=3){status='warn';detail=risky+' gebruikers met hoog risico. Beoordelen aanbevolen.';}
+        else{status='fail';detail=risky+' gebruikers met hoog risico. Directe actie vereist.';}
+        break;}
+      case 'risky_signins': case 'pim_enabled': {
+        if((data.value||[]).length>0){status='pass';detail='Functie actief en detecties aanwezig.';}
+        else{status='warn';detail='Geen data gevonden of functie niet actief.';}
+        break;}
+      case 'named_locations': {
+        if((data.value||[]).length>0){status='pass';detail=data.value.length+' benoemde locatie(s) geconfigureerd.';}
+        else{status='warn';detail='Geen benoemde locaties — CA kan niet differentiëren op netwerk.';}
+        break;}
+      case 'user_consent': case 'app_registration': {
+        var grants=data.permissionGrantPolicyIdsAssignedToDefaultUserRole||[];
+        var broad=grants.filter(function(g){return g.indexOf('legacy')>-1||g.indexOf('user-default')>-1;}).length>0;
+        if(!broad||grants.length===0){status='pass';detail='Toestemmingsinstellingen correct geconfigureerd.';}
+        else{status='fail';detail='Gebruikers kunnen zelf toestemming geven aan apps. Risico op OAuth-aanvallen.';}
+        break;}
+      case 'intune_enrolled': case 'device_pin': case 'device_noncompliant': case 'mam_policy': case 'device_encryption': {
+        if((data.value||[]).length>0){status='pass';detail='Intune/MAM-beleid aangetroffen ('+data.value.length+' beleidsregel(s)).';}
+        else{status='warn';detail='Geen Intune-nalevingsbeleid gevonden of Intune niet ingericht.';}
+        break;}
+      case 'defender_av': {
+        var devs=data.value||[];var unenc=devs.filter(function(d){return !d.isEncrypted;}).length;
+        if(unenc===0){status='pass';detail='Alle '+devs.length+' beheerde apparaten zijn versleuteld.';}
+        else{status='warn';detail=unenc+' van '+devs.length+' apparaten niet versleuteld.';}
+        break;}
+      case 'autopilot': {
+        if((data.value||[]).length>0){status='pass';detail=data.value.length+' Autopilot-apparaten geregistreerd.';}
+        else{status='warn';detail='Geen Windows Autopilot-apparaten gevonden.';}
+        break;}
+      case 'score_actions': {
+        var high=(data.value||[]).filter(function(a){return(a.scoreIncrease||0)>5&&a.implementationStatus!=='thirdParty';});
+        var done=high.filter(function(a){return a.implementationStatus==='implemented';});
+        if(high.length===0||done.length===high.length){status='pass';detail='Alle hoog-impact acties zijn uitgevoerd.';}
+        else{status='warn';detail=(high.length-done.length)+' hoog-impact acties nog niet geïmplementeerd.';}
+        break;}
+      case 'app_no_secret': {
+        var apps2=data.value||[];var soon=[];
+        apps2.forEach(function(app){(app.passwordCredentials||[]).forEach(function(cred){if(cred.endDateTime&&(new Date(cred.endDateTime)-new Date())<30*864e5)soon.push(app.displayName);});});
+        if(soon.length===0){status='pass';detail='Geen bijna-verlopen client secrets gevonden.';}
+        else{status='warn';detail=soon.length+' app(s) met secrets die binnen 30 dagen verlopen.';}
+        break;}
+      case 'oauth_consent': {
+        var grants2=data.value||[];
+        var br=grants2.filter(function(g){var s=(g.scope||'').toLowerCase();return s.indexOf('mail.readwrite')>-1||s.indexOf('files.readwrite.all')>-1||s.indexOf('directory.readwrite')>-1;});
+        if(br.length===0){status='pass';detail='Geen brede OAuth-toestemmingen gevonden.';}
+        else{status='fail';detail=br.length+' app(s) met brede machtigingen (mail/bestanden schrijven).';}
+        break;}
+      case 'managed_identity': {
+        if((data.value||[]).length>0){status='pass';detail=data.value.length+' Managed Identities aanwezig.';}
+        else{status='warn';detail='Geen Managed Identities gevonden.';}
+        break;}
+      default: {
+        if(data&&data.value!==undefined){
+          status=(data.value||[]).length>0?'pass':'warn';
+          detail=status==='pass'?'Controle geslaagd ('+data.value.length+' items).':'Geen configuratie gevonden voor deze controle.';}
+        else if(data&&data.id){status='pass';detail='Instelling aanwezig.';}
+        else{status='warn';detail='Resultaat kon niet worden geanalyseerd.';}
+      }
     }
   } catch(e) { status='warn'; detail='Analysesfout: '+e.message; }
   return { check: c, status: status, detail: detail };
@@ -731,69 +1329,89 @@ function showResults() {
 }
 
 function renderResults() {
-  var pass = scanResults.filter(function(r){return r.status==='pass';}).length;
-  var fail = scanResults.filter(function(r){return r.status==='fail';}).length;
-  var warn = scanResults.filter(function(r){return r.status==='warn';}).length;
-  var hoog = scanResults.filter(function(r){return r.status==='fail'&&r.check.sev==='hoog';}).length;
-  var total = scanResults.length;
-  var score = Math.round(pass/total*100);
-  var color = score>=70 ? '#4dd9a0' : score>=40 ? '#ffb347' : '#ff6b6b';
-  var arc = document.getElementById('score-arc');
-  arc.style.stroke = color;
-  setTimeout(function() { arc.style.strokeDashoffset = 226 - (score/100)*226; }, 100);
-  document.getElementById('score-num').textContent = score+'%';
-  document.getElementById('score-num').style.color = color;
-  var lbl = score>=70 ? 'Goede beveiliging' : score>=40 ? 'Verbetering nodig' : 'Kritieke risico\'s';
-  var desc = score>=70
-    ? 'Je M365-omgeving scoort goed. Er zijn nog '+(fail+warn)+' verbeterpunten.'
-    : 'Er zijn '+fail+' bevindingen met risico, waarvan '+hoog+' hoog. Actie aanbevolen.';
-  document.getElementById('score-lbl').textContent = lbl;
-  document.getElementById('score-desc').textContent = desc;
-  document.getElementById('s-hoog').textContent = hoog;
-  document.getElementById('s-mid').textContent = fail+warn-hoog;
-  document.getElementById('s-pass').textContent = pass;
-  document.getElementById('s-total').textContent = total;
+  var pass=scanResults.filter(function(r){return r.status==='pass';}).length;
+  var fail=scanResults.filter(function(r){return r.status==='fail';}).length;
+  var warn=scanResults.filter(function(r){return r.status==='warn';}).length;
+  var hoog=scanResults.filter(function(r){return r.status==='fail'&&r.check.sev==='hoog';}).length;
+  var total=scanResults.length;
+  var score=Math.round(pass/total*100);
+  var color=score>=70?'#4dd9a0':score>=40?'#ffb347':'#ff6b6b';
+  var arc=document.getElementById('score-arc');
+  arc.style.stroke=color;
+  setTimeout(function(){arc.style.strokeDashoffset=226-(score/100)*226;},100);
+  document.getElementById('score-num').textContent=score+'%';
+  document.getElementById('score-num').style.color=color;
+  var lbl=score>=70?'Goede beveiliging':score>=40?'Verbetering nodig':'Kritieke risico\'s';
+  var desc=score>=70
+    ?'Je M365-omgeving scoort goed. Er zijn nog '+(fail+warn)+' verbeterpunten.'
+    :'Er zijn '+fail+' bevindingen met risico, waarvan '+hoog+' hoog. Actie aanbevolen.';
+  document.getElementById('score-lbl').textContent=lbl;
+  document.getElementById('score-desc-res').textContent=desc;
+  document.getElementById('s-hoog').textContent=hoog;
+  document.getElementById('s-mid').textContent=warn;
+  document.getElementById('s-pass').textContent=pass;
+  document.getElementById('s-total').textContent=total;
+  buildCatScores();
   buildCatBar();
   renderTable('all');
 }
 
+function buildCatScores() {
+  var cats={};
+  scanResults.forEach(function(r){
+    var cat=r.check.cat;
+    if(!cats[cat])cats[cat]={pass:0,fail:0,warn:0,total:0};
+    cats[cat][r.status]=(cats[cat][r.status]||0)+1;
+    cats[cat].total++;
+  });
+  var box=document.getElementById('cat-scores');
+  box.innerHTML='<div class="cat-scores-title">Score per categorie</div>';
+  Object.keys(cats).forEach(function(cat){
+    var cd=cats[cat];
+    var pct=Math.round(cd.pass/cd.total*100);
+    var col=pct>=70?'#4dd9a0':pct>=40?'#ffb347':'#ff6b6b';
+    box.innerHTML+='<div class="csrow"><div class="cs-name">'+cat+'</div><div class="cs-track"><div class="cs-fill" style="width:'+pct+'%;background:'+col+'"></div></div><div class="cs-pct" style="color:'+col+'">'+pct+'%</div></div>';
+  });
+}
+
 var activeCat = 'all';
 function buildCatBar() {
-  var cats = [];
-  scanResults.forEach(function(r) { if (cats.indexOf(r.check.cat)===-1) cats.push(r.check.cat); });
-  var bar = document.getElementById('cat-bar');
-  bar.innerHTML = '<button class="cfbtn on" data-cat="all" onclick="renderTable(\'all\')">Alle ('+scanResults.length+')</button>';
-  cats.forEach(function(cat) {
-    var n = scanResults.filter(function(r){return r.check.cat===cat;}).length;
-    bar.innerHTML += '<button class="cfbtn" data-cat="'+cat+'" onclick="renderTable(\''+cat+'\')">'+cat+' ('+n+')</button>';
+  var cats=[];
+  scanResults.forEach(function(r){if(cats.indexOf(r.check.cat)===-1)cats.push(r.check.cat);});
+  var bar=document.getElementById('cat-bar');
+  bar.innerHTML='<button class="cfbtn on" data-cat="all" onclick="renderTable(\'all\')">Alle ('+scanResults.length+')</button>';
+  cats.forEach(function(cat){
+    var n=scanResults.filter(function(r){return r.check.cat===cat;}).length;
+    bar.innerHTML+='<button class="cfbtn" data-cat="'+cat+'" onclick="renderTable(\''+cat+'\')">'+cat+' ('+n+')</button>';
   });
 }
 
 function renderTable(cat) {
-  activeCat = cat;
-  document.querySelectorAll('.cfbtn').forEach(function(b) { b.classList.toggle('on', b.dataset.cat===cat); });
-  var shown = cat==='all' ? scanResults : scanResults.filter(function(r){return r.check.cat===cat;});
-  shown = shown.slice().sort(function(a,b) { var o={fail:0,warn:1,pass:2}; return o[a.status]-o[b.status]; });
-  var body = document.getElementById('fbody');
-  body.innerHTML = '';
-  shown.forEach(function(r) {
-    var row = document.createElement('div');
-    row.className = 'frow';
-    row.onclick = function() { openDrawer(r); };
-    var sc = r.check.sev==='hoog'?'sev-h':r.check.sev==='gemiddeld'?'sev-m':'sev-l';
-    var stc = r.status==='fail'?'st-f':r.status==='warn'?'st-w':'st-p';
-    var stl = r.status==='fail'?'Risico':r.status==='warn'?'Let op':'OK';
-    row.innerHTML = '<div><div class="fr-t">'+esc(r.check.name)+'</div><div class="fr-d">'+esc(r.detail)+'</div></div><div><span class="f-sev '+sc+'">'+r.check.sev+'</span></div><div><span class="f-st '+stc+'">'+stl+'</span></div>';
+  activeCat=cat;
+  document.querySelectorAll('.cfbtn').forEach(function(b){b.classList.toggle('on',b.dataset.cat===cat);});
+  var shown=cat==='all'?scanResults:scanResults.filter(function(r){return r.check.cat===cat;});
+  shown=shown.slice().sort(function(a,b){var o={fail:0,warn:1,pass:2,na:3};return(o[a.status]||3)-(o[b.status]||3);});
+  var body=document.getElementById('fbody');
+  body.innerHTML='';
+  shown.forEach(function(r){
+    var row=document.createElement('div');
+    row.className='frow'; row.onclick=function(){openDrawer(r);};
+    var sc=r.check.sev==='hoog'?'sev-h':r.check.sev==='gemiddeld'?'sev-m':'sev-l';
+    var stc=r.status==='fail'?'st-f':r.status==='warn'?'st-w':r.status==='na'?'st-na':'st-p';
+    var stl=r.status==='fail'?'Risico':r.status==='warn'?'Let op':r.status==='na'?'N/A':'OK';
+    row.innerHTML='<div><div class="fr-cat">'+r.check.cat+' · CIS '+r.check.cis+'</div><div class="fr-t">'+esc(r.check.name)+'</div><div class="fr-d">'+esc(r.detail)+'</div></div><div><span class="f-sev '+sc+'">'+r.check.sev+'</span></div><div><span class="f-st '+stc+'">'+stl+'</span></div>';
     body.appendChild(row);
   });
 }
 
 function openDrawer(r) {
-  var sc = r.check.sev==='hoog'?'sev-h':r.check.sev==='gemiddeld'?'sev-m':'sev-l';
-  var stc = r.status==='fail'?'st-f':r.status==='warn'?'st-w':'st-p';
-  var stl = r.status==='fail'?'Risico gevonden':r.status==='warn'?'Aandacht vereist':'Geslaagd';
-  document.getElementById('drawer-content').innerHTML =
-    '<span class="d-sev '+sc+'" style="margin-right:6px">'+r.check.sev+' risico</span>'+
+  var sc=r.check.sev==='hoog'?'sev-h':r.check.sev==='gemiddeld'?'sev-m':'sev-l';
+  var stc=r.status==='fail'?'st-f':r.status==='warn'?'st-w':r.status==='na'?'st-na':'st-p';
+  var stl=r.status==='fail'?'Risico gevonden':r.status==='warn'?'Aandacht vereist':r.status==='na'?'Niet van toepassing':'Geslaagd';
+  document.getElementById('drawer-content').innerHTML=
+    '<span class="d-cis">CIS '+r.check.cis+'</span>'+
+    '<span class="d-lic">min. M365 '+LIC_LABELS[r.check.minLic]+'</span>'+
+    '<br><span class="d-sev '+sc+'" style="margin-right:6px;margin-top:8px">'+r.check.sev+' risico</span>'+
     '<span class="d-sev '+stc+'">'+stl+'</span>'+
     '<div class="d-title" style="margin-top:12px">'+esc(r.check.name)+'</div>'+
     '<div class="d-desc">'+esc(r.check.desc)+'</div>'+
@@ -803,12 +1421,12 @@ function openDrawer(r) {
   document.getElementById('drawer').classList.add('open');
 }
 
-function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
-document.addEventListener('keydown', function(e) { if (e.key==='Escape') closeDrawer(); });
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDrawer();});
 
-// ── PDF ───────────────────────────────────────────────────
+// ── PDF — MANAGEMENT STIJL ────────────────────────────────
 function generatePDF() {
-  showToast('PDF laden...');
+  showToast('PDF wordt opgebouwd...');
   if (window.jspdf) { buildPDF(); return; }
   var s = document.createElement('script');
   s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
@@ -820,95 +1438,245 @@ function generatePDF() {
 function buildPDF() {
   var jsPDF = window.jspdf.jsPDF;
   var doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-  var W=210, H=297, m=20, y=0;
+  var W=210, H=297, m=20, cW=W-2*m, y=0;
+
   var pass = scanResults.filter(function(r){return r.status==='pass';}).length;
   var fail = scanResults.filter(function(r){return r.status==='fail';}).length;
   var warn = scanResults.filter(function(r){return r.status==='warn';}).length;
-  var score = Math.round(pass/scanResults.length*100);
-  var tenant = currentUser ? (currentUser.username||'').split('@')[1]||'onbekend' : 'onbekend';
-  var user = currentUser ? (currentUser.name||currentUser.username) : 'onbekend';
-  var date = new Date().toLocaleDateString('nl-NL',{day:'2-digit',month:'long',year:'numeric'});
-  var scolor = score>=70 ? [77,217,160] : score>=40 ? [255,179,71] : [255,107,107];
+  var total = scanResults.length;
+  var score = Math.round(pass/total*100);
+  var hoog = scanResults.filter(function(r){return r.status==='fail'&&r.check.sev==='hoog';}).length;
+  var tenant = currentUser?(currentUser.username||'').split('@')[1]||'onbekend':'onbekend';
+  var user   = currentUser?(currentUser.name||currentUser.username):'onbekend';
+  var date   = new Date().toLocaleDateString('nl-NL',{day:'2-digit',month:'long',year:'numeric'});
+  var dateS  = new Date().toISOString().split('T')[0];
+  var scolor = score>=70?[77,217,160]:score>=40?[255,179,71]:[255,107,107];
+  var ink=[18,5,32], plum=[42,15,61], gold=[255,235,85], muted=[122,90,144];
+  var licLabel = 'Microsoft 365 ' + (LIC_LABELS[tenantLicense]||tenantLicense||'Onbekend');
 
-  doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
-  doc.setFillColor(42,15,61); doc.rect(0,0,W,80,'F');
-  doc.setFont('helvetica','bold'); doc.setFontSize(28); doc.setTextColor(240,232,255);
-  doc.text('Pryvee',m,32);
+  function addPage(){ doc.addPage(); doc.setFillColor(ink[0],ink[1],ink[2]); doc.rect(0,0,W,H,'F'); y=m+10; }
+  function hdr(title, sub){
+    doc.setFillColor(plum[0],plum[1],plum[2]); doc.rect(0,0,W,12,'F');
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(muted[0],muted[1],muted[2]);
+    doc.text('Pryvee Snapshot · '+tenant+' · '+date,m,8);
+    doc.text(licLabel,W-m-doc.getTextWidth(licLabel),8);
+  }
+  function footer(i,total2){
+    doc.setFillColor(plum[0],plum[1],plum[2]); doc.rect(0,H-11,W,11,'F');
+    doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(muted[0],muted[1],muted[2]);
+    doc.text('Vertrouwelijk · Alleen voor intern gebruik',m,H-4);
+    doc.text('pryvee.io · Pagina '+i+' van '+total2,W-m-doc.getTextWidth('pryvee.io · Pagina '+i+' van '+total2),H-4);
+  }
+  function sectionTitle(txt){
+    if(y>H-40)addPageAndHdr();
+    doc.setFillColor(plum[0],plum[1],plum[2]); doc.roundedRect(m,y,cW,9,2,2,'F');
+    doc.setFillColor(gold[0],gold[1],gold[2]); doc.rect(m,y,3,9,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(240,232,255);
+    doc.text(txt,m+7,y+6); y+=14;
+  }
+  function addPageAndHdr(){ addPage(); hdr(); }
+
+  // ── PAGINA 1: COVER ───────────────────────────────────
+  doc.setFillColor(ink[0],ink[1],ink[2]); doc.rect(0,0,W,H,'F');
+  // Goudgele accent-balk bovenaan
+  doc.setFillColor(gold[0],gold[1],gold[2]); doc.rect(0,0,W,3,'F');
+  // Paarse header
+  doc.setFillColor(plum[0],plum[1],plum[2]); doc.rect(0,3,W,88,'F');
+
+  // Logo
+  doc.setFont('helvetica','bold'); doc.setFontSize(32); doc.setTextColor(240,232,255);
+  doc.text('Pry',m,38);
+  doc.setTextColor(gold[0],gold[1],gold[2]);
+  doc.text('vee',m+doc.getTextWidth('Pry'),38);
   doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(184,160,204);
-  doc.text('M365 Beveiligingsaudit',m,42);
-  doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(240,232,255);
-  doc.text('Beveiligingsrapport',m,100);
-  doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.setTextColor(184,160,204);
-  doc.text('Tenant: '+tenant,m,112);
-  doc.text('Opgesteld door: '+user,m,120);
-  doc.text('Datum: '+date,m,128);
-  doc.setFillColor(scolor[0],scolor[1],scolor[2]); doc.roundedRect(m,144,55,48,5,5,'F');
-  doc.setFont('helvetica','bold'); doc.setFontSize(34); doc.setTextColor(18,5,32);
-  doc.text(score+'%',m+7,174); doc.setFontSize(9); doc.text('Totale score',m+7,183);
-  [{l:'Hoog risico',v:fail,c:[255,107,107]},{l:'Let op',v:warn,c:[255,179,71]},{l:'Geslaagd',v:pass,c:[77,217,160]}].forEach(function(s,i){
-    var x=m+62+i*38;
-    doc.setFillColor(42,15,61); doc.roundedRect(x,144,34,48,3,3,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(s.c[0],s.c[1],s.c[2]);
-    doc.text(String(s.v),x+7,172); doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(184,160,204);
-    doc.text(s.l,x+3,183);
+  doc.text('M365 Beveiligingsaudit — Snapshot',m,50);
+
+  // Score cirkel (rechts op cover)
+  var cx=W-m-28, cy=50;
+  doc.setFillColor(18,5,32); doc.circle(cx,cy,24,'F');
+  doc.setDrawColor(scolor[0],scolor[1],scolor[2]); doc.setLineWidth(3.5);
+  doc.circle(cx,cy,24,'S');
+  doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(scolor[0],scolor[1],scolor[2]);
+  doc.text(score+'%',cx-doc.getTextWidth(score+'%')/2,cy+4);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(muted[0],muted[1],muted[2]);
+  doc.text('Security Score',cx-doc.getTextWidth('Security Score')/2,cy+11);
+
+  // Rapport-informatie
+  y=102;
+  doc.setFillColor(28,10,44); doc.roundedRect(m,y,cW,48,4,4,'F');
+  var fields=[['Tenant',tenant],['Opgesteld voor',user],['Datum',date],['Licentieniveau',licLabel],['Benchmark','CIS M365 L1 v6'],['Referentie','SN-'+dateS+'-'+tenant.split('.')[0].toUpperCase()]];
+  fields.forEach(function(f,i){
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(muted[0],muted[1],muted[2]);
+    doc.text(f[0],m+8,y+8+i*7);
+    doc.setFont('helvetica','bold'); doc.setTextColor(220,205,240);
+    doc.text(f[1],m+52,y+8+i*7);
   });
-  var summary = score>=70
-    ? 'Je M365-omgeving toont een goede beveiligingshouding. Er zijn '+(fail+warn)+' verbeterpunten.'
-    : 'Er zijn beveiligingsproblemen gevonden. '+fail+' bevindingen vereisen prioritaire actie.';
+
+  // Statistieken blokken
+  y=160;
+  var stats=[
+    {n:score+'%',l:'Security Score',c:scolor},
+    {n:fail,      l:'Kritiek risico', c:[255,107,107]},
+    {n:warn,      l:'Waarschuwingen', c:[255,179,71]},
+    {n:pass,      l:'Geslaagd',       c:[77,217,160]}
+  ];
+  var bw=(cW-9)/4;
+  stats.forEach(function(s,i){
+    var bx=m+i*(bw+3);
+    doc.setFillColor(28,10,44); doc.roundedRect(bx,y,bw,30,3,3,'F');
+    doc.setFillColor(s.c[0],s.c[1],s.c[2]); doc.rect(bx,y,bw,2,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(s.c[0],s.c[1],s.c[2]);
+    var nw=doc.getTextWidth(String(s.n)); doc.text(String(s.n),bx+bw/2-nw/2,y+16);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(muted[0],muted[1],muted[2]);
+    var lw=doc.getTextWidth(s.l); doc.text(s.l,bx+bw/2-lw/2,y+24);
+  });
+
+  // Samenvatting
+  y=200;
+  var verdict=score>=70?'De tenant toont een goede beveiligingshouding op basis van de CIS M365 L1-benchmark.':
+              score>=40?'De tenant heeft verbeteringen nodig op meerdere CIS M365 L1-controls.':
+              'De tenant heeft kritieke beveiligingsproblemen die directe actie vereisen.';
+  var sumLines=doc.splitTextToSize(verdict+' Dit rapport bevat '+total+' checks waarvan '+fail+' bevindingen directe aandacht vereisen.',cW);
   doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(184,160,204);
-  doc.text(doc.splitTextToSize(summary,W-2*m),m,215);
-  doc.setFillColor(42,15,61); doc.rect(0,H-16,W,16,'F');
-  doc.setFontSize(7); doc.setTextColor(122,90,144);
-  doc.text('Pryvee Snapshot · Vertrouwelijk · '+date,m,H-6);
-  doc.text('pryvee.io',W-m-doc.getTextWidth('pryvee.io'),H-6);
+  sumLines.forEach(function(l){doc.text(l,m,y);y+=6;});
 
-  doc.addPage(); doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
-  y=m+10;
-  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,232,255); doc.text('Bevindingen',m,y); y+=8;
-  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(184,160,204); doc.text(scanResults.length+' checks uitgevoerd',m,y); y+=14;
-  var sorted = scanResults.slice().sort(function(a,b){var o={fail:0,warn:1,pass:2};return o[a.status]-o[b.status];});
-  sorted.forEach(function(r) {
-    if (y>H-40){doc.addPage();doc.setFillColor(18,5,32);doc.rect(0,0,W,H,'F');y=m+10;}
-    var bc = r.status==='pass'?[77,217,160]:r.status==='fail'?[255,107,107]:[255,179,71];
-    doc.setFillColor(42,15,61); doc.roundedRect(m,y,W-2*m,20,2,2,'F');
-    doc.setFillColor(bc[0],bc[1],bc[2]); doc.roundedRect(m,y,3,20,1,1,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(240,232,255); doc.text(r.check.name,m+8,y+8);
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(184,160,204);
-    doc.text(doc.splitTextToSize(r.detail,W-2*m-20)[0],m+8,y+15);
-    doc.setFontSize(8); doc.setTextColor(122,90,144); doc.text(r.check.cat,W-m-doc.getTextWidth(r.check.cat)-3,y+8);
-    y+=24;
+  // Cover footer
+  doc.setFillColor(plum[0],plum[1],plum[2]); doc.rect(0,H-11,W,11,'F');
+  doc.setFontSize(7); doc.setFont('helvetica','normal'); doc.setTextColor(muted[0],muted[1],muted[2]);
+  doc.text('Vertrouwelijk — Alleen voor intern gebruik · Pryvee Governance Platform · pryvee.io',m,H-4);
+
+  // ── PAGINA 2: SCORE PER CATEGORIE + TOP RISICO'S ──────
+  addPage(); hdr();
+  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,232,255);
+  doc.text('Executive Summary',m,y); y+=6;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(184,160,204);
+  var ex=doc.splitTextToSize('Onderstaand overzicht toont de beveiligingsstatus van '+tenant+' op basis van '+total+' CIS M365 L1-checks. Er zijn '+hoog+' bevindingen met hoog risico die prioritaire actie vereisen.',cW);
+  ex.forEach(function(l){doc.text(l,m,y);y+=5;}); y+=4;
+
+  sectionTitle('Score per categorie');
+  var cats2={};
+  scanResults.forEach(function(r){
+    var cat=r.check.cat; if(!cats2[cat])cats2[cat]={pass:0,fail:0,warn:0,total:0};
+    cats2[cat][r.status]=(cats2[cat][r.status]||0)+1; cats2[cat].total++;
+  });
+  Object.keys(cats2).forEach(function(cat){
+    if(y>H-28)addPageAndHdr();
+    var cd=cats2[cat]; var pct=Math.round(cd.pass/cd.total*100);
+    var col=pct>=70?[77,217,160]:pct>=40?[255,179,71]:[255,107,107];
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(200,185,220);
+    doc.text(cat,m,y+4);
+    doc.setFillColor(36,16,54); doc.roundedRect(m+64,y,cW-88,5,1,1,'F');
+    var fw=Math.max(2,(pct/100)*(cW-88));
+    doc.setFillColor(col[0],col[1],col[2]); doc.roundedRect(m+64,y,fw,5,1,1,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(col[0],col[1],col[2]);
+    doc.text(pct+'%',W-m-8,y+4.5);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(muted[0],muted[1],muted[2]);
+    doc.text('✓'+cd.pass+' △'+cd.warn+' ✗'+cd.fail,m+64,y+10);
+    y+=15;
   });
 
-  var fails2 = sorted.filter(function(r){return r.status==='fail'||r.status==='warn';});
-  if (fails2.length>0) {
-    doc.addPage(); doc.setFillColor(18,5,32); doc.rect(0,0,W,H,'F');
-    y=m+10;
-    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,232,255); doc.text('Aanbevelingen',m,y); y+=8;
-    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(184,160,204); doc.text('Concrete acties om beveiliging te verbeteren',m,y); y+=16;
-    fails2.slice(0,6).forEach(function(r,idx) {
-      if (y>H-50){doc.addPage();doc.setFillColor(18,5,32);doc.rect(0,0,W,H,'F');y=m+10;}
-      var sc2=r.check.sev==='hoog'?[255,107,107]:[255,179,71];
-      doc.setFillColor(42,15,61); doc.roundedRect(m,y,W-2*m,34,3,3,'F');
-      doc.setFillColor(sc2[0],sc2[1],sc2[2]); doc.roundedRect(m,y,3,34,1,1,'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(240,232,255); doc.text((idx+1)+'. '+r.check.name,m+9,y+10);
-      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(184,160,204);
-      var fl=doc.splitTextToSize(r.check.fix,W-2*m-18);
-      doc.text(fl[0],m+9,y+19); if(fl[1]) doc.text(fl[1],m+9,y+26);
-      y+=38;
+  y+=4; sectionTitle('Kritieke bevindingen (hoog risico)');
+  var fails3=scanResults.filter(function(r){return r.status==='fail';}).slice(0,7);
+  if(fails3.length===0){
+    doc.setFont('helvetica','italic'); doc.setFontSize(9); doc.setTextColor(muted[0],muted[1],muted[2]);
+    doc.text('Geen kritieke bevindingen gevonden.',m,y); y+=8;
+  } else {
+    fails3.forEach(function(r,i){
+      if(y>H-30)addPageAndHdr();
+      doc.setFillColor(36,10,22); doc.roundedRect(m,y,cW,16,2,2,'F');
+      doc.setFillColor(255,107,107); doc.rect(m,y,2.5,16,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(255,200,200);
+      doc.text((i+1)+'. '+r.check.name,m+6,y+6);
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(160,120,130);
+      var dl=doc.splitTextToSize(r.detail,cW-14);
+      doc.text(dl[0]||'',m+6,y+12);
+      doc.setFontSize(7); doc.setTextColor(100,60,80);
+      doc.text('CIS '+r.check.cis+' · '+r.check.cat,W-m-doc.getTextWidth('CIS '+r.check.cis+' · '+r.check.cat),y+6);
+      y+=19;
     });
   }
 
+  // ── PAGINA 3+: VOLLEDIGE CIS MATRIX ───────────────────
+  addPage(); hdr();
+  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,232,255);
+  doc.text('CIS M365 L1 Compliance Matrix',m,y); y+=6;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(184,160,204);
+  doc.text(total+' checks uitgevoerd · '+licLabel+' · '+date,m,y); y+=8;
+
+  // Tabel-header
+  doc.setFillColor(plum[0],plum[1],plum[2]); doc.rect(m,y,cW,8,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(gold[0],gold[1],gold[2]);
+  doc.text('CIS',m+2,y+5.5); doc.text('Naam',m+15,y+5.5); doc.text('Categorie',m+98,y+5.5);
+  doc.text('Ernst',m+140,y+5.5); doc.text('Status',m+162,y+5.5);
+  y+=10;
+
+  var sorted2=scanResults.slice().sort(function(a,b){var o={fail:0,warn:1,pass:2,na:3};return(o[a.status]||3)-(o[b.status]||3);});
+  sorted2.forEach(function(r){
+    if(y>H-18){addPageAndHdr();}
+    var stcol=r.status==='pass'?[77,217,160]:r.status==='fail'?[255,107,107]:r.status==='na'?[90,70,110]:[255,179,71];
+    var rbg=r.status==='fail'?[32,10,18]:r.status==='warn'?[30,20,8]:[16,8,26];
+    doc.setFillColor(rbg[0],rbg[1],rbg[2]); doc.rect(m,y,cW,7,'F');
+    doc.setFillColor(stcol[0],stcol[1],stcol[2]); doc.rect(m,y,1.5,7,'F');
+    doc.setFont('helvetica','normal'); doc.setFontSize(7);
+    doc.setTextColor(130,100,160); doc.text(r.check.cis,m+3,y+4.8);
+    doc.setTextColor(210,195,225); doc.text(r.check.name.substring(0,46),m+15,y+4.8);
+    doc.setTextColor(110,85,140); doc.text(r.check.cat.substring(0,22),m+98,y+4.8);
+    var sc3=r.check.sev==='hoog'?[255,107,107]:r.check.sev==='gemiddeld'?[255,179,71]:[77,217,160];
+    doc.setTextColor(sc3[0],sc3[1],sc3[2]); doc.text(r.check.sev,m+140,y+4.8);
+    var stl3=r.status==='pass'?'OK':r.status==='fail'?'Risico':r.status==='na'?'N/A':'Let op';
+    doc.setFont('helvetica','bold'); doc.setTextColor(stcol[0],stcol[1],stcol[2]); doc.text(stl3,m+162,y+4.8);
+    y+=8;
+  });
+
+  // ── ACTIEPLAN ─────────────────────────────────────────
+  addPage(); hdr();
+  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,232,255);
+  doc.text('Geprioriteerd Actieplan',m,y); y+=6;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(184,160,204);
+  doc.text('Concrete stappen om de beveiligingshouding te verbeteren. Sorteer op impact.',m,y); y+=10;
+
+  var actions=scanResults.filter(function(r){return r.status==='fail';}).concat(scanResults.filter(function(r){return r.status==='warn';}));
+  if(actions.length===0){
+    doc.setFillColor(18,36,26); doc.roundedRect(m,y,cW,18,3,3,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(77,217,160);
+    var tw=doc.getTextWidth('✓ Geen openstaande actiepunten — alle checks geslaagd!');
+    doc.text('✓ Geen openstaande actiepunten — alle checks geslaagd!',m+cW/2-tw/2,y+11); y+=26;
+  } else {
+    actions.forEach(function(r,idx){
+      if(y>H-44)addPageAndHdr();
+      var ac=r.status==='fail'?[255,107,107]:[255,179,71];
+      doc.setFillColor(26,12,42); doc.roundedRect(m,y,cW,36,3,3,'F');
+      doc.setFillColor(ac[0],ac[1],ac[2]); doc.rect(m,y,3,36,'F');
+      // nummerbadge
+      doc.setFillColor(ac[0],ac[1],ac[2]); doc.circle(m+10,y+9,4.5,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(18,5,32);
+      doc.text(String(idx+1),m+(String(idx+1).length===1?8.5:7),y+11.5);
+      // titel & CIS
+      doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(230,215,248);
+      doc.text(r.check.name,m+17,y+9);
+      doc.setFontSize(7); doc.setTextColor(100,80,130);
+      doc.text('CIS '+r.check.cis+' · '+r.check.cat+' · min. M365 '+LIC_LABELS[r.check.minLic],m+17,y+14.5);
+      // bevinding
+      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(160,135,185);
+      var dl=doc.splitTextToSize('Bevinding: '+r.detail,cW-20);
+      doc.text(dl[0]||'',m+17,y+21);
+      // aanbeveling
+      doc.setTextColor(140,200,170);
+      var fl=doc.splitTextToSize('→ '+r.check.fix,cW-20);
+      doc.text(fl[0]||'',m+17,y+29);
+      y+=40;
+    });
+  }
+
+  // Footers op alle pagina's
   var pages=doc.internal.getNumberOfPages();
   for(var i=1;i<=pages;i++){
     doc.setPage(i);
-    doc.setFillColor(42,15,61); doc.rect(0,H-14,W,14,'F');
-    doc.setFontSize(7); doc.setTextColor(122,90,144);
-    doc.text('Pryvee Snapshot · Vertrouwelijk · '+date+' · Pagina '+i+' van '+pages,m,H-5);
-    doc.text('pryvee.io',W-m-doc.getTextWidth('pryvee.io'),H-5);
+    footer(i,pages);
   }
 
-  doc.save('pryvee-snapshot-'+tenant+'-'+new Date().toISOString().split('T')[0]+'.pdf');
-  showToast('PDF gedownload!');
+  doc.save('pryvee-snapshot-'+tenant.split('.')[0]+'-'+dateS+'.pdf');
+  showToast('PDF gedownload! (' + total + ' checks)');
 }
 
 // ── UTILS ─────────────────────────────────────────────────
@@ -916,11 +1684,7 @@ function resetScan() {
   scanResults = [];
   document.getElementById('results-wrap').style.display = 'none';
   document.getElementById('prog-wrap').style.display = 'none';
-  // Geen geldige sessie? Terug naar login
-  if (!sessionToken || !sessionEmail) {
-    showLoginOverlay();
-    return;
-  }
+  if (!sessionToken || !sessionEmail) { showLoginOverlay(); return; }
   document.getElementById('scan-start').style.display = 'block';
 }
 
