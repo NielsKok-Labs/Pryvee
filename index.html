@@ -369,88 +369,105 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
 <section class="wrap reveal" id="pricing" aria-labelledby="price-h" style="padding-bottom:120px">
   <div class="tag">Prijzen</div>
   <h2 class="h2" id="price-h">Duidelijke prijzen.<br>Geen verrassingen.</h2>
-  <p class="lead">Kies een losse module, of neem Essentials en bespaar. Maandelijks opzegbaar. Geen jaarcontract.</p>
- 
-  <div class="new-price-grid">
- 
+  <p class="lead">Kies een losse module of neem Essentials — alle drie samen voor één vast bedrag. Maandelijks opzegbaar, geen jaarcontract.</p>
+
+  <div class="new-price-grid" style="grid-template-columns:repeat(4,1fr)">
+
     <!-- Snapshot -->
     <div class="nplan">
       <div class="nplan-ico">&#128202;</div>
       <div class="nplan-name">Snapshot</div>
       <p class="nplan-desc">M365 beveiligingsaudit met managementklaar PDF-rapport</p>
       <div class="nplan-price">€99<span>/mnd</span></div>
-      <div class="nplan-per">per tenant &middot; maandelijks opzegbaar</div>
+      <div class="nplan-per">per tenant · opzegbaar</div>
       <div class="nplan-div"></div>
       <ul class="nplan-feats">
         <li>Geautomatiseerde beveiligingschecks</li>
         <li>MFA &amp; Conditional Access analyse</li>
+        <li>Gastaccounts &amp; extern deelrisico</li>
         <li>Microsoft Secure Score inzicht</li>
-        <li>Gastaccounts en extern deelrisico</li>
         <li>Managementklare PDF-export</li>
-        <li>Alleen-lezen — niets geschreven naar tenant</li>
       </ul>
       <a href="snapshot-tool.html" class="btn-plan fill">Start Snapshot &#8594;</a>
     </div>
- 
-    <!-- Essentials — highlighted -->
-    <div class="nplan hi">
-      <div class="nplan-badge">Meest gekozen</div>
-      <div class="nplan-ico">&#128202;&#128274;&#127968;</div>
-      <div class="nplan-name">Pryvee Essentials</div>
-      <p class="nplan-desc">Snapshot + Redact + Spaces — de complete governance suite voor MKB</p>
-      <div class="nplan-price">€149<span>/mnd</span></div>
-      <div class="nplan-per">per tenant &middot; maandelijks opzegbaar</div>
-      <div style="font-size:13px;color:var(--gold);margin-bottom:4px;font-family:'Geist Mono',monospace">Bespaar €28/mnd t.o.v. los</div>
-      <div class="nplan-div"></div>
-      <ul class="nplan-feats">
-        <li>Alles in Snapshot</li>
-        <li>Redact — onbeperkt documenten anonimiseren</li>
-        <li>Spaces — Teams governance (binnenkort)</li>
-        <li>12 PII-entiteitstypen (BSN, IBAN…)</li>
-        <li>Audit-log export</li>
-        <li>Één abonnement, drie modules</li>
-      </ul>
-      <a href="snapshot-tool.html" class="btn-plan fill">Start met Essentials &#8594;</a>
-    </div>
- 
+
     <!-- Redact -->
     <div class="nplan">
       <div class="nplan-ico">&#128274;</div>
       <div class="nplan-name">Redact</div>
       <p class="nplan-desc">AVG-compliant PII-redactie volledig in de browser</p>
       <div class="nplan-price">€39<span>/mnd</span></div>
-      <div class="nplan-per">per organisatie &middot; maandelijks opzegbaar</div>
+      <div class="nplan-per">per organisatie · opzegbaar</div>
       <div class="nplan-div"></div>
       <ul class="nplan-feats">
         <li>PDF &amp; DOCX redactie</li>
-        <li>12 PII-entiteitstypen</li>
-        <li>100% in-browser — geen upload</li>
+        <li>BSN, IBAN, namen, adressen</li>
+        <li>100% in-browser — niets opgeslagen</li>
         <li>Handmatige redactie-tool</li>
         <li>Audit-log export</li>
-        <li>Nederlands &amp; Engelstalig</li>
       </ul>
       <a href="redact-tool.html" class="btn-plan fill">Start Redact &#8594;</a>
     </div>
- 
-    <!-- MSP -->
-    <div class="nplan" style="grid-column: 1 / -1; max-width: 480px; margin: 0 auto;">
-      <div class="nplan-ico">&#127970;</div>
-      <div class="nplan-name">MSP Partner</div>
-      <p class="nplan-desc">Volumeprijzen voor managed service providers met meerdere klanttenants</p>
-      <div class="nplan-price" style="font-size:32px;letter-spacing:-1px">Op aanvraag</div>
-      <div class="nplan-per">per tenant &middot; volumekorting</div>
+
+    <!-- Spaces — binnenkort -->
+    <div class="nplan" style="opacity:.75">
+      <div class="nplan-badge" style="background:rgba(255,235,85,.15);color:var(--gold);border:1px solid rgba(255,235,85,.25)">Binnenkort</div>
+      <div class="nplan-ico">&#127968;</div>
+      <div class="nplan-name">Spaces</div>
+      <p class="nplan-desc">Teams &amp; SharePoint governance zonder Power Platform</p>
+      <div class="nplan-price">€39<span>/mnd</span></div>
+      <div class="nplan-per">per tenant · opzegbaar</div>
       <div class="nplan-div"></div>
       <ul class="nplan-feats">
-        <li>Alle modules inbegrepen</li>
-        <li>Onbeperkt tenants beheren</li>
-        <li>White-label PDF-rapporten</li>
-        <li>Multi-tenant overzicht</li>
-        <li>Eigen contractvorm</li>
+        <li>Teams aanmaken via templates</li>
+        <li>Whitelabel branding per klant</li>
+        <li>Aanvraag- &amp; goedkeuringsflow</li>
+        <li>Overzichtsdashboard per tenant</li>
+        <li>Geen installatie in klant-tenant</li>
       </ul>
-      <a href="mailto:info@pryveegovernance.com" class="btn-plan out">Neem contact op &#8594;</a>
+      <div class="btn-plan out" style="opacity:.4;cursor:default;pointer-events:none;text-align:center">Binnenkort beschikbaar</div>
     </div>
- 
+
+    <!-- Essentials — highlighted -->
+    <div class="nplan hi">
+      <div class="nplan-badge">Meest gekozen · Bespaar €28/mnd</div>
+      <div class="nplan-ico">&#128202;&#128274;&#127968;</div>
+      <div class="nplan-name">Essentials</div>
+      <p class="nplan-desc">Snapshot + Redact + Spaces — de complete suite voor MKB</p>
+      <div class="nplan-price">€149<span>/mnd</span></div>
+      <div class="nplan-per">per tenant · opzegbaar</div>
+      <div class="nplan-div"></div>
+      <ul class="nplan-feats">
+        <li>Alle Snapshot beveiligingschecks</li>
+        <li>Redact — onbeperkt documenten</li>
+        <li>Spaces — Teams governance (binnenkort)</li>
+        <li>Managementklare PDF-export</li>
+        <li>12 PII-entiteitstypen (BSN, IBAN…)</li>
+        <li>Één abonnement · alle updates inbegrepen</li>
+      </ul>
+      <a href="snapshot-tool.html" class="btn-plan fill">Start met Essentials &#8594;</a>
+    </div>
+
   </div>
+
+  <!-- MSP — los eronder, volle breedte -->
+  <div class="nplan" style="margin-top:16px;max-width:480px">
+    <div class="nplan-ico">&#127970;</div>
+    <div class="nplan-name">MSP Partner</div>
+    <p class="nplan-desc">Volumeprijzen voor managed service providers met meerdere klanttenants</p>
+    <div class="nplan-price" style="font-size:32px;letter-spacing:-1px">Op aanvraag</div>
+    <div class="nplan-per">volumekorting · eigen contract</div>
+    <div class="nplan-div"></div>
+    <ul class="nplan-feats">
+      <li>Alle modules inbegrepen</li>
+      <li>Onbeperkt tenants beheren</li>
+      <li>White-label PDF-rapporten</li>
+      <li>Multi-tenant overzicht</li>
+      <li>Volumekorting &amp; eigen contractvorm</li>
+    </ul>
+    <a href="mailto:info@pryveegovernance.com" class="btn-plan out">Neem contact op &#8594;</a>
+  </div>
+
 </section>
   
 <!-- CTA -->
