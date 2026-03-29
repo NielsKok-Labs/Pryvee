@@ -369,110 +369,120 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36
 <section class="wrap reveal" id="pricing" aria-labelledby="price-h" style="padding-bottom:120px">
   <div class="tag">Prijzen</div>
   <h2 class="h2" id="price-h">Duidelijke prijzen.<br>Geen verrassingen.</h2>
-  <p class="lead">Kies een losse module, of neem Essentials en krijg alle drie voor één vast bedrag. Maandelijks opzegbaar.</p>
- 
-  <!-- Rij 1: drie losse modules -->
-  <div class="new-price-grid" style="margin-bottom:16px">
- 
+  <p class="lead">Maandelijks opzegbaar. Geen jaarcontract. Geen verborgen kosten.</p>
+
+  <!-- Essentials — hero kaart bovenaan, horizontaal -->
+  <div class="nplan hi" style="margin-bottom:16px;padding:40px 48px">
+    <div class="nplan-badge">Meest gekozen &nbsp;·&nbsp; Bespaar €28/mnd</div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center">
+
+      <!-- Links: info -->
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <span style="font-size:32px">&#128202;&#128274;&#127968;</span>
+          <div>
+            <div class="nplan-name" style="margin-bottom:2px">Pryvee Essentials</div>
+            <div style="font-size:12px;color:var(--muted);font-family:'Geist Mono',monospace">Snapshot + Redact + Spaces</div>
+          </div>
+        </div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;max-width:520px">De complete governance suite voor MKB — beveiligingsaudit, documentredactie en Teams governance in één abonnement.</p>
+        <ul style="list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 32px">
+          <li class="nplan-feats" style="margin:0;padding:0;display:contents">
+            <li style="font-size:13px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5">Geautomatiseerde M365 beveiligingschecks</li>
+            <li style="font-size:13px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5">Redact — onbeperkt documenten anonimiseren</li>
+            <li style="font-size:13px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5">MFA &amp; Conditional Access analyse</li>
+            <li style="font-size:13px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5">Spaces — Teams governance (binnenkort)</li>
+            <li style="font-size:13px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5">Managementklare PDF-export</li>
+            <li style="font-size:13px;color:var(--muted);padding-left:22px;position:relative;line-height:1.5">12 PII-entiteitstypen (BSN, IBAN…)</li>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Rechts: prijs + knop -->
+      <div style="text-align:center;min-width:200px">
+        <div class="nplan-price" style="font-size:56px;letter-spacing:-3px">€149<span style="font-size:20px">/mnd</span></div>
+        <div class="nplan-per" style="margin-bottom:24px">per tenant &middot; opzegbaar</div>
+        <a href="snapshot-tool.html" class="btn-plan fill" style="white-space:nowrap">Start met Essentials &#8594;</a>
+        <div style="margin-top:10px;font-size:12px;color:var(--muted2)">€177 los &rarr; nu €149</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Losse modules + MSP — vier kaarten compact -->
+  <div class="new-price-grid" style="grid-template-columns:repeat(4,1fr);align-items:start">
+
     <!-- Snapshot -->
     <div class="nplan">
       <div class="nplan-ico">&#128202;</div>
-      <div class="nplan-name">Snapshot</div>
-      <p class="nplan-desc">M365 beveiligingsaudit met managementklaar PDF-rapport</p>
-      <div class="nplan-price">€99<span>/mnd</span></div>
-      <div class="nplan-per">per tenant &middot; maandelijks opzegbaar</div>
+      <div class="nplan-name" style="font-size:18px">Snapshot</div>
+      <p class="nplan-desc" style="min-height:auto;margin-bottom:16px">M365 beveiligingsaudit + PDF-rapport</p>
+      <div class="nplan-price" style="font-size:32px;letter-spacing:-1.5px">€99<span>/mnd</span></div>
+      <div class="nplan-per" style="margin-bottom:0">per tenant</div>
       <div class="nplan-div"></div>
-      <ul class="nplan-feats">
-        <li>Geautomatiseerde beveiligingschecks</li>
-        <li>MFA &amp; Conditional Access analyse</li>
-        <li>Gastaccounts &amp; extern deelrisico</li>
-        <li>Microsoft Secure Score inzicht</li>
-        <li>Managementklare PDF-export</li>
+      <ul class="nplan-feats" style="margin-bottom:20px">
+        <li>Beveiligingschecks</li>
+        <li>MFA &amp; CA analyse</li>
+        <li>Gastaccounts &amp; extern delen</li>
+        <li>PDF-export</li>
       </ul>
-      <a href="snapshot-tool.html" class="btn-plan fill">Start Snapshot &#8594;</a>
+      <a href="snapshot-tool.html" class="btn-plan fill">Start &#8594;</a>
     </div>
- 
+
     <!-- Redact -->
     <div class="nplan">
       <div class="nplan-ico">&#128274;</div>
-      <div class="nplan-name">Redact</div>
-      <p class="nplan-desc">AVG-compliant PII-redactie volledig in de browser</p>
-      <div class="nplan-price">€39<span>/mnd</span></div>
-      <div class="nplan-per">per organisatie &middot; maandelijks opzegbaar</div>
+      <div class="nplan-name" style="font-size:18px">Redact</div>
+      <p class="nplan-desc" style="min-height:auto;margin-bottom:16px">PII-redactie volledig in de browser</p>
+      <div class="nplan-price" style="font-size:32px;letter-spacing:-1.5px">€39<span>/mnd</span></div>
+      <div class="nplan-per" style="margin-bottom:0">per organisatie</div>
       <div class="nplan-div"></div>
-      <ul class="nplan-feats">
+      <ul class="nplan-feats" style="margin-bottom:20px">
         <li>PDF &amp; DOCX redactie</li>
-        <li>BSN, IBAN, namen, adressen</li>
-        <li>100% in-browser — niets opgeslagen</li>
-        <li>Handmatige redactie-tool</li>
+        <li>BSN, IBAN, namen</li>
+        <li>100% in-browser</li>
         <li>Audit-log export</li>
       </ul>
-      <a href="redact-tool.html" class="btn-plan fill">Start Redact &#8594;</a>
+      <a href="redact-tool.html" class="btn-plan fill">Start &#8594;</a>
     </div>
- 
+
     <!-- Spaces -->
-    <div class="nplan" style="opacity:.7">
-      <div class="nplan-badge" style="background:rgba(255,235,85,.12);color:var(--gold);border:1px solid rgba(255,235,85,.2);font-size:10px;padding:3px 12px">Binnenkort</div>
+    <div class="nplan" style="opacity:.65">
+      <div class="nplan-badge" style="background:rgba(255,235,85,.1);color:var(--gold);border:1px solid rgba(255,235,85,.2);font-size:10px;letter-spacing:.04em">Binnenkort</div>
       <div class="nplan-ico">&#127968;</div>
-      <div class="nplan-name">Spaces</div>
-      <p class="nplan-desc">Teams &amp; SharePoint governance zonder Power Platform</p>
-      <div class="nplan-price">€39<span>/mnd</span></div>
-      <div class="nplan-per">per tenant &middot; maandelijks opzegbaar</div>
+      <div class="nplan-name" style="font-size:18px">Spaces</div>
+      <p class="nplan-desc" style="min-height:auto;margin-bottom:16px">Teams governance zonder Power Platform</p>
+      <div class="nplan-price" style="font-size:32px;letter-spacing:-1.5px">€39<span>/mnd</span></div>
+      <div class="nplan-per" style="margin-bottom:0">per tenant</div>
       <div class="nplan-div"></div>
-      <ul class="nplan-feats">
-        <li>Teams aanmaken via templates</li>
-        <li>Whitelabel branding per klant</li>
-        <li>Aanvraag- &amp; goedkeuringsflow</li>
-        <li>Overzichtsdashboard per tenant</li>
-        <li>Geen installatie in klant-tenant</li>
+      <ul class="nplan-feats" style="margin-bottom:20px">
+        <li>Teams via templates</li>
+        <li>Whitelabel branding</li>
+        <li>Goedkeuringsflow</li>
+        <li>Geen installatie nodig</li>
       </ul>
-      <div class="btn-plan out" style="opacity:.4;cursor:default;pointer-events:none;justify-content:center">Binnenkort beschikbaar</div>
+      <div class="btn-plan out" style="opacity:.4;cursor:default;pointer-events:none">Binnenkort</div>
     </div>
- 
-  </div>
- 
-  <!-- Rij 2: Essentials + MSP -->
-  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:start">
- 
-    <!-- Essentials highlighted -->
-    <div class="nplan hi">
-      <div class="nplan-badge">Meest gekozen &nbsp;·&nbsp; Bespaar €28/mnd</div>
-      <div class="nplan-ico">&#128202;&#128274;&#127968;</div>
-      <div class="nplan-name">Pryvee Essentials</div>
-      <p class="nplan-desc">Snapshot + Redact + Spaces — de complete governance suite voor MKB</p>
-      <div class="nplan-price">€149<span>/mnd</span></div>
-      <div class="nplan-per">per tenant &middot; maandelijks opzegbaar</div>
-      <div class="nplan-div"></div>
-      <ul class="nplan-feats">
-        <li>Alle Snapshot beveiligingschecks</li>
-        <li>Redact — onbeperkt documenten anonimiseren</li>
-        <li>Spaces — Teams governance (binnenkort)</li>
-        <li>Managementklare PDF-export</li>
-        <li>12 PII-entiteitstypen (BSN, IBAN…)</li>
-        <li>Één abonnement &middot; alle updates inbegrepen</li>
-      </ul>
-      <a href="snapshot-tool.html" class="btn-plan fill">Start met Essentials &#8594;</a>
-    </div>
- 
+
     <!-- MSP -->
     <div class="nplan">
       <div class="nplan-ico">&#127970;</div>
-      <div class="nplan-name">MSP Partner</div>
-      <p class="nplan-desc">Volumeprijzen voor managed service providers met meerdere klanttenants</p>
-      <div class="nplan-price" style="font-size:30px;letter-spacing:-1px">Op aanvraag</div>
-      <div class="nplan-per">volumekorting &middot; eigen contract</div>
+      <div class="nplan-name" style="font-size:18px">MSP Partner</div>
+      <p class="nplan-desc" style="min-height:auto;margin-bottom:16px">Meerdere klanttenants beheren</p>
+      <div class="nplan-price" style="font-size:24px;letter-spacing:-1px;margin-top:4px">Op aanvraag</div>
+      <div class="nplan-per" style="margin-bottom:0">volumekorting</div>
       <div class="nplan-div"></div>
-      <ul class="nplan-feats">
+      <ul class="nplan-feats" style="margin-bottom:20px">
         <li>Alle modules inbegrepen</li>
-        <li>Onbeperkt tenants beheren</li>
-        <li>White-label PDF-rapporten</li>
-        <li>Multi-tenant overzicht</li>
-        <li>Volumekorting &amp; eigen contract</li>
+        <li>Onbeperkt tenants</li>
+        <li>White-label rapporten</li>
+        <li>Eigen contract</li>
       </ul>
-      <a href="mailto:info@pryveegovernance.com" class="btn-plan out">Neem contact op &#8594;</a>
+      <a href="mailto:info@pryveegovernance.com" class="btn-plan out">Contact &#8594;</a>
     </div>
- 
+
   </div>
+
 </section>
   
 <!-- CTA -->
